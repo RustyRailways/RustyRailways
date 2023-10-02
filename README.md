@@ -1,2 +1,2 @@
-# The_Rust_Railways
+# Rusty_Railways
 git repository for embedded project 
