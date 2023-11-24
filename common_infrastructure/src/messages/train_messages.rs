@@ -1,7 +1,9 @@
 use serde::{Deserialize,Serialize};
 
+use crate::devices::Device;
+
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Deserialize, Serialize)]
 pub enum TrainMessage {
-    HartBeatFromMaster,
+    HartBeatFrom(Device),
     SetSpeed(i8),
 }
