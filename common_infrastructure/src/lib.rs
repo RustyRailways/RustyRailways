@@ -12,4 +12,5 @@ pub mod messages;
 // hardware absraction layers for the varius components;
 pub mod hals;
 
+#[cfg(test)]
 mod tests;
