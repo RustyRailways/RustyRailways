@@ -2,16 +2,21 @@ use std::cell::RefCell;
 use std::collections::HashMap;
 use common_infrastructure::devices::Switch;
 use common_infrastructure::Position;
+use common_infrastructure::devices::Train as TrainEnum;
+pub mod nodes;
+use nodes::{GenericNode, NodeType, RoadNode, SwitchNode};
 
-mod nodes;
-use nodes::{Node, NodeType, RoadNode, SwitchNode};
 
-mod train;
-
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Map{
+    nodes: HashMap<Position, GenericNode>,
+    switch_to_position: HashMap<Switch,Position>,
+}
 
-    node: HashMap<Position, NodeType>,
-    switches: HashMap<Switch,SwitchNode>,
 
+
+impl Map {
+    pub fn get_node_at(&self, position: Position) -> &GenericNode{
+        return self.nodes.get(&position).unwrap()
+    }
 }

@@ -1,13 +1,19 @@
-use common_infrastructure::devices::{Switch, Train};
+use std::cell::RefCell;
+use std::collections::{HashMap, VecDeque};
+use common_infrastructure::devices::{Switch, Train as TrainEnum};
 use common_infrastructure::hals::{GenericHal, MasterHal};
 use common_infrastructure::messages::{MasterMessage, SwitchMessage, TrainMessage};
+use crate::map::Map;
 
-mod map;
-
+pub mod map;
+mod train;
+use train::Train;
 
 
 pub struct SimulatedMap{
-
+    message_queue: RefCell<VecDeque<MasterMessage>>,
+    map: RefCell<Map>,
+    trains: RefCell<HashMap<TrainEnum,Train>>
 }
 
 impl GenericHal for SimulatedMap{
@@ -15,18 +21,21 @@ impl GenericHal for SimulatedMap{
         todo!()
     }
     fn sleep_for_ms(ms: u32) {
-        todo!()
+        return;
     }
 }
 
 impl MasterHal for SimulatedMap {
     fn get_message(&self) -> anyhow::Result<Option<MasterMessage>> {
-        todo!()
+        Ok(self.message_queue.borrow_mut().pop_front())
     }
     fn send_message_to_switch(&self, switch: Switch, message: SwitchMessage) -> anyhow::Result<()> {
-        todo!()
+        let switch = self.map.borrow_mut().
     }
-    fn send_message_to_train(&self, train: Train, message: TrainMessage) -> anyhow::Result<()> {
-        todo!()
+    fn send_message_to_train(&self, train: TrainEnum, message: TrainMessage) -> anyhow::Result<()> {
+        if let TrainMessage::SetSpeed(speed) = message{
+            self.trains.borrow_mut().get_mut(&train).unwrap().set_speed(speed);
+        }
+        Ok(())
     }
 }

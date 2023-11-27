@@ -2,29 +2,68 @@ use std::cell::RefCell;
 use common_infrastructure::devices::Switch;
 use common_infrastructure::Position;
 use super::Map;
-pub trait Node{
-    fn next(&self, map: &Map)->Option<NodeType>;
-    fn prev(&self, map: &Map)->Option<NodeType>;
+
+pub trait SwitchNodeTrait{
+    fn set_straight(&self)->Result<(),()>;
+    fn set_diverted(&self)->Result<(),()>;
 }
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub trait NodeConnectionsTrait{
+    fn next<'a>(&self, map: &'a Map)->Option<&'a GenericNode>;
+    fn prev<'a>(&self, map: &'a Map)->Option<&'a GenericNode>;
+}
+
+pub trait NodeTrait: NodeConnectionsTrait + SwitchNodeTrait{
+    fn get_position(&self)->Position;
+}
+
+// Node that can be both a simple road node, or a switch.
+#[derive(PartialEq, Eq, Debug)]
+pub struct GenericNode{
+    position: Position,
+    node: NodeType,
+}
+
+#[derive(PartialEq, Eq, Debug)]
 pub enum NodeType{
-    Switch(Switch),
+    Switch(SwitchNode),
     Road(RoadNode)
 }
 
-impl Node for NodeType{
-    fn next(&self, map: &Map)->Option<NodeType>{
-        match self{
-            NodeType::Switch(s) => map.switches.get(s).unwrap().next(map),
-            NodeType::Road(r) => r.next(map)
+
+impl NodeConnectionsTrait for GenericNode {
+    fn next<'a>(&self, map: &'a Map) -> Option<&'a GenericNode> {
+        match &self.node {
+            NodeType::Road(r) => r.next(map),
+            NodeType::Switch(s) => s.next(map)
         }
     }
-    fn prev(&self, map: &Map)->Option<NodeType>{
-        match self{
-            NodeType::Switch(s) => map.switches.get(s).unwrap().prev(map),
-            NodeType::Road(r) => r.prev(map)
+    fn prev<'a>(&self, map: &'a Map) -> Option<&'a GenericNode> {
+        match &self.node {
+            NodeType::Road(r) => r.prev(map),
+            NodeType::Switch(s) => s.prev(map)
         }
+    }
+}
+
+impl SwitchNodeTrait for GenericNode {
+    fn set_straight(&self) -> Result<(), ()> {
+        match &self.node {
+            NodeType::Road(r) => Err(()),
+            NodeType::Switch(s) => s.set_straight()
+        }
+    }
+    fn set_diverted(&self) -> Result<(), ()> {
+        match &self.node {
+            NodeType::Road(r) => Err(()),
+            NodeType::Switch(s) => s.set_diverted()
+        }
+    }
+}
+
+impl NodeTrait for GenericNode {
+    fn get_position(&self) -> Position {
+        return self.position;
     }
 }
 
@@ -34,20 +73,12 @@ pub struct RoadNode{
     prev: Option<Position>
 }
 
-impl Node for RoadNode{
-    fn next(&self, map: &Map)->Option<NodeType>{
-        // node, node are always present, if not, the map is broken.
-        // and i rather unwrap, so i know the problem is there.
-        Some(
-            *map.node.get(&self.next?).unwrap()
-        )
+impl NodeConnectionsTrait for RoadNode{
+    fn next<'a>(&self, map: &'a Map) -> Option<&'a GenericNode> {
+        return Some(map.get_node_at(self.next?));
     }
-    fn prev(&self, map: &Map)->Option<NodeType>{
-        // node, node are always present, if not, the map is broken.
-        // and i rather unwrap, so i know the problem is there.
-        Some(
-            *map.node.get(&self.prev?).unwrap()
-        )
+    fn prev<'a>(&self, map: &'a Map) -> Option<&'a GenericNode> {
+        return Some(map.get_node_at(self.prev?));
     }
 }
 
@@ -59,25 +90,26 @@ pub struct SwitchNode{
     is_straight: RefCell<bool>,
 }
 
-impl Node for SwitchNode{
-    fn next(&self, map: &Map)->Option<NodeType>{
-
-        let p = match *self.is_straight.borrow(){
-            true => self.next_straight,
-            false => self.next_diverted
-        };
-
-        // node, node are always present, if not, the map is broken.
-        // and i rather unwrap, so i know the problem is there.
-        Some(
-            *map.node.get(&p).unwrap()
-        )
+impl SwitchNodeTrait for SwitchNode {
+    fn set_straight(&self) -> Result<(), ()> {
+        *self.is_straight.borrow_mut() = true;
+        Ok(())
     }
-    fn prev(&self, map: &Map)->Option<NodeType>{
-        // node, node are always present, if not, the map is broken.
-        // and i rather unwrap, so i know the problem is there.
-        Some(
-            *map.node.get(&self.prev?).unwrap()
-        )
+    fn set_diverted(&self) -> Result<(), ()> {
+        *self.is_straight.borrow_mut() = false;
+        Ok(())
+    }
+}
+
+impl NodeConnectionsTrait for SwitchNode {
+    fn next<'a>(&self, map: &'a Map) -> Option<&'a GenericNode> {
+        if *self.is_straight.borrow(){
+            return Some(map.get_node_at(self.next_straight))
+        }else{
+            return Some(map.get_node_at(self.next_diverted))
+        }
+    }
+    fn prev<'a>(&self, map: &'a Map) -> Option<&'a GenericNode> {
+        return Some(map.get_node_at(self.prev?));
     }
 }
