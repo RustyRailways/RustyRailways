@@ -29,8 +29,14 @@ impl Train{
             return None;
         }
 
+        let position_prev = self.position;
+
         self.position = self.get_next_position(map);
-        
+
+        if self.get_next_position(map) == position_prev{
+            self.is_straight = !self.is_straight;
+        }
+
         return Some(MasterMessage::TrainHasReachedPosition(self.train,self.position));
     }
 
