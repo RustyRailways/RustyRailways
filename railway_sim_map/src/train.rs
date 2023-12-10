@@ -2,7 +2,7 @@ use common_infrastructure::messages::MasterMessage;
 use common_infrastructure::devices::Train as TrainEnum;
 use common_infrastructure::Position;
 
-use crate::map::nodes::{NodeTrait,SwitchNodeTrait,NodeConnectionsTrait, NodeType, RoadNode, SwitchNode};
+use crate::map::nodes::{NodeTrait,NodeConnectionsTrait};
 
 
 use super::Map;

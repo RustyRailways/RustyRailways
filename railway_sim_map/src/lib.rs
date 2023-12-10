@@ -3,12 +3,14 @@ use std::collections::{HashMap, VecDeque};
 use std::ops::Deref;
 use common_infrastructure::devices::{Switch, Train as TrainEnum};
 use common_infrastructure::hals::{GenericHal, MasterHal};
+use common_infrastructure::Position;
 use common_infrastructure::messages::{MasterMessage, SwitchMessage, TrainMessage};
 use crate::map::Map;
-
 pub mod map;
 mod train;
 use train::Train;
+#[cfg(test)]
+mod tests;
 
 
 pub struct SimulatedMap{
@@ -20,7 +22,15 @@ pub struct SimulatedMap{
 
 impl GenericHal for SimulatedMap{
     fn new() -> anyhow::Result<Self> {
-        todo!()
+        let mut trains = HashMap::new();
+        trains.insert(TrainEnum::T1, Train::new(TrainEnum::T1, Position::P4));
+        trains.insert(TrainEnum::T2, Train::new(TrainEnum::T2, Position::P6));
+
+        Ok(Self{
+            message_queue: RefCell::new(VecDeque::new()),
+            map: Map::new().into(),
+            trains: trains.into(),
+        })
     }
     fn sleep_for_ms(&self, _: u32) {
         for (train_id, train) in self.trains.borrow().iter(){

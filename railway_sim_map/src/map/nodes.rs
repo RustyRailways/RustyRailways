@@ -1,5 +1,4 @@
 use std::cell::RefCell;
-use common_infrastructure::devices::Switch;
 use common_infrastructure::Position;
 use super::Map;
 
@@ -31,6 +30,50 @@ pub enum NodeType{
 }
 
 
+impl GenericNode{
+    pub fn new_road(position: Position, prev: Option<Position>, next: Option<Position>)->Self{
+        Self{
+            position,
+            node: NodeType::new_road(prev,next)
+        }
+    }
+    pub fn new_switch(position: Position, prev: Option<Position>, next_straight: Position, next_diverted: Position)->Self{
+        Self{
+            position,
+            node: NodeType::new_switch(prev,next_straight,next_diverted)
+        }
+    }
+}
+
+impl NodeType {
+    pub fn new_road(prev: Option<Position>, next: Option<Position>) ->Self{
+        Self::Road(RoadNode::new(prev,next))
+    }
+    pub fn new_switch(prev: Option<Position>, next_straight: Position, next_diverted: Position)->Self{
+        Self::Switch(SwitchNode::new(prev,next_straight,next_diverted))
+    }
+}
+
+impl SwitchNode {
+    pub fn new(prev: Option<Position>, next_straight: Position, next_diverted: Position)->Self{
+        Self{
+            next_diverted,
+            next_straight,
+            prev,
+            is_straight: RefCell::new(true),
+        }
+    }
+}
+
+impl RoadNode {
+    pub fn new(prev: Option<Position>, next: Option<Position>)->Self{
+        Self{
+            prev,
+            next,
+        }
+    }
+}
+
 impl NodeConnectionsTrait for GenericNode {
     fn next<'a>(&self, map: &'a Map) -> Option<&'a GenericNode> {
         match &self.node {
@@ -49,13 +92,13 @@ impl NodeConnectionsTrait for GenericNode {
 impl SwitchNodeTrait for GenericNode {
     fn set_straight(&self) -> Result<(), ()> {
         match &self.node {
-            NodeType::Road(r) => Err(()),
+            NodeType::Road(_) => panic!("call straight on a road node!"),
             NodeType::Switch(s) => s.set_straight()
         }
     }
     fn set_diverted(&self) -> Result<(), ()> {
         match &self.node {
-            NodeType::Road(r) => Err(()),
+            NodeType::Road(_) => panic!("call diverted on a road node!"),
             NodeType::Switch(s) => s.set_diverted()
         }
     }
