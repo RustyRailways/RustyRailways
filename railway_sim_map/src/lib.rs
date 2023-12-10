@@ -33,7 +33,10 @@ impl GenericHal for SimulatedMap{
             }
         }
         for (_, train) in self.trains.borrow_mut().iter_mut(){
-            train.do_move(self.map.borrow().deref());
+            let message = train.do_move(self.map.borrow().deref());
+            if let Some(m) = message{
+                self.message_queue.borrow_mut().push_back(m);
+            }
         }
 
         for (train_id, train) in self.trains.borrow().iter(){
