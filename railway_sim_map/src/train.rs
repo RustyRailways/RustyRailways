@@ -33,6 +33,9 @@ impl Train{
 
         self.position = self.get_next_position(map);
 
+        // if the track has changed the primary orientation,
+        // i need to change the train's direction
+        // to keep the actual direction of the train coherent
         if self.get_next_position(map) == position_prev{
             self.is_straight = !self.is_straight;
         }
