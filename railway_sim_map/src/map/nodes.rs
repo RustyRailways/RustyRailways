@@ -19,7 +19,7 @@ pub trait NodeTrait: NodeConnectionsTrait + SwitchNodeTrait{
 // Node that can be both a simple road node, or a switch.
 #[derive(PartialEq, Eq, Debug)]
 pub struct GenericNode{
-    position: Position,
+    pub(crate) position: Position,
     node: NodeType,
 }
 
@@ -82,6 +82,29 @@ impl NodeConnectionsTrait for GenericNode {
         }
     }
     fn prev<'a>(&self, map: &'a Map) -> Option<&'a GenericNode> {
+
+        // check that if i am going to a switch,
+        // the switch is set in the correct position, and not in the opposite one.
+        // to avoid the train derailing.
+        if let NodeType::Switch(s) = &self.node{
+            let prev = s.prev(map);
+            if let Some(prev) = prev{
+
+                let option_1 = prev.next(map).map(|x|x.position);
+                let option_2 = prev.prev(map).map(|x|x.position);
+
+                if option_1 != Some(self.position) && option_2 != Some(self.position){
+                    panic!(
+                        "The switch at position {:?} was not set in the correct position,\
+                        wen the train was going to it from {:?}"
+                        ,prev.position,
+                        self.position
+                    );
+                }
+            }
+        }
+
+
         match &self.node {
             NodeType::Road(r) => r.prev(map),
             NodeType::Switch(s) => s.prev(map)
