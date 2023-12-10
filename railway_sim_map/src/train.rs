@@ -36,7 +36,7 @@ impl Train{
         // if the track has changed the primary orientation,
         // i need to change the train's direction
         // to keep the actual direction of the train coherent
-        if self.get_next_position(map) == position_prev{
+        if self.get_option_next_position(map) == Some(position_prev){
             self.is_straight = !self.is_straight;
         }
 
@@ -47,20 +47,22 @@ impl Train{
         self.speed = speed;
     }
 
-    pub fn get_next_position(&self, map: &Map) -> Position{
+    fn get_option_next_position(&self, map: &Map) -> Option<Position>{
         if self.speed == 0{
-            return self.position;
+            return Some(self.position);
         }
 
         let current_node = map.get_node_at(self.position);
 
-        let next = match (self.is_straight,self.speed) {
+        match (self.is_straight,self.speed) {
             (true, 0..) | (false, ..=-1) => current_node.next(map),
             (true, ..=-1) | (false, 0..) => current_node.prev(map),
-        };
+        }.map(|x| x.get_position())
+    }
 
-        match next{
-            Some(n) => n.get_position(),
+    pub fn get_next_position(&self, map: &Map) -> Position{
+        match self.get_option_next_position(map){
+            Some(n) => n,
             None => panic!("The train crashed because it went out of the map!")
         }
     }
