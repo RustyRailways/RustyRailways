@@ -28,6 +28,21 @@ impl Train{
         if self.speed == 0{
             return None;
         }
+
+        self.position = self.get_next_position(map);
+        
+        return Some(MasterMessage::TrainHasReachedPosition(self.train,self.position));
+    }
+
+    pub fn set_speed(&mut self, speed: i8){
+        self.speed = speed;
+    }
+
+    pub fn get_next_position(&self, map: &Map) -> Position{
+        if self.speed == 0{
+            return self.position;
+        }
+
         let current_node = map.get_node_at(self.position);
 
         let next = match (self.is_straight,self.speed) {
@@ -35,17 +50,9 @@ impl Train{
             (true, ..=-1) | (false, 0..) => current_node.prev(map),
         };
 
-        let next = match next{
-            Some(n) => n,
+        match next{
+            Some(n) => n.get_position(),
             None => panic!("The train crashed because it went out of the map!")
-        };
-
-        self.position = next.get_position();
-        
-        return Some(MasterMessage::TrainHasReachedPosition(self.train,self.position));
-    }
-
-    pub fn set_speed(&mut self, speed: i8){
-        self.speed = speed;
+        }
     }
 }

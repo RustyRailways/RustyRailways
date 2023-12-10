@@ -5,6 +5,7 @@ use common_infrastructure::Position;
 use common_infrastructure::devices::Train as TrainEnum;
 pub mod nodes;
 use nodes::{GenericNode, NodeType, RoadNode, SwitchNode};
+use crate::map::nodes::SwitchNodeTrait;
 
 
 #[derive(Debug)]
@@ -18,5 +19,15 @@ pub struct Map{
 impl Map {
     pub fn get_node_at(&self, position: Position) -> &GenericNode{
         return self.nodes.get(&position).unwrap()
+    }
+
+    pub fn set_straight(&mut self, switch: Switch){
+        let p = self.switch_to_position[&switch];
+        self.nodes.get_mut(&p).unwrap().set_straight().unwrap();
+    }
+
+    pub fn set_diverted(&mut self, switch: Switch){
+        let p = self.switch_to_position[&switch];
+        self.nodes.get_mut(&p).unwrap().set_diverted().unwrap();
     }
 }

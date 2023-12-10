@@ -1,5 +1,6 @@
 use std::cell::RefCell;
 use std::collections::{HashMap, VecDeque};
+use std::ops::Deref;
 use common_infrastructure::devices::{Switch, Train as TrainEnum};
 use common_infrastructure::hals::{GenericHal, MasterHal};
 use common_infrastructure::messages::{MasterMessage, SwitchMessage, TrainMessage};
@@ -16,12 +17,33 @@ pub struct SimulatedMap{
     trains: RefCell<HashMap<TrainEnum,Train>>
 }
 
+
 impl GenericHal for SimulatedMap{
     fn new() -> anyhow::Result<Self> {
         todo!()
     }
-    fn sleep_for_ms(ms: u32) {
-        return;
+    fn sleep_for_ms(&self, _: u32) {
+        for (train_id, train) in self.trains.borrow().iter(){
+            let nex_pos = train.get_next_position(self.map.borrow().deref());
+            for (train_id2, train2) in self.trains.borrow().iter(){
+                if train_id == train_id2{
+                    continue
+                }
+                assert_ne!(nex_pos, train2.position, "The train {:?} has crashed with the train {:?} while in move",train_id, train_id2);
+            }
+        }
+        for (_, train) in self.trains.borrow_mut().iter_mut(){
+            train.do_move(self.map.borrow().deref());
+        }
+
+        for (train_id, train) in self.trains.borrow().iter(){
+            for (train_id2, train2) in self.trains.borrow().iter(){
+                if train_id == train_id2{
+                    continue
+                }
+                assert_ne!(train.position, train2.position, "The train {:?} has crashed with the train {:?} while in move",train_id, train_id2);
+            }
+        }
     }
 }
 
@@ -29,13 +51,17 @@ impl MasterHal for SimulatedMap {
     fn get_message(&self) -> anyhow::Result<Option<MasterMessage>> {
         Ok(self.message_queue.borrow_mut().pop_front())
     }
-    fn send_message_to_switch(&self, switch: Switch, message: SwitchMessage) -> anyhow::Result<()> {
-        let switch = self.map.borrow_mut().
-    }
     fn send_message_to_train(&self, train: TrainEnum, message: TrainMessage) -> anyhow::Result<()> {
         if let TrainMessage::SetSpeed(speed) = message{
             self.trains.borrow_mut().get_mut(&train).unwrap().set_speed(speed);
         }
+        Ok(())
+    }
+    fn send_message_to_switch(&self, switch: Switch, message: SwitchMessage) -> anyhow::Result<()> {
+        match message {
+            SwitchMessage::SetPositionDiverging => self.map.borrow_mut().set_diverted(switch),
+            SwitchMessage::SetPositionStraight => self.map.borrow_mut().set_straight(switch)
+        };
         Ok(())
     }
 }
