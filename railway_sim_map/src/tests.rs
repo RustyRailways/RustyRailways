@@ -127,3 +127,27 @@ fn test_crash_4(){
     map.sleep_for_ms(0);
 }
 
+#[test]
+#[should_panic(expected = "The train T1 has derailed because the intersection in P1 was set to the opposite direction")]
+fn test_wrong_cross(){
+    let map = SimulatedMap::new().unwrap();
+
+    map.send_message_to_train(TrainEnum::T1, TrainMessage::SetSpeed(10)).unwrap();
+    map.sleep_for_ms(0);
+    assert_eq!(
+        map.get_message().unwrap(),
+        MasterMessage::TrainHasReachedPosition(TrainEnum::T1, Position::P17).into()
+    );
+
+    map.sleep_for_ms(0);
+    assert_eq!(
+        map.get_message().unwrap(),
+        MasterMessage::TrainHasReachedPosition(TrainEnum::T1, Position::P3).into()
+    );
+
+    map.send_message_to_switch(Switch::S1, SwitchMessage::SetPositionStraight).unwrap();
+
+    map.sleep_for_ms(0);
+
+    println!("{:?}",map.get_message().unwrap());
+}

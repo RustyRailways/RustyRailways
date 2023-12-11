@@ -32,6 +32,16 @@ impl Train{
         let position_prev = self.position;
 
         self.position = self.get_next_position(map);
+        // check that i can reach the old position from the new one
+        // if not, it means that the cross was not set in the correct position
+        // and the train has derailed
+        let next = map.get_node_at(self.position).next(map);
+        let prev = map.get_node_at(self.position).prev(map);
+        let next = next.map(|x| x.get_position());
+        let prev = prev.map(|x| x.get_position());
+        assert!(next == Some(position_prev) || prev == Some(position_prev),
+                "The train {:?} has derailed because the intersection in {:?} was set to the opposite direction"
+                , self.train,self.position);
 
         // if the track has changed the primary orientation,
         // i need to change the train's direction
