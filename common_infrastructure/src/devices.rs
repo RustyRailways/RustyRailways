@@ -2,13 +2,13 @@ use crate::ip_addresses;
 use crate::HasIpAddress;
 use serde::{Deserialize,Serialize};
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Deserialize, Serialize)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, Deserialize, Serialize)]
 pub enum Train{
     T1,
     T2
 }
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Deserialize, Serialize)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, Deserialize, Serialize)]
 pub enum Switch {
     S1,
     S2,
@@ -22,7 +22,7 @@ pub enum Switch {
     S10
 }
 
-#[derive(Clone, Copy,PartialEq, Eq,Debug,Deserialize,Serialize)]
+#[derive(Clone, Copy,PartialEq, Eq,Debug, Hash,Deserialize,Serialize)]
 pub enum Device {
     Master,
     Train(Train),
