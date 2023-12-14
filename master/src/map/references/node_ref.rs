@@ -1,5 +1,6 @@
-use crate::map::{Map,MapStateInitialized, Node};
+use crate::map::{Map,MapStateInitialized};
 use crate::map::states::{InitializedState, ReferenceState, UninitializedState};
+use crate::map::nodes::Node;
 use common_infrastructure::Position;
 use serde::{Deserialize, Serialize};
 use std::ops::Deref;

@@ -1,4 +1,5 @@
-use crate::map::{Map,MapStateInitialized, TrainController};
+use crate::map::{Map,MapStateInitialized};
+use crate::map::devices::TrainController;
 use crate::map::states::{InitializedState, ReferenceState, UninitializedState};
 use common_infrastructure::devices::Train;
 use serde::{Deserialize, Serialize};

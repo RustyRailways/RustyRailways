@@ -1,4 +1,5 @@
-use crate::map::{Map,MapStateInitialized, SwitchController};
+use crate::map::{Map,MapStateInitialized};
+use crate::map::devices::SwitchController;
 use crate::map::states::{InitializedState, ReferenceState, UninitializedState};
 use common_infrastructure::devices::Switch;
 use serde::{Deserialize, Serialize};
