@@ -17,29 +17,28 @@ pub trait ReferenceState {
 }
 
 pub trait UninitializedState: ReferenceState + Serialize + Deserialize<'static>{
-    fn initialize<'a>(self, map: &'a Map<MapStateInitialized<'a>>) -> Self::InitializedType<'a>;
+    fn initialize<'a>(self, map: &'a Map<'a, MapStateInitialized>) -> Self::InitializedType<'a>;
 }
 
 pub trait InitializedState<'a>: ReferenceState {
     fn un_initialize(self) -> Self::UninitializedType;
 }
 
-pub trait MapState{
+pub trait MapState<'a>{
     type NodeRefType: NodeRef;
     type TrainRefType: TrainRef;
     type SwitchRefType: SwitchRef;
 }
 
 pub struct MapStateUninitialized{}
-impl MapState for MapStateUninitialized{
+impl<'a> MapState<'a> for MapStateUninitialized{
     type NodeRefType = UnIntiNodeRef;
     type TrainRefType = UnIntiTrainRef;
     type SwitchRefType = UnIntiSwitchRef;
 }
-pub struct MapStateInitialized<'a>{
-    lifetime : PhantomData<&'a Map<MapStateInitialized<'a>>>
-}
-impl<'a> MapState for MapStateInitialized<'a>{
+pub struct MapStateInitialized{}
+
+impl<'a> MapState<'a> for MapStateInitialized{
     type NodeRefType = IntiNodeRef<'a>;
     type TrainRefType = IntiTrainRef<'a>;
     type SwitchRefType = IntiSwitchRef<'a>;

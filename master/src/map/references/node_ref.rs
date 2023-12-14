@@ -13,7 +13,7 @@ pub struct UnIntiNodeRef{
 }
 impl NodeRef for UnIntiNodeRef{}
 impl UninitializedState for UnIntiNodeRef{
-    fn initialize<'a>(self, map: &'a Map<MapStateInitialized<'a>>) -> Self::InitializedType<'a> {
+    fn initialize<'a>(self, map: &'a Map<'a, MapStateInitialized>) -> Self::InitializedType<'a> {
         let node = map.get_node(self.position);
         IntiNodeRef{
             node
@@ -27,11 +27,11 @@ impl ReferenceState for UnIntiNodeRef{
 
 
 pub struct IntiNodeRef<'a>{
-    node: &'a Node<MapStateInitialized<'a>>
+    node: &'a Node<'a,MapStateInitialized>
 }
 impl<'a> NodeRef for IntiNodeRef<'a>{}
 impl<'a> Deref for IntiNodeRef<'a>{
-    type Target = Node<MapStateInitialized<'a>>;
+    type Target = Node<'a,MapStateInitialized>;
     fn deref(&self) -> &Self::Target {
         self.node
     }

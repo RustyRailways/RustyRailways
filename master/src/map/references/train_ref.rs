@@ -14,7 +14,7 @@ pub struct UnIntiTrainRef{
 impl TrainRef for UnIntiTrainRef{}
 
 impl UninitializedState for UnIntiTrainRef{
-    fn initialize<'a>(self, map: &'a Map<MapStateInitialized<'a>>) -> Self::InitializedType<'a> {
+    fn initialize<'a>(self, map: &'a Map<'a, MapStateInitialized>) -> Self::InitializedType<'a> {
         let train = map.get_train(self.train);
         IntiTrainRef{
             train
@@ -28,13 +28,13 @@ impl ReferenceState for UnIntiTrainRef{
 }
 
 pub struct IntiTrainRef<'a>{
-    train: &'a TrainController<MapStateInitialized<'a>>
+    train: &'a TrainController<'a,MapStateInitialized>
 }
 
 impl TrainRef for IntiTrainRef<'_>{}
 
 impl<'a> Deref for IntiTrainRef<'a>{
-    type Target = TrainController<MapStateInitialized<'a>>;
+    type Target = TrainController<'a,MapStateInitialized>;
     fn deref(&self) -> &Self::Target {
         self.train
     }

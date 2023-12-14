@@ -4,7 +4,7 @@ use crate::map::references::*;
 use crate::map::states::{MapState, MapStateInitialized};
 use crate::map::devices::SwitchControllerOption;
 
-pub enum NodeStatus<T: MapState>{
+pub enum NodeStatus<'a,T: MapState<'a>>{
     /// there is no train in this node, and no train is planning to pass through it
     Unlocked,
     /// there is no train in this node, but a train is planning to pass through it
@@ -13,24 +13,24 @@ pub enum NodeStatus<T: MapState>{
     OccupiedByTrain(T::TrainRefType),
 }
 
-pub struct Node<T: MapState>{
+pub struct Node<'a, T: MapState<'a>>{
     state: PhantomData<T>,
     pub position: Position,
-    adjacent_nodes: AdjacentNodes<T>,
-    status: NodeStatus<T>,
+    adjacent_nodes: AdjacentNodes<'a,T>,
+    status: NodeStatus<'a,T>,
 }
 
 /// On our model a node can have at most 3 adjacent nodes...
 /// so instead of using a vector, we use an enum to represent
 /// to avoid accessing the heap for small vectors.
-enum AdjacentNodes<T: MapState>{
+enum AdjacentNodes<'a,T: MapState<'a>>{
     None,
     One([T::NodeRefType;1]),
     Two([T::NodeRefType;2]),
     Tree([T::NodeRefType;3]),
 }
 
-impl<'a> AdjacentNodes<MapStateInitialized<'a>>{
+impl<'a> AdjacentNodes<'a,MapStateInitialized>{
     fn get_adjacent_nodes(&'a self) ->&[IntiNodeRef<'a>]{
         match self {
             AdjacentNodes::None => &[],
@@ -43,14 +43,14 @@ impl<'a> AdjacentNodes<MapStateInitialized<'a>>{
 
 /// This struct represent a link between 2 nodes.
 /// in the real world this is a rail track between 2 stations (aka tag rfid)
-pub struct Link<T: MapState>{
+pub struct Link<'a,T: MapState<'a>>{
     state: PhantomData<T>,
     length: u32,
     max_speed: u32,
     node: T::NodeRefType,
     /// If this track travels through a switch, this is the switch
     /// it can be used to set the correct pat
-    controller: SwitchControllerOption<T>,
+    controller: SwitchControllerOption<'a,T>,
     direction: Direction,
 }
 

@@ -2,22 +2,22 @@ use std::marker::PhantomData;
 use common_infrastructure::devices::{Switch, Train};
 use crate::map::states::{MapState, MapStateInitialized};
 
-pub struct TrainController<T: MapState>{
-    state: PhantomData<T>,
+pub struct TrainController<'a,T: MapState<'a>>{
+    state: PhantomData<&'a T>,
     pub train: Train,
 }
 
-pub struct SwitchController<T: MapState>{
-    state: PhantomData<T>,
+pub struct SwitchController<'a,T: MapState<'a>>{
+    state: PhantomData<&'a T>,
     pub switch: Switch,
 }
 
-pub enum SwitchControllerOption<T: MapState>{
+pub enum SwitchControllerOption<'a,T: MapState<'a>>{
     NoSwitch,
     SwitchToSetStraight(T::SwitchRefType),
     SwitchToSetDiverted(T::SwitchRefType),
 }
-impl SwitchControllerOption<MapStateInitialized<'_>> {
+impl<'a> SwitchControllerOption<'a,MapStateInitialized> {
     pub fn set(&self){
         match self {
             SwitchControllerOption::NoSwitch => {},

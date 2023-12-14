@@ -17,22 +17,39 @@ pub mod nodes;
 pub mod devices;
 
 
-pub struct Map<T: MapState>{
+pub struct Map<'a,T: MapState<'a>>{
     state: PhantomData<T>,
-    nodes: HashMap<Position, Node<T>>,
-    trains: HashMap<Train, TrainController<T>>,
-    switches: HashMap<Switch, SwitchController<T>>,
+    nodes: HashMap<Position, Node<'a,T>>,
+    trains: HashMap<Train, TrainController<'a,T>>,
+    switches: HashMap<Switch, SwitchController<'a,T>>,
 }
 
-impl<T: MapState> Map<T> {
-    pub fn get_node(&self, position: Position) -> &Node<T>{
+impl<'a, T: MapState<'a>> Map<'a, T> {
+    pub fn get_node(&self, position: Position) -> &Node<'a, T>{
         self.nodes.get(&position).unwrap()
     }
-    pub fn get_train(&self, train: Train) -> &TrainController<T>{
+    pub fn get_train(&self, train: Train) -> &TrainController<'a, T>{
         self.trains.get(&train).unwrap()
     }
-    pub fn get_switch(&self, switch: Switch) -> &SwitchController<T>{
+    pub fn get_switch(&self, switch: Switch) -> &SwitchController<'a, T>{
         self.switches.get(&switch).unwrap()
     }
 }
 
+impl<'a> Map<'a,MapStateUninitialized>{
+
+    pub fn new() -> Self{
+        Map{
+            state: PhantomData,
+            nodes: HashMap::new(),
+            trains: HashMap::new(),
+            switches: HashMap::new(),
+        }
+    }
+
+    pub fn initialize(self) -> Map<'a,MapStateInitialized>{
+        todo!()
+    }
+
+
+}

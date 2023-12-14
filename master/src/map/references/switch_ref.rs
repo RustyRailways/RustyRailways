@@ -13,7 +13,7 @@ pub struct UnIntiSwitchRef{
 impl SwitchRef for UnIntiSwitchRef{}
 
 impl UninitializedState for UnIntiSwitchRef{
-    fn initialize<'a>(self, map: &'a Map<MapStateInitialized<'a>>) -> Self::InitializedType<'a> {
+    fn initialize<'a>(self, map: &'a Map<'a, MapStateInitialized>) -> Self::InitializedType<'a> {
         let switch = map.get_switch(self.switch);
         IntiSwitchRef{
             switch
@@ -27,13 +27,13 @@ impl ReferenceState for UnIntiSwitchRef{
 }
 
 pub struct IntiSwitchRef<'a>{
-    switch: &'a SwitchController<MapStateInitialized<'a>>
+    switch: &'a SwitchController<'a,MapStateInitialized>
 }
 
 impl SwitchRef for IntiSwitchRef<'_>{}
 
 impl<'a> Deref for IntiSwitchRef<'a>{
-    type Target = SwitchController<MapStateInitialized<'a>>;
+    type Target = SwitchController<'a,MapStateInitialized>;
     fn deref(&self) -> &Self::Target {
         self.switch
     }
