@@ -27,3 +27,4 @@ pub trait CompleteInitializationMut<'a>{
 mod init_switch_controller_option;
 mod init_link;
 mod init_adjacent_nodes;
+mod init_node_status;

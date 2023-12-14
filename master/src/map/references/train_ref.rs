@@ -9,7 +9,7 @@ pub trait TrainRef: ReferenceState {}
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Copy, Clone)]
 pub struct UnIntiTrainRef{
-    train: Train
+    pub train: Train
 }
 impl TrainRef for UnIntiTrainRef{}
 
@@ -28,7 +28,7 @@ impl ReferenceState for UnIntiTrainRef{
 }
 
 pub struct IntiTrainRef<'a>{
-    train: &'a TrainController
+    pub train: &'a TrainController
 }
 
 impl TrainRef for IntiTrainRef<'_>{}
