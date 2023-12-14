@@ -12,15 +12,15 @@ use crate::map::references::*;
 use std::marker::PhantomData;
 
 pub trait ReferenceState {
-    type InitializedType<'a>: InitializedState<'a>;
-    type UninitializedType: UninitializedState;
+    type InitializedType<'a>: ReferenceStateInitialized<'a>;
+    type UninitializedType: ReferenceStateUninitialized;
 }
 
-pub trait UninitializedState: ReferenceState + Serialize + Deserialize<'static>{
+pub trait ReferenceStateUninitialized: ReferenceState + Serialize + Deserialize<'static>{
     fn initialize<'a>(self, map: &'a Map<'a, MapStateInitialized>) -> Self::InitializedType<'a>;
 }
 
-pub trait InitializedState<'a>: ReferenceState {
+pub trait ReferenceStateInitialized<'a>: ReferenceState {
     fn un_initialize(self) -> Self::UninitializedType;
 }
 

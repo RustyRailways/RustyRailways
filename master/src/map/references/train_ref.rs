@@ -1,6 +1,6 @@
 use crate::map::{Map,MapStateInitialized};
 use crate::map::devices::TrainController;
-use crate::map::states::{InitializedState, ReferenceState, UninitializedState};
+use crate::map::states::{ReferenceStateInitialized, ReferenceState, ReferenceStateUninitialized};
 use common_infrastructure::devices::Train;
 use serde::{Deserialize, Serialize};
 use std::ops::Deref;
@@ -13,7 +13,7 @@ pub struct UnIntiTrainRef{
 }
 impl TrainRef for UnIntiTrainRef{}
 
-impl UninitializedState for UnIntiTrainRef{
+impl ReferenceStateUninitialized for UnIntiTrainRef{
     fn initialize<'a>(self, map: &'a Map<'a, MapStateInitialized>) -> Self::InitializedType<'a> {
         let train = map.get_train(self.train);
         IntiTrainRef{
@@ -39,7 +39,7 @@ impl<'a> Deref for IntiTrainRef<'a>{
         self.train
     }
 }
-impl InitializedState<'_> for IntiTrainRef<'_>{
+impl ReferenceStateInitialized<'_> for IntiTrainRef<'_>{
     fn un_initialize(self) -> Self::UninitializedType {
         UnIntiTrainRef{
             train: self.train.train

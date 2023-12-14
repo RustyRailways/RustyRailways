@@ -1,8 +1,10 @@
+use std::cell::RefCell;
 use std::marker::PhantomData;
 use common_infrastructure::Position;
 use crate::map::references::*;
-use crate::map::states::{MapState, MapStateInitialized};
+use crate::map::states::{MapState, MapStateInitialized, MapStateUninitialized};
 use crate::map::devices::SwitchControllerOption;
+use crate::map::Map;
 
 pub enum NodeStatus<'a,T: MapState<'a>>{
     /// there is no train in this node, and no train is planning to pass through it
@@ -16,8 +18,8 @@ pub enum NodeStatus<'a,T: MapState<'a>>{
 pub struct Node<'a, T: MapState<'a>>{
     state: PhantomData<T>,
     pub position: Position,
-    adjacent_nodes: AdjacentNodes<'a,T>,
-    status: NodeStatus<'a,T>,
+    adjacent_nodes: RefCell<AdjacentNodes<'a,T>>,
+    status: RefCell<NodeStatus<'a,T>>,
 }
 
 /// On our model a node can have at most 3 adjacent nodes...
@@ -59,4 +61,44 @@ pub struct Link<'a,T: MapState<'a>>{
 enum Direction{
     Forward,
     Backward,
+}
+
+
+////////////////////// Implementation of unitialized Node //////////////////////
+
+impl Node<'_,MapStateUninitialized>{
+    pub fn new(position: Position) -> Self{
+        Node{
+            state: PhantomData,
+            position,
+            adjacent_nodes: AdjacentNodes::None.into(),
+            status: NodeStatus::Unlocked.into(),
+        }
+    }
+
+    pub fn set_train(&mut self, train: UnIntiTrainRef){
+        self.status = NodeStatus::OccupiedByTrain(train).into();
+    }
+}
+
+
+////////////////////// Implementation of initialized Node //////////////////////
+
+impl<'a> Node<'a,MapStateInitialized>{
+
+    fn new(position: Position) -> Self{
+        Node{
+            state: PhantomData,
+            position,
+            adjacent_nodes: AdjacentNodes::None.into(),
+            status: NodeStatus::Unlocked.into(),
+        }
+    }
+
+
+    pub fn complete_initialization(&'a self, node: Node<'_,MapStateInitialized>, map: &'a Map<'a,MapStateInitialized>){
+        assert_eq!(self.position, node.position);
+
+    }
+
 }

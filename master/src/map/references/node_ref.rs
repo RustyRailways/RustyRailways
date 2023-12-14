@@ -1,5 +1,5 @@
 use crate::map::{Map,MapStateInitialized};
-use crate::map::states::{InitializedState, ReferenceState, UninitializedState};
+use crate::map::states::{ReferenceStateInitialized, ReferenceState, ReferenceStateUninitialized};
 use crate::map::nodes::Node;
 use common_infrastructure::Position;
 use serde::{Deserialize, Serialize};
@@ -9,10 +9,10 @@ pub trait NodeRef: ReferenceState {}
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Copy, Clone)]
 pub struct UnIntiNodeRef{
-    position: Position
+    pub position: Position
 }
 impl NodeRef for UnIntiNodeRef{}
-impl UninitializedState for UnIntiNodeRef{
+impl ReferenceStateUninitialized for UnIntiNodeRef{
     fn initialize<'a>(self, map: &'a Map<'a, MapStateInitialized>) -> Self::InitializedType<'a> {
         let node = map.get_node(self.position);
         IntiNodeRef{
@@ -36,7 +36,7 @@ impl<'a> Deref for IntiNodeRef<'a>{
         self.node
     }
 }
-impl<'a> InitializedState<'a> for IntiNodeRef<'a>{
+impl<'a> ReferenceStateInitialized<'a> for IntiNodeRef<'a>{
     fn un_initialize(self) -> Self::UninitializedType {
         UnIntiNodeRef{
             position: self.position

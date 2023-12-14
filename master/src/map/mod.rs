@@ -4,7 +4,7 @@ use std::ops::Deref;
 use common_infrastructure::Position;
 use common_infrastructure::devices::{Switch, Train};
 use crate::map::references::*;
-use crate::map::states::{InitializedState, MapState, MapStateInitialized, MapStateUninitialized};
+use crate::map::states::{ReferenceStateInitialized, MapState, MapStateInitialized, MapStateUninitialized};
 use devices::{SwitchController, TrainController};
 use nodes::Node;
 
@@ -16,6 +16,7 @@ pub mod nodes;
 /// Contains Switch and Trains
 pub mod devices;
 
+pub mod initialization;
 
 pub struct Map<'a,T: MapState<'a>>{
     state: PhantomData<T>,
