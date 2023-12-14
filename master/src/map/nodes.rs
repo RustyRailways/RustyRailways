@@ -65,7 +65,7 @@ pub enum Direction{
 }
 
 
-////////////////////// Implementation of unitialized Node //////////////////////
+////////////////////// Implementation of uninitialized Node //////////////////////
 
 impl Node<'_,MapStateUninitialized>{
     pub fn new(position: Position) -> Self{
