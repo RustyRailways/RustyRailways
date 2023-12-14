@@ -26,7 +26,7 @@ pub struct Node<'a, T: MapState<'a>>{
 /// On our model a node can have at most 3 adjacent nodes...
 /// so instead of using a vector, we use an enum to represent
 /// to avoid accessing the heap for small vectors.
-enum AdjacentNodes<'a,T: MapState<'a>>{
+pub enum AdjacentNodes<'a,T: MapState<'a>>{
     None,
     One([T::NodeRefType;1]),
     Two([T::NodeRefType;2]),
@@ -99,7 +99,6 @@ impl<'a> Node<'a,MapStateInitialized>{
 
     pub fn complete_initialization(&'a self, node: Node<'_,MapStateInitialized>, map: &'a Map<'a,MapStateInitialized>){
         assert_eq!(self.position, node.position);
-
     }
 
 }

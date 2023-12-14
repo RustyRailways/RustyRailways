@@ -1,7 +1,7 @@
 use super::CompleteInitializationMut;
 use crate::map::nodes::Link;
 use crate::map::Map;
-use crate::map::references::{IntiNodeRef, IntiSwitchRef};
+use crate::map::references::IntiNodeRef;
 use crate::map::states::{MapStateInitialized, MapStateUninitialized};
 
 impl<'a> CompleteInitializationMut<'a> for Link<'a,MapStateInitialized>{
