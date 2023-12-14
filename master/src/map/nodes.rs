@@ -1,5 +1,6 @@
 use std::cell::RefCell;
 use std::marker::PhantomData;
+use serde::{Deserialize, Serialize};
 use common_infrastructure::Position;
 use crate::map::references::*;
 use crate::map::states::{MapState, MapStateInitialized, MapStateUninitialized};
@@ -46,19 +47,19 @@ impl<'a> AdjacentNodes<'a,MapStateInitialized>{
 /// This struct represent a link between 2 nodes.
 /// in the real world this is a rail track between 2 stations (aka tag rfid)
 pub struct Link<'a,T: MapState<'a>>{
-    state: PhantomData<T>,
-    length: u32,
-    max_speed: u32,
-    node: T::NodeRefType,
+    pub length: u32,
+    pub max_speed: u32,
+    pub node: T::NodeRefType,
     /// If this track travels through a switch, this is the switch
     /// it can be used to set the correct pat
-    controller: SwitchControllerOption<'a,T>,
-    direction: Direction,
+    pub controller: SwitchControllerOption<'a,T>,
+    pub direction: Direction,
 }
 
 /// When you are in a node (aka station) you can go only int two directions
 /// this enum represent those 2 directions, forward and backward.
-enum Direction{
+#[derive(Copy, Clone, PartialEq, Eq, Debug, Serialize,Deserialize)]
+pub enum Direction{
     Forward,
     Backward,
 }

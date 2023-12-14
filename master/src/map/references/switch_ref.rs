@@ -8,7 +8,7 @@ pub trait SwitchRef: ReferenceState {}
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Copy, Clone)]
 pub struct UnIntiSwitchRef{
-    switch: Switch
+    pub switch: Switch
 }
 impl SwitchRef for UnIntiSwitchRef{}
 
@@ -27,13 +27,13 @@ impl ReferenceState for UnIntiSwitchRef{
 }
 
 pub struct IntiSwitchRef<'a>{
-    switch: &'a SwitchController<'a,MapStateInitialized>
+    pub switch: &'a SwitchController
 }
 
 impl SwitchRef for IntiSwitchRef<'_>{}
 
 impl<'a> Deref for IntiSwitchRef<'a>{
-    type Target = SwitchController<'a,MapStateInitialized>;
+    type Target = SwitchController;
     fn deref(&self) -> &Self::Target {
         self.switch
     }

@@ -28,13 +28,13 @@ impl ReferenceState for UnIntiTrainRef{
 }
 
 pub struct IntiTrainRef<'a>{
-    train: &'a TrainController<'a,MapStateInitialized>
+    train: &'a TrainController
 }
 
 impl TrainRef for IntiTrainRef<'_>{}
 
 impl<'a> Deref for IntiTrainRef<'a>{
-    type Target = TrainController<'a,MapStateInitialized>;
+    type Target = TrainController;
     fn deref(&self) -> &Self::Target {
         self.train
     }

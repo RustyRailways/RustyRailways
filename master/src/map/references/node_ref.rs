@@ -27,7 +27,7 @@ impl ReferenceState for UnIntiNodeRef{
 
 
 pub struct IntiNodeRef<'a>{
-    node: &'a Node<'a,MapStateInitialized>
+    pub node: &'a Node<'a,MapStateInitialized>
 }
 impl<'a> NodeRef for IntiNodeRef<'a>{}
 impl<'a> Deref for IntiNodeRef<'a>{
