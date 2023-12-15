@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::marker::PhantomData;
 use std::ops::Deref;
+use serde::Serialize;
 use common_infrastructure::Position;
 use common_infrastructure::devices::{Switch, Train};
 use crate::map::references::*;
@@ -18,6 +19,15 @@ pub mod devices;
 
 pub mod initialization;
 
+/// Unfortunately, as of today (december 2023) there is no way to derive
+/// a trait for a generic structure only for some specific trait bounds.
+/// this means that our struct `Map` can't derive `Serialize` and `Deserialize`
+/// as it contains references to `Node`, `TrainController` and `SwitchController`
+/// in the initialized version.
+/// To solve this issue we implemented the serialization and deserialization manually here.
+pub mod serde_impls;
+
+#[derive(Debug,Serialize)]
 pub struct Map<'a,T: MapState<'a>>{
     nodes: HashMap<Position, Node<'a,T>>,
     trains: HashMap<Train, TrainController>,

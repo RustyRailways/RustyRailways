@@ -6,6 +6,7 @@
 // An initialized map has the internal references, so it's easy
 // to use, but can't be serialized and deserialized.
 
+use std::fmt::Debug;
 use serde::{Serialize, Deserialize};
 use crate::map::Map;
 use crate::map::references::*;
@@ -25,9 +26,9 @@ pub trait ReferenceStateInitialized<'a>: ReferenceState {
 }
 
 pub trait MapState<'a>{
-    type NodeRefType: NodeRef;
-    type TrainRefType: TrainRef;
-    type SwitchRefType: SwitchRef;
+    type NodeRefType: NodeRef + Debug + Serialize;
+    type TrainRefType: TrainRef + Debug + Serialize;
+    type SwitchRefType: SwitchRef + Debug + Serialize;
 }
 
 pub struct MapStateUninitialized{}
@@ -36,6 +37,7 @@ impl<'a> MapState<'a> for MapStateUninitialized{
     type TrainRefType = UnIntiTrainRef;
     type SwitchRefType = UnIntiSwitchRef;
 }
+#[derive(Debug,Serialize,Deserialize)]
 pub struct MapStateInitialized{}
 
 impl<'a> MapState<'a> for MapStateInitialized{

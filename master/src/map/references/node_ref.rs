@@ -24,11 +24,12 @@ impl ReferenceState for UnIntiNodeRef{
     type InitializedType<'a> = IntiNodeRef<'a>;
     type UninitializedType = Self;
 }
-
-
+#[derive(Debug)]
 pub struct IntiNodeRef<'a>{
     pub node: &'a Node<'a,MapStateInitialized>
 }
+
+
 impl<'a> NodeRef for IntiNodeRef<'a>{}
 impl<'a> Deref for IntiNodeRef<'a>{
     type Target = Node<'a,MapStateInitialized>;
