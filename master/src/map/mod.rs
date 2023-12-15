@@ -11,6 +11,7 @@ use nodes::Node;
 use references::{IntiNodeRef, IntiSwitchRef, IntiTrainRef, UnIntiNodeRef, UnIntiSwitchRef, UnIntiTrainRef};
 use crate::map::devices::SwitchControllerOption;
 use crate::map::nodes::Direction;
+use map_creation_object::SwitchPosition;
 
 pub mod states;
 pub mod references;
@@ -134,11 +135,16 @@ impl Map<MapStateUninitialized>{
 
         Ok(())
     }
-
-
 }
 
-pub enum SwitchPosition{
-    Straight,
-    Diverted,
+pub mod map_creation_object{
+    pub enum SwitchPosition{
+        Straight,
+        Diverted,
+    }
+
+    pub use common_infrastructure::Position;
+    pub use common_infrastructure::devices::{Switch, Train};
+    pub use crate::map::nodes::Direction;
 }
+
