@@ -6,11 +6,28 @@ use crate::map::states::{MapState, MapStateInitialized};
 pub struct TrainController{
     pub train: Train,
 }
+
+impl TrainController {
+    pub fn new(train: Train) -> Self{
+        TrainController{
+            train,
+        }
+    }
+}
+
 #[derive(Debug,Serialize,Deserialize,Clone)]
 pub struct SwitchController{
     pub switch: Switch,
 }
-#[derive(Debug)]
+
+impl SwitchController {
+    pub fn new(switch: Switch) -> Self{
+        SwitchController{
+            switch,
+        }
+    }
+}
+#[derive(Debug,Serialize,Deserialize,Clone)]
 pub enum SwitchControllerOption<T: MapState>{
     NoSwitch,
     SwitchToSetStraight(T::SwitchRefType),

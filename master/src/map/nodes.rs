@@ -1,13 +1,14 @@
 use std::cell::RefCell;
 use std::marker::PhantomData;
 use serde::{Deserialize, Serialize};
+use common_infrastructure::devices::Switch;
 use common_infrastructure::Position;
 use crate::map::references::*;
 use crate::map::states::{MapState, MapStateInitialized, MapStateUninitialized};
 use crate::map::devices::SwitchControllerOption;
 use crate::map::Map;
 
-#[derive(Debug,Serialize,Deserialize,Clone)]
+#[derive(Debug,Serialize,Deserialize,Clone,PartialEq,Eq)]
 pub enum NodeStatus<T: MapState>{
     /// there is no train in this node, and no train is planning to pass through it
     Unlocked,
@@ -31,13 +32,13 @@ pub struct Node<T: MapState>{
 #[derive(Debug,Serialize,Deserialize,Clone)]
 pub enum AdjacentNodes<T: MapState>{
     None,
-    One([T::NodeRefType;1]),
-    Two([T::NodeRefType;2]),
-    Tree([T::NodeRefType;3]),
+    One([Link<T>;1]),
+    Two([Link<T>;2]),
+    Tree([Link<T>;3]),
 }
 
-impl AdjacentNodes<MapStateInitialized>{
-    fn get_adjacent_nodes(& self) ->&[IntiNodeRef]{
+impl<T: MapState> AdjacentNodes<T>{
+    fn get_adjacent_nodes(& self) ->&[Link<T>]{
         match self {
             AdjacentNodes::None => &[],
             AdjacentNodes::One(nodes) => nodes,
@@ -49,6 +50,7 @@ impl AdjacentNodes<MapStateInitialized>{
 
 /// This struct represent a link between 2 nodes.
 /// in the real world this is a rail track between 2 stations (aka tag rfid)
+#[derive(Debug,Serialize,Deserialize,Clone)]
 pub struct Link<T: MapState>{
     pub length: u32,
     pub max_speed: u32,
@@ -58,6 +60,21 @@ pub struct Link<T: MapState>{
     pub controller: SwitchControllerOption<T>,
     pub direction: Direction,
 }
+
+impl Link<MapStateUninitialized>{
+    pub fn new(length: u32, max_speed: u32, node: UnIntiNodeRef,
+               controller: SwitchControllerOption<MapStateUninitialized>, direction: Direction) -> Self {
+
+        Link {
+            length,
+            max_speed,
+            node,
+            controller,
+            direction,
+        }
+    }
+}
+
 
 /// When you are in a node (aka station) you can go only int two directions
 /// this enum represent those 2 directions, forward and backward.
@@ -79,8 +96,20 @@ impl Node<MapStateUninitialized>{
         }
     }
 
-    pub fn set_train(&mut self, train: UnIntiTrainRef){
-        self.status = NodeStatus::OccupiedByTrain(train).into();
+    pub fn set_train(& self, train: UnIntiTrainRef) -> Result<(),&str>
+    {
+        if *self.status.borrow() != NodeStatus::Unlocked{
+            return Err("Impossible to set train on a node that is not unlocked");
+        }
+        *self.status.borrow_mut() = NodeStatus::OccupiedByTrain(train);
+        Ok(())
+    }
+
+    pub fn add_link(&self, to: UnIntiNodeRef, direction: Direction, max_speed: u32, length: u32, controller: SwitchControllerOption<MapStateUninitialized>) -> Result<(),&str>{
+
+        self.adjacent_nodes.borrow_mut().add_link(to, controller, direction, max_speed, length)?;
+
+        Ok(())
     }
 }
 
@@ -96,7 +125,27 @@ impl Node<MapStateInitialized>{
             status: NodeStatus::Unlocked.into(),
         }
     }
+}
 
+impl AdjacentNodes<MapStateUninitialized> {
+    fn add_link(&mut self, to: UnIntiNodeRef, controller: SwitchControllerOption<MapStateUninitialized>, direction: Direction, max_speed: u32, length: u32) -> Result<(),&'static str>{
 
+        for node in self.get_adjacent_nodes(){
+            if node.node.position == to.position{
+                return Err("Impossible to add a link to a node that is already linked");
+            }
+        }
 
+        let new_link = Link::new(length, max_speed, to, controller, direction);
+
+        *self = match self.clone() {
+            AdjacentNodes::None => AdjacentNodes::One([new_link]),
+            AdjacentNodes::One([l1]) => AdjacentNodes::Two([l1, new_link]),
+            AdjacentNodes::Two([l1,l2]) => AdjacentNodes::Tree([l1,l2, new_link]),
+            AdjacentNodes::Tree(_) => return Err("Impossible to add more than 3 links to a node")
+        };
+
+        Ok(())
+
+    }
 }

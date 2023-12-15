@@ -1,6 +1,7 @@
+use crate::map::devices::SwitchControllerOption;
 use crate::map::initialization::UnInitialize;
 use super::CompleteInitializationMut;
-use crate::map::nodes::AdjacentNodes;
+use crate::map::nodes::{AdjacentNodes, Link};
 use crate::map::Map;
 use crate::map::references::{IntiNodeRef, UnIntiNodeRef};
 use crate::map::states::{MapStateInitialized, MapStateUninitialized};
@@ -9,12 +10,23 @@ impl CompleteInitializationMut for AdjacentNodes<MapStateInitialized>{
     type InitFromType = AdjacentNodes<MapStateUninitialized>;
     fn complete_initialization(&mut self, init_from: &Self::InitFromType, map: & Map<MapStateInitialized>) {
         macro_rules! init_node {
-            ($node:ident) => {
-                IntiNodeRef{
-                    node: map.get_node($node.position)
+            ($link:ident) => {
+                Link::<MapStateInitialized>{
+                    node: IntiNodeRef{
+                        node: map.get_node($link.node.position)
+                    },
+                    length: $link.length,
+                    max_speed: $link.max_speed,
+                    controller: {
+                        let mut controller = SwitchControllerOption::<MapStateInitialized>::NoSwitch;
+                        controller.complete_initialization(&$link.controller, map);
+                        controller
+                    },
+                    direction: $link.direction,
                 }
             }
         }
+
 
         *self = match init_from {
             AdjacentNodes::None => {
@@ -41,7 +53,7 @@ impl CompleteInitializationMut for AdjacentNodes<MapStateInitialized>{
         }
     }
 }
-
+/*
 impl UnInitialize for AdjacentNodes<MapStateInitialized> {
     type UninitializedType = AdjacentNodes<MapStateUninitialized>;
     fn un_initialize(self) -> Self::UninitializedType {
@@ -77,4 +89,4 @@ impl UnInitialize for AdjacentNodes<MapStateInitialized> {
             }
         }
     }
-}
+}*/

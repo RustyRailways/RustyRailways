@@ -33,7 +33,7 @@ pub trait MapState{
     type SwitchRefType: SwitchRef + Debug + Serialize + for<'a> Deserialize<'a> + Clone;
 }
 
-#[derive(Debug,Serialize,Deserialize,Clone)]
+#[derive(Debug,Serialize,Deserialize,Clone,Eq, PartialEq)]
 pub struct MapStateUninitialized{}
 impl MapState for MapStateUninitialized{
     type NodeRefType = UnIntiNodeRef;

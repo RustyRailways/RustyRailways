@@ -8,6 +8,9 @@ use crate::map::references::*;
 use crate::map::states::{ReferenceStateInitialized, MapState, MapStateInitialized, MapStateUninitialized};
 use devices::{SwitchController, TrainController};
 use nodes::Node;
+use references::{IntiNodeRef, IntiSwitchRef, IntiTrainRef, UnIntiNodeRef, UnIntiSwitchRef, UnIntiTrainRef};
+use crate::map::devices::SwitchControllerOption;
+use crate::map::nodes::Direction;
 
 pub mod states;
 pub mod references;
@@ -18,6 +21,8 @@ pub mod nodes;
 pub mod devices;
 pub mod initialization;
 pub mod serde_impls;
+#[cfg(test)]
+mod map_tests;
 
 #[derive(Debug,Serialize,Deserialize)]
 pub struct Map<T: MapState>{
@@ -47,4 +52,93 @@ impl Map<MapStateUninitialized>{
         }
     }
 
+    pub fn add_train(&mut self, train: Train, position: Position) -> Result<(),&str>{
+        if self.trains.contains_key(&train){
+            return Err("Train already exists");
+        }
+        if !self.nodes.contains_key(&position){
+            return Err("Position does not exist");
+        }
+
+        self.trains.insert(train, TrainController::new(train));
+        self.get_node(position).set_train(UnIntiTrainRef{train})?;
+
+        Ok(())
+    }
+
+    pub fn add_switch(&mut self, switch: Switch) -> Result<(),&str>{
+        if self.switches.contains_key(&switch){
+            return Err("Switch already exists");
+        }
+
+        self.switches.insert(switch, SwitchController::new(switch));
+        Ok(())
+    }
+
+    pub fn add_node(&mut self, position: Position) -> Result<(),&str>{
+        if self.nodes.contains_key(&position){
+            return Err("Node already exists");
+        }
+
+        self.nodes.insert(position, Node::new(position));
+        Ok(())
+    }
+
+    pub fn add_link(&mut self, position_from: Position, position_to: Position,
+                    direction_from: Direction, direction_to: Direction,
+                    length: u32, max_speed: u32, switch: Option<(Switch,SwitchPosition)>
+    ) -> Result<(),&str>{
+        if !self.nodes.contains_key(&position_from){
+            return Err("Node from does not exist");
+        }
+        if !self.nodes.contains_key(&position_to){
+            return Err("Node to does not exist");
+        }
+        if let Some(switch) = &switch{
+            if !self.switches.contains_key(&switch.0){
+                return Err("Switch does not exist");
+            }
+        }
+
+        let node_from = self.get_node(position_from);
+        let node_to = self.get_node(position_to);
+
+        let node_from_ref = UnIntiNodeRef{
+            position: position_from,
+        };
+
+        let node_to_ref = UnIntiNodeRef{
+            position: position_to,
+        };
+
+        let switch = match switch {
+            None => SwitchControllerOption::<MapStateUninitialized>::NoSwitch,
+            Some((switch, position)) => {
+                match position {
+                    SwitchPosition::Straight => {
+                        SwitchControllerOption::SwitchToSetStraight(UnIntiSwitchRef{
+                            switch
+                        })
+                    },
+                    SwitchPosition::Diverted => {
+                        SwitchControllerOption::SwitchToSetDiverted(UnIntiSwitchRef{
+                            switch
+                        })
+                    },
+                }
+            }
+        };
+
+        node_from.add_link(node_to_ref, direction_from, length, max_speed, switch.clone())?;
+        node_to.add_link(node_from_ref, direction_to, length, max_speed, switch)?;
+
+        Ok(())
+    }
+
+
+}
+
+pub enum SwitchPosition{
+    Straight,
+    Diverted,
 }
