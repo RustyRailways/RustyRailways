@@ -6,7 +6,7 @@ use crate::map::states::{MapStateInitialized, MapStateUninitialized};
 
 impl CompleteInitializationMut for NodeStatus<MapStateInitialized>{
     type InitFromType = NodeStatus<MapStateUninitialized>;
-    fn complete_initialization(& mut self, init_from: Self::InitFromType, map: & Map<MapStateInitialized>) {
+    fn complete_initialization(& mut self, init_from: &Self::InitFromType, map: & Map<MapStateInitialized>) {
         *self = match init_from {
             NodeStatus::Unlocked => {
                 NodeStatus::Unlocked

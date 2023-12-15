@@ -6,7 +6,7 @@ use crate::map::states::{MapStateInitialized, MapStateUninitialized};
 
 impl CompleteInitializationMut for AdjacentNodes<MapStateInitialized>{
     type InitFromType = AdjacentNodes<MapStateUninitialized>;
-    fn complete_initialization(&mut self, init_from: Self::InitFromType, map: & Map<MapStateInitialized>) {
+    fn complete_initialization(&mut self, init_from: &Self::InitFromType, map: & Map<MapStateInitialized>) {
         macro_rules! init_node {
             ($node:ident) => {
                 IntiNodeRef{

@@ -19,10 +19,9 @@ pub enum NodeStatus<T: MapState>{
 
 #[derive(Debug, Serialize,Deserialize)]
 pub struct Node<T: MapState>{
-    state: PhantomData<T>,
     pub position: Position,
-    adjacent_nodes: RefCell<AdjacentNodes<T>>,
-    status: RefCell<NodeStatus<T>>,
+    pub adjacent_nodes: RefCell<AdjacentNodes<T>>,
+    pub status: RefCell<NodeStatus<T>>,
 }
 
 /// On our model a node can have at most 3 adjacent nodes...
@@ -73,7 +72,6 @@ pub enum Direction{
 impl Node<MapStateUninitialized>{
     pub fn new(position: Position) -> Self{
         Node{
-            state: PhantomData,
             position,
             adjacent_nodes: AdjacentNodes::None.into(),
             status: NodeStatus::Unlocked.into(),
@@ -92,7 +90,6 @@ impl Node<MapStateInitialized>{
 
     fn new(position: Position) -> Self{
         Node{
-            state: PhantomData,
             position,
             adjacent_nodes: AdjacentNodes::None.into(),
             status: NodeStatus::Unlocked.into(),

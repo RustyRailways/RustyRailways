@@ -15,12 +15,12 @@ use crate::map::states::MapStateInitialized;
 
 pub trait CompleteInitialization{
     type InitFromType;
-    fn complete_initialization(self, init_from: Self::InitFromType, map: & Map<MapStateInitialized>);
+    fn complete_initialization(&self, init_from: &Self::InitFromType, map: & Map<MapStateInitialized>);
 }
 
 pub trait CompleteInitializationMut{
     type InitFromType;
-    fn complete_initialization(&mut self, init_from: Self::InitFromType, map: & Map<MapStateInitialized>);
+    fn complete_initialization(&mut self, init_from: &Self::InitFromType, map: & Map<MapStateInitialized>);
 }
 
 
