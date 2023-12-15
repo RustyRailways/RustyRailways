@@ -14,7 +14,7 @@ pub struct UnIntiTrainRef{
 impl TrainRef for UnIntiTrainRef{}
 
 impl ReferenceStateUninitialized for UnIntiTrainRef{
-    fn initialize<'a>(self, map: &'a Map<'a, MapStateInitialized>) -> Self::InitializedType<'a> {
+    fn initialize(self, map: & Map<MapStateInitialized>) -> Self::InitializedType {
         let train = map.get_train(self.train);
         IntiTrainRef{
             train
@@ -23,32 +23,33 @@ impl ReferenceStateUninitialized for UnIntiTrainRef{
 
 }
 impl ReferenceState for UnIntiTrainRef{
-    type InitializedType<'a> = IntiTrainRef<'a>;
+    type InitializedType = IntiTrainRef;
     type UninitializedType = Self;
 }
 
 #[derive(Debug)]
-pub struct IntiTrainRef<'a>{
-    pub train: &'a TrainController
+pub struct IntiTrainRef{
+    pub train: *const TrainController
 }
 
-impl TrainRef for IntiTrainRef<'_>{}
+impl TrainRef for IntiTrainRef{}
 
-impl<'a> Deref for IntiTrainRef<'a>{
+impl Deref for IntiTrainRef{
     type Target = TrainController;
     fn deref(&self) -> &Self::Target {
-        self.train
+        unsafe {&*self.train}
     }
 }
-impl ReferenceStateInitialized<'_> for IntiTrainRef<'_>{
+impl ReferenceStateInitialized for IntiTrainRef{
     fn un_initialize(self) -> Self::UninitializedType {
         UnIntiTrainRef{
-            train: self.train.train
+            train: unsafe{(*self.train).train}
         }
     }
 }
-impl ReferenceState for IntiTrainRef<'_>{
-    type InitializedType<'a> = Self;
+impl ReferenceState for IntiTrainRef{
+    type InitializedType = Self;
     type UninitializedType = UnIntiTrainRef;
 }
+
 

@@ -4,9 +4,9 @@ use crate::map::Map;
 use crate::map::references::IntiNodeRef;
 use crate::map::states::{MapStateInitialized, MapStateUninitialized};
 
-impl<'a> CompleteInitializationMut<'a> for Link<'a,MapStateInitialized>{
-    type InitFromType = Link<'a,MapStateUninitialized>;
-    fn complete_initialization(&'a mut self, init_from: Self::InitFromType, map: &'a Map<'a, MapStateInitialized>) {
+impl CompleteInitializationMut for Link<MapStateInitialized>{
+    type InitFromType = Link<MapStateUninitialized>;
+    fn complete_initialization(& mut self, init_from: Self::InitFromType, map: & Map<MapStateInitialized>) {
         self.length = init_from.length;
         self.max_speed = init_from.max_speed;
         self.node = IntiNodeRef{

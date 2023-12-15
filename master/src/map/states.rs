@@ -13,35 +13,37 @@ use crate::map::references::*;
 use std::marker::PhantomData;
 
 pub trait ReferenceState {
-    type InitializedType<'a>: ReferenceStateInitialized<'a>;
+    type InitializedType: ReferenceStateInitialized;
+
     type UninitializedType: ReferenceStateUninitialized;
 }
 
 pub trait ReferenceStateUninitialized: ReferenceState + Serialize + Deserialize<'static>{
-    fn initialize<'a>(self, map: &'a Map<'a, MapStateInitialized>) -> Self::InitializedType<'a>;
+    fn initialize(self, map: & Map<MapStateInitialized>) -> Self::InitializedType;
 }
 
-pub trait ReferenceStateInitialized<'a>: ReferenceState {
+pub trait ReferenceStateInitialized: ReferenceState {
     fn un_initialize(self) -> Self::UninitializedType;
 }
 
-pub trait MapState<'a>{
-    type NodeRefType: NodeRef + Debug + Serialize;
-    type TrainRefType: TrainRef + Debug + Serialize;
-    type SwitchRefType: SwitchRef + Debug + Serialize;
+
+pub trait MapState{
+    type NodeRefType: NodeRef + Debug + Serialize + for<'a> Deserialize<'a>;
+    type TrainRefType: TrainRef + Debug + Serialize + for<'a> Deserialize<'a>;
+    type SwitchRefType: SwitchRef + Debug + Serialize + for<'a> Deserialize<'a>;
 }
 
+#[derive(Debug,Serialize,Deserialize)]
 pub struct MapStateUninitialized{}
-impl<'a> MapState<'a> for MapStateUninitialized{
+impl MapState for MapStateUninitialized{
     type NodeRefType = UnIntiNodeRef;
     type TrainRefType = UnIntiTrainRef;
     type SwitchRefType = UnIntiSwitchRef;
 }
 #[derive(Debug,Serialize,Deserialize)]
 pub struct MapStateInitialized{}
-
-impl<'a> MapState<'a> for MapStateInitialized{
-    type NodeRefType = IntiNodeRef<'a>;
-    type TrainRefType = IntiTrainRef<'a>;
-    type SwitchRefType = IntiSwitchRef<'a>;
+impl MapState for MapStateInitialized{
+    type NodeRefType = IntiNodeRef;
+    type TrainRefType = IntiTrainRef;
+    type SwitchRefType = IntiSwitchRef;
 }

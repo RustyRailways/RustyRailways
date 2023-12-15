@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::marker::PhantomData;
 use std::ops::Deref;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use common_infrastructure::Position;
 use common_infrastructure::devices::{Switch, Train};
 use crate::map::references::*;
@@ -27,15 +27,15 @@ pub mod initialization;
 /// To solve this issue we implemented the serialization and deserialization manually here.
 pub mod serde_impls;
 
-#[derive(Debug,Serialize)]
-pub struct Map<'a,T: MapState<'a>>{
-    nodes: HashMap<Position, Node<'a,T>>,
+#[derive(Debug,Serialize,Deserialize)]
+pub struct Map<T: MapState>{
+    nodes: HashMap<Position, Node<T>>,
     trains: HashMap<Train, TrainController>,
     switches: HashMap<Switch, SwitchController>,
 }
 
-impl<'a, T: MapState<'a>> Map<'a, T> {
-    pub fn get_node(&self, position: Position) -> &Node<'a, T>{
+impl<T: MapState> Map<T> {
+    pub fn get_node(&self, position: Position) -> &Node<T>{
         self.nodes.get(&position).unwrap()
     }
     pub fn get_train(&self, train: Train) -> &TrainController{
@@ -46,8 +46,7 @@ impl<'a, T: MapState<'a>> Map<'a, T> {
     }
 }
 
-impl<'a> Map<'a,MapStateUninitialized>{
-
+impl Map<MapStateUninitialized>{
     pub fn new() -> Self{
         Map{
             nodes: HashMap::new(),
@@ -56,9 +55,7 @@ impl<'a> Map<'a,MapStateUninitialized>{
         }
     }
 
-    pub fn initialize(self) -> Map<'a,MapStateInitialized>{
+    pub fn initialize(self) -> Map<MapStateInitialized>{
         todo!()
     }
-
-
 }

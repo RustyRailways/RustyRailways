@@ -13,7 +13,7 @@ pub struct UnIntiSwitchRef{
 impl SwitchRef for UnIntiSwitchRef{}
 
 impl ReferenceStateUninitialized for UnIntiSwitchRef{
-    fn initialize<'a>(self, map: &'a Map<'a, MapStateInitialized>) -> Self::InitializedType<'a> {
+    fn initialize(self, map: & Map<MapStateInitialized>) -> Self::InitializedType {
         let switch = map.get_switch(self.switch);
         IntiSwitchRef{
             switch
@@ -22,30 +22,30 @@ impl ReferenceStateUninitialized for UnIntiSwitchRef{
 
 }
 impl ReferenceState for UnIntiSwitchRef{
-    type InitializedType<'a> = IntiSwitchRef<'a>;
+    type InitializedType = IntiSwitchRef;
     type UninitializedType = Self;
 }
 #[derive(Debug)]
-pub struct IntiSwitchRef<'a>{
-    pub switch: &'a SwitchController
+pub struct IntiSwitchRef{
+    pub switch: *const SwitchController
 }
 
-impl SwitchRef for IntiSwitchRef<'_>{}
+impl SwitchRef for IntiSwitchRef{}
 
-impl<'a> Deref for IntiSwitchRef<'a>{
+impl Deref for IntiSwitchRef{
     type Target = SwitchController;
     fn deref(&self) -> &Self::Target {
-        self.switch
+        unsafe {&*self.switch}
     }
 }
-impl ReferenceStateInitialized<'_> for IntiSwitchRef<'_>{
+impl ReferenceStateInitialized for IntiSwitchRef{
     fn un_initialize(self) -> Self::UninitializedType {
         UnIntiSwitchRef{
-            switch: self.switch.switch
+            switch: unsafe{(*self.switch).switch}
         }
     }
 }
-impl ReferenceState for IntiSwitchRef<'_>{
-    type InitializedType<'a> = Self;
+impl ReferenceState for IntiSwitchRef{
+    type InitializedType = Self;
     type UninitializedType = UnIntiSwitchRef;
 }

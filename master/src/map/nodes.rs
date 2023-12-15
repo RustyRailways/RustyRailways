@@ -7,8 +7,8 @@ use crate::map::states::{MapState, MapStateInitialized, MapStateUninitialized};
 use crate::map::devices::SwitchControllerOption;
 use crate::map::Map;
 
-#[derive(Debug,Serialize)]
-pub enum NodeStatus<'a,T: MapState<'a>>{
+#[derive(Debug,Serialize,Deserialize)]
+pub enum NodeStatus<T: MapState>{
     /// there is no train in this node, and no train is planning to pass through it
     Unlocked,
     /// there is no train in this node, but a train is planning to pass through it
@@ -17,27 +17,27 @@ pub enum NodeStatus<'a,T: MapState<'a>>{
     OccupiedByTrain(T::TrainRefType),
 }
 
-#[derive(Debug, Serialize)]
-pub struct Node<'a, T: MapState<'a>>{
+#[derive(Debug, Serialize,Deserialize)]
+pub struct Node<T: MapState>{
     state: PhantomData<T>,
     pub position: Position,
-    adjacent_nodes: RefCell<AdjacentNodes<'a,T>>,
-    status: RefCell<NodeStatus<'a,T>>,
+    adjacent_nodes: RefCell<AdjacentNodes<T>>,
+    status: RefCell<NodeStatus<T>>,
 }
 
 /// On our model a node can have at most 3 adjacent nodes...
 /// so instead of using a vector, we use an enum to represent
 /// to avoid accessing the heap for small vectors.
-#[derive(Debug,Serialize)]
-pub enum AdjacentNodes<'a,T: MapState<'a>>{
+#[derive(Debug,Serialize,Deserialize)]
+pub enum AdjacentNodes<T: MapState>{
     None,
     One([T::NodeRefType;1]),
     Two([T::NodeRefType;2]),
     Tree([T::NodeRefType;3]),
 }
 
-impl<'a> AdjacentNodes<'a,MapStateInitialized>{
-    fn get_adjacent_nodes(&'a self) ->&[IntiNodeRef<'a>]{
+impl AdjacentNodes<MapStateInitialized>{
+    fn get_adjacent_nodes(& self) ->&[IntiNodeRef]{
         match self {
             AdjacentNodes::None => &[],
             AdjacentNodes::One(nodes) => nodes,
@@ -49,13 +49,13 @@ impl<'a> AdjacentNodes<'a,MapStateInitialized>{
 
 /// This struct represent a link between 2 nodes.
 /// in the real world this is a rail track between 2 stations (aka tag rfid)
-pub struct Link<'a,T: MapState<'a>>{
+pub struct Link<T: MapState>{
     pub length: u32,
     pub max_speed: u32,
     pub node: T::NodeRefType,
     /// If this track travels through a switch, this is the switch
     /// it can be used to set the correct pat
-    pub controller: SwitchControllerOption<'a,T>,
+    pub controller: SwitchControllerOption<T>,
     pub direction: Direction,
 }
 
@@ -70,7 +70,7 @@ pub enum Direction{
 
 ////////////////////// Implementation of uninitialized Node //////////////////////
 
-impl Node<'_,MapStateUninitialized>{
+impl Node<MapStateUninitialized>{
     pub fn new(position: Position) -> Self{
         Node{
             state: PhantomData,
@@ -88,7 +88,7 @@ impl Node<'_,MapStateUninitialized>{
 
 ////////////////////// Implementation of initialized Node //////////////////////
 
-impl<'a> Node<'a,MapStateInitialized>{
+impl Node<MapStateInitialized>{
 
     fn new(position: Position) -> Self{
         Node{
@@ -100,8 +100,5 @@ impl<'a> Node<'a,MapStateInitialized>{
     }
 
 
-    pub fn complete_initialization(&'a self, node: Node<'_,MapStateInitialized>, map: &'a Map<'a,MapStateInitialized>){
-        assert_eq!(self.position, node.position);
-    }
 
 }

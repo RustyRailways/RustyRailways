@@ -13,14 +13,14 @@ use crate::map::states::MapStateInitialized;
 /// There is a mutable and an immutable version of the trait.
 /// the first for normal objects, the second for objects that support interior mutability.
 
-pub trait CompleteInitialization<'a>{
+pub trait CompleteInitialization{
     type InitFromType;
-    fn complete_initialization(&'a self, init_from: Self::InitFromType, map: &'a Map<'a,MapStateInitialized>);
+    fn complete_initialization(self, init_from: Self::InitFromType, map: & Map<MapStateInitialized>);
 }
 
-pub trait CompleteInitializationMut<'a>{
+pub trait CompleteInitializationMut{
     type InitFromType;
-    fn complete_initialization(&'a mut self, init_from: Self::InitFromType, map: &'a Map<'a,MapStateInitialized>);
+    fn complete_initialization(&mut self, init_from: Self::InitFromType, map: & Map<MapStateInitialized>);
 }
 
 
@@ -28,3 +28,4 @@ mod init_switch_controller_option;
 mod init_link;
 mod init_adjacent_nodes;
 mod init_node_status;
+mod init_node;

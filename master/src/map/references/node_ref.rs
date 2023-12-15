@@ -13,7 +13,7 @@ pub struct UnIntiNodeRef{
 }
 impl NodeRef for UnIntiNodeRef{}
 impl ReferenceStateUninitialized for UnIntiNodeRef{
-    fn initialize<'a>(self, map: &'a Map<'a, MapStateInitialized>) -> Self::InitializedType<'a> {
+    fn initialize(self, map: & Map<MapStateInitialized>) -> Self::InitializedType {
         let node = map.get_node(self.position);
         IntiNodeRef{
             node
@@ -21,30 +21,31 @@ impl ReferenceStateUninitialized for UnIntiNodeRef{
     }
 }
 impl ReferenceState for UnIntiNodeRef{
-    type InitializedType<'a> = IntiNodeRef<'a>;
+    type InitializedType = IntiNodeRef;
     type UninitializedType = Self;
 }
+
 #[derive(Debug)]
-pub struct IntiNodeRef<'a>{
-    pub node: &'a Node<'a,MapStateInitialized>
+pub struct IntiNodeRef{
+    pub node:  *const Node<MapStateInitialized>
 }
 
 
-impl<'a> NodeRef for IntiNodeRef<'a>{}
-impl<'a> Deref for IntiNodeRef<'a>{
-    type Target = Node<'a,MapStateInitialized>;
+impl NodeRef for IntiNodeRef{}
+impl Deref for IntiNodeRef{
+    type Target = Node<MapStateInitialized>;
     fn deref(&self) -> &Self::Target {
-        self.node
+        unsafe {&*self.node}
     }
 }
-impl<'a> ReferenceStateInitialized<'a> for IntiNodeRef<'a>{
+impl ReferenceStateInitialized for IntiNodeRef{
     fn un_initialize(self) -> Self::UninitializedType {
         UnIntiNodeRef{
             position: self.position
         }
     }
 }
-impl ReferenceState for IntiNodeRef<'_>{
-    type InitializedType<'b> = IntiNodeRef<'b>;
+impl ReferenceState for IntiNodeRef{
+    type InitializedType = IntiNodeRef;
     type UninitializedType = UnIntiNodeRef;
 }

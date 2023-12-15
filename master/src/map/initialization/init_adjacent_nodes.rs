@@ -4,9 +4,9 @@ use crate::map::Map;
 use crate::map::references::IntiNodeRef;
 use crate::map::states::{MapStateInitialized, MapStateUninitialized};
 
-impl<'a> CompleteInitializationMut<'a> for AdjacentNodes<'a,MapStateInitialized>{
-    type InitFromType = AdjacentNodes<'a,MapStateUninitialized>;
-    fn complete_initialization(&'a mut self, init_from: Self::InitFromType, map: &'a Map<'a, MapStateInitialized>) {
+impl CompleteInitializationMut for AdjacentNodes<MapStateInitialized>{
+    type InitFromType = AdjacentNodes<MapStateUninitialized>;
+    fn complete_initialization(&mut self, init_from: Self::InitFromType, map: & Map<MapStateInitialized>) {
         macro_rules! init_node {
             ($node:ident) => {
                 IntiNodeRef{
@@ -17,21 +17,21 @@ impl<'a> CompleteInitializationMut<'a> for AdjacentNodes<'a,MapStateInitialized>
 
         *self = match init_from {
             AdjacentNodes::None => {
-                AdjacentNodes::<'a,MapStateInitialized>::None
+                AdjacentNodes::<MapStateInitialized>::None
             }
             AdjacentNodes::One([n1]) => {
-                AdjacentNodes::<'a,MapStateInitialized>::One([
+                AdjacentNodes::<MapStateInitialized>::One([
                     init_node!(n1)
                 ])
             }
             AdjacentNodes::Two([n1,n2]) => {
-                AdjacentNodes::<'a,MapStateInitialized>::Two([
+                AdjacentNodes::<MapStateInitialized>::Two([
                     init_node!(n1),
                     init_node!(n2)
                 ])
             }
             AdjacentNodes::Tree([n1,n2,n3]) => {
-                AdjacentNodes::<'a,MapStateInitialized>::Tree([
+                AdjacentNodes::<MapStateInitialized>::Tree([
                     init_node!(n1),
                     init_node!(n2),
                     init_node!(n3)
