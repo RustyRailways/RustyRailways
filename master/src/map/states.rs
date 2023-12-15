@@ -28,12 +28,12 @@ pub trait ReferenceStateInitialized: ReferenceState {
 
 
 pub trait MapState{
-    type NodeRefType: NodeRef + Debug + Serialize + for<'a> Deserialize<'a>;
-    type TrainRefType: TrainRef + Debug + Serialize + for<'a> Deserialize<'a>;
-    type SwitchRefType: SwitchRef + Debug + Serialize + for<'a> Deserialize<'a>;
+    type NodeRefType: NodeRef + Debug + Serialize + for<'a> Deserialize<'a> + Clone;
+    type TrainRefType: TrainRef + Debug + Serialize + for<'a> Deserialize<'a> + Clone;
+    type SwitchRefType: SwitchRef + Debug + Serialize + for<'a> Deserialize<'a> + Clone;
 }
 
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,Clone)]
 pub struct MapStateUninitialized{}
 impl MapState for MapStateUninitialized{
     type NodeRefType = UnIntiNodeRef;

@@ -2,11 +2,11 @@ use std::marker::PhantomData;
 use serde::{Deserialize, Serialize};
 use common_infrastructure::devices::{Switch, Train};
 use crate::map::states::{MapState, MapStateInitialized};
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,Clone)]
 pub struct TrainController{
     pub train: Train,
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,Clone)]
 pub struct SwitchController{
     pub switch: Switch,
 }

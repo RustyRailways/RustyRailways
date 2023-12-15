@@ -23,9 +23,19 @@ pub trait CompleteInitializationMut{
     fn complete_initialization(&mut self, init_from: &Self::InitFromType, map: & Map<MapStateInitialized>);
 }
 
+pub trait Initialize{
+    type InitializedType;
+    fn initialize(self) -> Self::InitializedType;
+}
+
+pub trait UnInitialize{
+    type UninitializedType;
+    fn un_initialize(self) -> Self::UninitializedType;
+}
 
 mod init_switch_controller_option;
 mod init_link;
 mod init_adjacent_nodes;
 mod init_node_status;
 mod init_node;
+mod init_map;

@@ -7,7 +7,7 @@ use crate::map::states::{MapState, MapStateInitialized, MapStateUninitialized};
 use crate::map::devices::SwitchControllerOption;
 use crate::map::Map;
 
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,Clone)]
 pub enum NodeStatus<T: MapState>{
     /// there is no train in this node, and no train is planning to pass through it
     Unlocked,
@@ -17,7 +17,7 @@ pub enum NodeStatus<T: MapState>{
     OccupiedByTrain(T::TrainRefType),
 }
 
-#[derive(Debug, Serialize,Deserialize)]
+#[derive(Debug, Serialize,Deserialize,Clone)]
 pub struct Node<T: MapState>{
     pub position: Position,
     pub adjacent_nodes: RefCell<AdjacentNodes<T>>,
@@ -27,7 +27,8 @@ pub struct Node<T: MapState>{
 /// On our model a node can have at most 3 adjacent nodes...
 /// so instead of using a vector, we use an enum to represent
 /// to avoid accessing the heap for small vectors.
-#[derive(Debug,Serialize,Deserialize)]
+
+#[derive(Debug,Serialize,Deserialize,Clone)]
 pub enum AdjacentNodes<T: MapState>{
     None,
     One([T::NodeRefType;1]),

@@ -7,6 +7,7 @@ use std::ops::Deref;
 
 pub trait NodeRef: ReferenceState {}
 
+
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Copy, Clone)]
 pub struct UnIntiNodeRef{
     pub position: Position
@@ -25,7 +26,7 @@ impl ReferenceState for UnIntiNodeRef{
     type UninitializedType = Self;
 }
 
-#[derive(Debug)]
+#[derive(Debug,Clone)]
 pub struct IntiNodeRef{
     pub node:  *const Node<MapStateInitialized>
 }

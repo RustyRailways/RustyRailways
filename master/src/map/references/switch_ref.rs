@@ -25,7 +25,7 @@ impl ReferenceState for UnIntiSwitchRef{
     type InitializedType = IntiSwitchRef;
     type UninitializedType = Self;
 }
-#[derive(Debug)]
+#[derive(Debug,Clone)]
 pub struct IntiSwitchRef{
     pub switch: *const SwitchController
 }
