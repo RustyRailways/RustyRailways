@@ -28,7 +28,7 @@ mod map_tests;
 #[derive(Debug,Serialize,Deserialize)]
 pub struct Map<T: MapState>{
     nodes: HashMap<Position, Node<T>>,
-    trains: HashMap<Train, TrainController>,
+    trains: HashMap<Train, TrainController<T>>,
     switches: HashMap<Switch, SwitchController>,
 }
 
@@ -36,7 +36,7 @@ impl<T: MapState> Map<T> {
     pub fn get_node(&self, position: Position) -> &Node<T>{
         self.nodes.get(&position).unwrap()
     }
-    pub fn get_train(&self, train: Train) -> &TrainController{
+    pub fn get_train(&self, train: Train) -> &TrainController<T>{
         self.trains.get(&train).unwrap()
     }
     pub fn get_switch(&self, switch: Switch) -> &SwitchController{

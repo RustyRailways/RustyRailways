@@ -39,3 +39,4 @@ mod init_adjacent_nodes;
 mod init_node_status;
 mod init_node;
 mod init_map;
+mod init_train_controller;

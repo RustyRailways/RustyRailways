@@ -31,6 +31,19 @@ pub struct IntiNodeRef{
     pub node:  *const Node<MapStateInitialized>
 }
 
+impl IntiNodeRef{
+
+    // allow to construct a new pointer that is null, that can be initialized later
+    pub unsafe fn new_null() -> Self{
+        IntiNodeRef{
+            node: std::ptr::null()
+        }
+    }
+
+    pub fn complete_initialization(&mut self, init_from: &UnIntiNodeRef , map: &Map<MapStateInitialized>){
+        *self = init_from.initialize(map);
+    }
+}
 
 impl NodeRef for IntiNodeRef{}
 impl Deref for IntiNodeRef{
