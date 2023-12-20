@@ -9,6 +9,7 @@
 const char *ssid = "your-ssid";
 const char *password = "your-password";
 
+
 unsigned long lastHeartbeatTime = 0;
 WebSocketsServer webSocket = WebSocketsServer(80);
 Servo servo;
@@ -17,9 +18,9 @@ bool open;
 void sendStatus() {
   DynamicJsonDocument doc(JSON_DIM);
   doc["Status"] = open ? "open" : "close";
-  String heartbeatMessage;
-  serializeJson(doc);
-  webSocket.broadcastTXT(heartbeatMessage);
+  String message;
+  serializeJson(doc, message);
+  webSocket.broadcastTXT(message);
 }
 
 void OpenSwitch() {
@@ -69,7 +70,7 @@ void sendHeartbeat() {
 
 void setup() {
   Serial.begin(115200);
-  servo.attach(2, 500, 2400);
+  servo.attach(D4, 500, 2400);
   OpenSwitch();
   Serial.begin(115200);
   WiFi.begin(ssid, password);
