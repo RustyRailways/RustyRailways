@@ -1,6 +1,8 @@
 use crate::devices::Device;
 use anyhow::{Ok,Result};
 use serde_json;
+use crate::messages;
+use crate::devices;
 
 #[test]
 fn test()->Result<()>{
@@ -9,5 +11,10 @@ fn test()->Result<()>{
     println!("{d_str}");
     let d2 = serde_json::from_str::<Device>(&d_str)?;
     assert_eq!(d,d2);
+
+    let m = messages::MasterMessage::HeartBeatFrom(Device::Switch(devices::Switch::S1));
+
+    let m = serde_json::to_string(&m)?;
+    print!("{m}");
     Ok(())
 }

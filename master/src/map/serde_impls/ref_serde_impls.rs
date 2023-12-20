@@ -24,14 +24,14 @@ impl Serialize for IntiSwitchRef {
 }
 
 impl<'de> Deserialize<'de> for IntiNodeRef {
-    fn deserialize<D>(deserializer: D) -> Result<Self, <D as serde::Deserializer<'de>>::Error> where
+    fn deserialize<D>(_: D) -> Result<Self, <D as serde::Deserializer<'de>>::Error> where
         D: serde::Deserializer<'de> {
         unimplemented!("Initialized node references can't be deserialized, use the uninitialized version instead")
     }
 }
 
 impl<'de> Deserialize<'de> for IntiTrainRef {
-    fn deserialize<D>(deserializer: D) -> Result<Self, <D as serde::Deserializer<'de>>::Error> where
+    fn deserialize<D>(_: D) -> Result<Self, <D as serde::Deserializer<'de>>::Error> where
         D: serde::Deserializer<'de> {
         unimplemented!("Initialized train references can't be deserialized, use the uninitialized version instead")
     }

@@ -27,7 +27,7 @@ impl ReferenceState for UnIntiSwitchRef{
 }
 #[derive(Debug,Clone)]
 pub struct IntiSwitchRef{
-    pub switch: *const SwitchController
+    pub(crate) switch: *const SwitchController
 }
 
 impl SwitchRef for IntiSwitchRef{}

@@ -18,7 +18,7 @@ pub enum NodeStatus<T: MapState>{
     OccupiedByTrain(T::TrainRefType),
 }
 
-#[derive(Debug, Serialize,Deserialize,Clone)]
+#[derive(Debug,Serialize, Deserialize,Clone)]
 pub struct Node<T: MapState>{
     pub position: Position,
     pub adjacent_nodes: RefCell<AdjacentNodes<T>>,

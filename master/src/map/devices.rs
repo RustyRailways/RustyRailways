@@ -1,6 +1,8 @@
-use std::marker::PhantomData;
+use anyhow::Result;
 use serde::{Deserialize, Serialize};
 use common_infrastructure::devices::{Switch, Train};
+use common_infrastructure::hals::MasterHal;
+use common_infrastructure::messages::SwitchMessage;
 use crate::map::states::{MapState, MapStateInitialized};
 #[derive(Debug,Serialize,Deserialize,Clone)]
 pub struct TrainController{
@@ -34,22 +36,15 @@ pub enum SwitchControllerOption<T: MapState>{
     SwitchToSetDiverted(T::SwitchRefType),
 }
 impl SwitchControllerOption<MapStateInitialized> {
-    pub fn set(&self){
+    pub fn set<T: MasterHal>(&self, hal: &T) -> Result<()>{
         match self {
-            SwitchControllerOption::NoSwitch => {},
+            SwitchControllerOption::NoSwitch => Ok(()),
             SwitchControllerOption::SwitchToSetStraight(switch) => {
-                //switch.set_straight();
-                todo!()
+                hal.send_message_to_switch((**switch).switch, SwitchMessage::SetPositionStraight)
             },
             SwitchControllerOption::SwitchToSetDiverted(switch) => {
-                //switch.set_diverted();
-                todo!()
+                hal.send_message_to_switch((**switch).switch, SwitchMessage::SetPositionDiverging)
             },
         }
     }
 }
-
-
-
-
-
