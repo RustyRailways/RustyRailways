@@ -6,20 +6,22 @@
 #define JSON_DIM 256 // Adjust the size based on your JSON message, default 256
 #define HEART_BEAT_INTERVAL 1000 // 1 sec
 
-const char *ssid = "your-ssid";
-const char *password = "your-password";
+//const char *ssid = "your-ssid";
+//const char *password = "your-password";
+
+const char *ssid = "Rete abc";
+const char *password = "ciaociaocattai";
 
 unsigned long lastHeartbeatTime = 0;
-WebSocketsServer webSocket = WebSocketsServer(81);
+WebSocketsServer webSocket = WebSocketsServer(80);
 Servo servo;
 bool open;
 
 void sendStatus() {
   DynamicJsonDocument doc(JSON_DIM);
-  doc["HeartBeatFrom"] = ESP.getChipId();
   doc["Status"] = open ? "open" : "close";
   String heartbeatMessage;
-  serializeJson(doc, heartbeatMessage);
+  serializeJson(doc);
   webSocket.broadcastTXT(heartbeatMessage);
 }
 
