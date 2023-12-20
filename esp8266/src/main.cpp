@@ -6,11 +6,8 @@
 #define JSON_DIM 256 // Adjust the size based on your JSON message, default 256
 #define HEART_BEAT_INTERVAL 1000 // 1 sec
 
-//const char *ssid = "your-ssid";
-//const char *password = "your-password";
-
-const char *ssid = "Rete abc";
-const char *password = "ciaociaocattai";
+const char *ssid = "your-ssid";
+const char *password = "your-password";
 
 unsigned long lastHeartbeatTime = 0;
 WebSocketsServer webSocket = WebSocketsServer(80);
