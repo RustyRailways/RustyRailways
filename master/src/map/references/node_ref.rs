@@ -15,7 +15,7 @@ pub struct UnIntiNodeRef{
 impl NodeRef for UnIntiNodeRef{}
 impl ReferenceStateUninitialized for UnIntiNodeRef{
     fn initialize(self, map: & Map<MapStateInitialized>) -> Self::InitializedType {
-        let node = map.get_node(self.position);
+        let node = map.get_node(self.position).unwrap();
         IntiNodeRef{
             node
         }

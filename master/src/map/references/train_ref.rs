@@ -15,7 +15,7 @@ impl TrainRef for UnIntiTrainRef{}
 
 impl ReferenceStateUninitialized for UnIntiTrainRef{
     fn initialize(self, map: & Map<MapStateInitialized>) -> Self::InitializedType {
-        let train = map.get_train(self.train);
+        let train = map.get_train(self.train).unwrap();
         IntiTrainRef{
             train
         }

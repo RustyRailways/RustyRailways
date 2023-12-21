@@ -14,7 +14,7 @@ impl SwitchRef for UnIntiSwitchRef{}
 
 impl ReferenceStateUninitialized for UnIntiSwitchRef{
     fn initialize(self, map: & Map<MapStateInitialized>) -> Self::InitializedType {
-        let switch = map.get_switch(self.switch);
+        let switch = map.get_switch(self.switch).unwrap();
         IntiSwitchRef{
             switch
         }

@@ -25,12 +25,12 @@ impl Initialize for Map<MapStateUninitialized>{
         };
         new_map.nodes.values().for_each(
             |node| node.complete_initialization(
-                self.get_node(node.position), &new_map
+                self.get_node(node.position).unwrap(), &new_map
             )
         );
         new_map.trains.values().for_each(
             |train_controller| train_controller.complete_initialization(
-                self.get_train(train_controller.train), &new_map
+                self.get_train(train_controller.train).unwrap(), &new_map
             )
         );
         new_map

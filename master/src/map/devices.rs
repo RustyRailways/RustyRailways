@@ -20,14 +20,12 @@ pub struct TrainController<T: MapState>{
 
 
 impl TrainController<MapStateUninitialized> {
-    pub fn new(train: Train, direction: Direction) -> Self{
+    pub fn new(train: Train, direction: Direction, position: Position) -> Self{
         TrainController{
             train,
             direction,
             current_speed: 0.into(),
-            current_position: UnIntiNodeRef{
-                position: Position::P1
-            }.into()
+            current_position: UnIntiNodeRef{position}.into()
         }
     }
 }

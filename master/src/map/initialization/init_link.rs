@@ -10,7 +10,7 @@ impl CompleteInitializationMut for Link<MapStateInitialized>{
         self.length = init_from.length;
         self.max_speed = init_from.max_speed;
         self.node = IntiNodeRef{
-            node: map.get_node(init_from.node.position)
+            node: map.get_node(init_from.node.position).unwrap()
         };
         self.controller.complete_initialization(&init_from.controller, map);
         self.direction = init_from.direction;

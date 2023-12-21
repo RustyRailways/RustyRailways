@@ -33,14 +33,14 @@ pub struct Map<T: MapState>{
 }
 
 impl<T: MapState> Map<T> {
-    pub fn get_node(&self, position: Position) -> &Node<T>{
-        self.nodes.get(&position).unwrap()
+    pub fn get_node(&self, position: Position) -> Result<&Node<T>,()>{
+        self.nodes.get(&position).ok_or(())
     }
-    pub fn get_train(&self, train: Train) -> &TrainController<T>{
-        self.trains.get(&train).unwrap()
+    pub fn get_train(&self, train: Train) -> Result<&TrainController<T>,()>{
+        self.trains.get(&train).ok_or(())
     }
-    pub fn get_switch(&self, switch: Switch) -> &SwitchController{
-        self.switches.get(&switch).unwrap()
+    pub fn get_switch(&self, switch: Switch) -> Result<&SwitchController,()>{
+        self.switches.get(&switch).ok_or(())
     }
 }
 
@@ -57,12 +57,12 @@ impl Map<MapStateUninitialized>{
         if self.trains.contains_key(&train){
             return Err("Train already exists");
         }
-        if !self.nodes.contains_key(&position){
-            return Err("Position does not exist");
-        }
 
-        self.trains.insert(train, TrainController::new(train,train_direction));
-        self.get_node(position).set_train(UnIntiTrainRef{train})?;
+
+
+        self.trains.insert(train, TrainController::new(train,train_direction,position));
+        let node = self.get_node(position).map_err(|_| "Node does not exist")?;
+        node.set_train(UnIntiTrainRef{train})?;
 
         Ok(())
     }
@@ -89,20 +89,15 @@ impl Map<MapStateUninitialized>{
                     direction_from: Direction, direction_to: Direction,
                     length: u32, max_speed: u32, switch: Option<(Switch,SwitchPosition)>
     ) -> Result<(),&str>{
-        if !self.nodes.contains_key(&position_from){
-            return Err("Node from does not exist");
-        }
-        if !self.nodes.contains_key(&position_to){
-            return Err("Node to does not exist");
-        }
+
         if let Some(switch) = &switch{
             if !self.switches.contains_key(&switch.0){
                 return Err("Switch does not exist");
             }
         }
 
-        let node_from = self.get_node(position_from);
-        let node_to = self.get_node(position_to);
+        let node_from = self.get_node(position_from).map_err(|_| "Node from does not exist")?;
+        let node_to = self.get_node(position_to).map_err(|_| "Node to does not exist")?;
 
         let node_from_ref = UnIntiNodeRef{
             position: position_from,

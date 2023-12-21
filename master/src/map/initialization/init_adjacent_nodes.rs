@@ -13,7 +13,7 @@ impl CompleteInitializationMut for AdjacentNodes<MapStateInitialized>{
             ($link:ident) => {
                 Link::<MapStateInitialized>{
                     node: IntiNodeRef{
-                        node: map.get_node($link.node.position)
+                        node: map.get_node($link.node.position).unwrap()
                     },
                     length: $link.length,
                     max_speed: $link.max_speed,

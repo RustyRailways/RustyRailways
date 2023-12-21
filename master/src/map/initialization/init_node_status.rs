@@ -14,14 +14,14 @@ impl CompleteInitializationMut for NodeStatus<MapStateInitialized>{
             NodeStatus::LockedByTrain(train) => {
                 NodeStatus::<MapStateInitialized>::LockedByTrain(
                     IntiTrainRef{
-                        train: map.get_train(train.train)
+                        train: map.get_train(train.train).unwrap()
                     }
                 )
             }
             NodeStatus::OccupiedByTrain(train) => {
                 NodeStatus::<MapStateInitialized>::OccupiedByTrain(
                     IntiTrainRef{
-                        train: map.get_train(train.train)
+                        train: map.get_train(train.train).unwrap()
                     }
                 )
             }

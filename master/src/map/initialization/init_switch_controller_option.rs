@@ -14,14 +14,14 @@ impl CompleteInitializationMut for SwitchControllerOption<MapStateInitialized>{
             SwitchControllerOption::SwitchToSetStraight(s) => {
                 SwitchControllerOption::<MapStateInitialized>::SwitchToSetStraight(
                     IntiSwitchRef{
-                        switch: map.get_switch(s.switch)
+                        switch: map.get_switch(s.switch).unwrap()
                     }
                 )
             }
             SwitchControllerOption::SwitchToSetDiverted(s) => {
                 SwitchControllerOption::SwitchToSetDiverted(
                     IntiSwitchRef{
-                        switch: map.get_switch(s.switch)
+                        switch: map.get_switch(s.switch).unwrap()
                     }
                 )
             }
