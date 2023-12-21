@@ -18,7 +18,7 @@ impl Initialize for Map<MapStateUninitialized>{
         for (switch, switch_controller) in &self.switches{
             switches.insert(*switch, switch_controller.clone());
         }
-        let mut new_map = Map{
+        let new_map = Map{
             nodes,
             trains,
             switches,
@@ -28,9 +28,9 @@ impl Initialize for Map<MapStateUninitialized>{
                 self.get_node(node.position), &new_map
             )
         );
-        new_map.trains.values_mut().for_each(
+        new_map.trains.values().for_each(
             |train_controller| train_controller.complete_initialization(
-                self.get_train_controller(train_controller.train), &new_map
+                self.get_train(train_controller.train), &new_map
             )
         );
         new_map

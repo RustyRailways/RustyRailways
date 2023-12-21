@@ -5,10 +5,10 @@ use crate::map::Map;
 use crate::map::references::IntiNodeRef;
 use crate::map::states::{MapStateInitialized, MapStateUninitialized, ReferenceStateInitialized};
 
-impl CompleteInitializationMut for TrainController<MapStateInitialized>{
+impl CompleteInitialization for TrainController<MapStateInitialized>{
     type InitFromType = TrainController<MapStateUninitialized>;
-    fn complete_initialization(&mut self, init_from: &Self::InitFromType, map: & Map<MapStateInitialized>) {
-        self.current_position.complete_initialization(&init_from.current_position, map);
+    fn complete_initialization(&self, init_from: &Self::InitFromType, map: & Map<MapStateInitialized>) {
+        self.current_position.borrow_mut().complete_initialization(&init_from.current_position.borrow(), map);
     }
 }
 
@@ -18,7 +18,7 @@ impl Initialize for TrainController<MapStateUninitialized> {
         TrainController{
             train: self.train,
             current_speed: self.current_speed,
-            current_position: unsafe{IntiNodeRef::new_null()},
+            current_position: unsafe{IntiNodeRef::new_null().into()},
         }
     }
 }
@@ -28,7 +28,7 @@ impl UnInitialize for TrainController<MapStateInitialized> {
         TrainController{
             train: self.train,
             current_speed: self.current_speed,
-            current_position: self.current_position.un_initialize(),
+            current_position: self.current_position.into_inner().un_initialize().into(),
         }
     }
 }
