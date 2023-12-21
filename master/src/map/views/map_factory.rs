@@ -6,7 +6,10 @@ use std::convert::Into;
 use serde_json;
 use crate::map::initialization::Initialize;
 use anyhow;
+use common_infrastructure::hals::MasterHal;
+use crate::map::views::map_controller_view::MapControllerView;
 use crate::map::views::map_creation_view::MapCreationView;
+use crate::map::views::map_navigation_view::MapNavigationView;
 use crate::map::views::map_visualization_view::MapVisualizationView;
 
 pub struct MapFactory{
@@ -40,11 +43,11 @@ impl MapFactory{
     pub fn build_visualization_view(&self) -> MapVisualizationView{
         MapVisualizationView::new(self.map.clone())
     }
-    pub fn build_navigation_view(&self) -> MapVisualizationView{
-        MapVisualizationView::new(self.map.clone())
+    pub fn build_navigation_view(&self) -> MapNavigationView{
+        MapNavigationView::new(self.map.clone())
     }
-    pub fn build_controller_view(&self) -> MapVisualizationView{
-        MapVisualizationView::new(self.map.clone())
+    pub fn build_controller_view<'a,T: MasterHal>(&self, hal: &'a T) -> MapControllerView<'a,T>{
+        MapControllerView::new(self.map.clone(),hal)
     }
 }
 

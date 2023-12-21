@@ -1,5 +1,5 @@
 use crate::map::devices::TrainController;
-use super::{CompleteInitializationMut, CompleteInitialization, Initialize, UnInitialize};
+use super::{CompleteInitialization, Initialize, UnInitialize};
 use crate::map::nodes::{AdjacentNodes, Node, NodeStatus};
 use crate::map::Map;
 use crate::map::references::IntiNodeRef;
