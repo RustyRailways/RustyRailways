@@ -15,8 +15,8 @@ use map_creation_object::SwitchPosition;
 
 pub mod states;
 pub mod references;
-
 pub mod nodes;
+pub mod views;
 
 /// Contains Switch and Trains
 pub mod devices;
