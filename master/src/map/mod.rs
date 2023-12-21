@@ -12,11 +12,14 @@ use references::{IntiNodeRef, IntiSwitchRef, IntiTrainRef, UnIntiNodeRef, UnInti
 use crate::map::devices::SwitchControllerOption;
 use crate::map::nodes::Direction;
 use map_creation_object::SwitchPosition;
+use anyhow::Result;
+use crate::map::map_creation_error::MapCreationError;
 
 pub mod states;
 pub mod references;
 pub mod nodes;
 pub mod views;
+pub mod map_creation_error;
 
 /// Contains Switch and Trains
 pub mod devices;
@@ -53,32 +56,32 @@ impl Map<MapStateUninitialized>{
         }
     }
 
-    pub fn add_train(&mut self, train: Train, train_direction: Direction, position: Position) -> Result<(),&str>{
+    pub fn add_train(&mut self, train: Train, train_direction: Direction, position: Position) -> Result<()>{
         if self.trains.contains_key(&train){
-            return Err("Train already exists");
+            return Err(MapCreationError::new("Train already exists").into());
         }
 
-
-
         self.trains.insert(train, TrainController::new(train,train_direction,position));
-        let node = self.get_node(position).map_err(|_| "Node does not exist")?;
+        let node = self.get_node(position).map_err(
+            |_| <MapCreationError as Into<anyhow::Error>>::into(MapCreationError::new("Node does not exist"))
+        )?;
         node.set_train(UnIntiTrainRef{train})?;
 
         Ok(())
     }
 
-    pub fn add_switch(&mut self, switch: Switch) -> Result<(),&str>{
+    pub fn add_switch(&mut self, switch: Switch) -> Result<()>{
         if self.switches.contains_key(&switch){
-            return Err("Switch already exists");
+            return Err(MapCreationError::new("Switch already exists").into());
         }
 
         self.switches.insert(switch, SwitchController::new(switch));
         Ok(())
     }
 
-    pub fn add_node(&mut self, position: Position) -> Result<(),&str>{
+    pub fn add_node(&mut self, position: Position) -> Result<()>{
         if self.nodes.contains_key(&position){
-            return Err("Node already exists");
+            return Err(MapCreationError::new("Node already exists").into());
         }
 
         self.nodes.insert(position, Node::new(position));
@@ -88,16 +91,23 @@ impl Map<MapStateUninitialized>{
     pub fn add_link(&mut self, position_from: Position, position_to: Position,
                     direction_from: Direction, direction_to: Direction,
                     length: u32, max_speed: u32, switch: Option<(Switch,SwitchPosition)>
-    ) -> Result<(),&str>{
+    ) -> Result<()>{
 
         if let Some(switch) = &switch{
             if !self.switches.contains_key(&switch.0){
-                return Err("Switch does not exist");
+                return Err(MapCreationError::new("Switch does not exist").into());
             }
         }
 
-        let node_from = self.get_node(position_from).map_err(|_| "Node from does not exist")?;
-        let node_to = self.get_node(position_to).map_err(|_| "Node to does not exist")?;
+        let node_from: Result<_,anyhow::Error> = self.get_node(position_from).map_err(
+            |_| MapCreationError::new("Node from does not exist").into()
+        );
+        let node_from = node_from?;
+
+        let node_to: Result<_,anyhow::Error>  = self.get_node(position_to).map_err(
+            |_| MapCreationError::new("Node to does not exist").into()
+        );
+        let node_to = node_to?;
 
         let node_from_ref = UnIntiNodeRef{
             position: position_from,

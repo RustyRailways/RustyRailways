@@ -6,7 +6,8 @@ use common_infrastructure::Position;
 use crate::map::references::*;
 use crate::map::states::{MapState, MapStateInitialized, MapStateUninitialized};
 use crate::map::devices::SwitchControllerOption;
-use crate::map::Map;
+use anyhow::Result;
+use crate::map::map_creation_error::MapCreationError;
 
 #[derive(Debug,Serialize,Deserialize,Clone,PartialEq,Eq)]
 pub enum NodeStatus<T: MapState>{
@@ -96,16 +97,17 @@ impl Node<MapStateUninitialized>{
         }
     }
 
-    pub fn set_train(& self, train: UnIntiTrainRef) -> Result<(),&str>
+    pub fn set_train(& self, train: UnIntiTrainRef) -> Result<()>
     {
         if *self.status.borrow() != NodeStatus::Unlocked{
-            return Err("Impossible to set train on a node that is not unlocked");
+            return Err(MapCreationError::new("Impossible to set train on a node that is not unlocked").into());
         }
         *self.status.borrow_mut() = NodeStatus::OccupiedByTrain(train);
         Ok(())
     }
 
-    pub fn add_link(&self, to: UnIntiNodeRef, direction: Direction, max_speed: u32, length: u32, controller: SwitchControllerOption<MapStateUninitialized>) -> Result<(),&str>{
+    pub fn add_link(&self, to: UnIntiNodeRef, direction: Direction, max_speed: u32,
+                    length: u32, controller: SwitchControllerOption<MapStateUninitialized>) -> Result<()>{
 
         self.adjacent_nodes.borrow_mut().add_link(to, controller, direction, max_speed, length)?;
 
@@ -128,11 +130,12 @@ impl Node<MapStateInitialized>{
 }
 
 impl AdjacentNodes<MapStateUninitialized> {
-    pub fn add_link(&mut self, to: UnIntiNodeRef, controller: SwitchControllerOption<MapStateUninitialized>, direction: Direction, max_speed: u32, length: u32) -> Result<(),&'static str>{
+    pub fn add_link(&mut self, to: UnIntiNodeRef, controller: SwitchControllerOption<MapStateUninitialized>,
+                    direction: Direction, max_speed: u32, length: u32) -> Result<()>{
 
         for node in self.get_adjacent_nodes(){
             if node.node.position == to.position{
-                return Err("Impossible to add a link to a node that is already linked");
+                return Err(MapCreationError::new("Impossible to add a link to a node that is already linked").into());
             }
         }
 
@@ -142,7 +145,7 @@ impl AdjacentNodes<MapStateUninitialized> {
             AdjacentNodes::None => AdjacentNodes::One([new_link]),
             AdjacentNodes::One([l1]) => AdjacentNodes::Two([l1, new_link]),
             AdjacentNodes::Two([l1,l2]) => AdjacentNodes::Tree([l1,l2, new_link]),
-            AdjacentNodes::Tree(_) => return Err("Impossible to add more than 3 links to a node")
+            AdjacentNodes::Tree(_) => return Err(MapCreationError::new("Impossible to add more than 3 links to a node").into())
         };
 
         Ok(())
