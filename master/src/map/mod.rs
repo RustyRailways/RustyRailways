@@ -1,14 +1,12 @@
 use std::collections::HashMap;
-use std::marker::PhantomData;
 use std::ops::Deref;
 use serde::{Deserialize, Serialize};
 use common_infrastructure::Position;
 use common_infrastructure::devices::{Switch, Train};
-use crate::map::references::*;
-use crate::map::states::{ReferenceStateInitialized, MapState, MapStateInitialized, MapStateUninitialized};
+use crate::map::states::{MapState, MapStateInitialized, MapStateUninitialized};
 use devices::{SwitchController, TrainController};
 use nodes::Node;
-use references::{IntiNodeRef, IntiSwitchRef, IntiTrainRef, UnIntiNodeRef, UnIntiSwitchRef, UnIntiTrainRef};
+use references::{UnIntiNodeRef, UnIntiSwitchRef, UnIntiTrainRef};
 use crate::map::devices::SwitchControllerOption;
 use crate::map::nodes::Direction;
 use map_creation_object::SwitchPosition;
@@ -18,6 +16,7 @@ use crate::map::map_creation_error::MapCreationError;
 pub mod states;
 pub mod references;
 pub mod nodes;
+#[allow(dead_code)]
 pub mod views;
 pub mod map_creation_error;
 
@@ -90,7 +89,7 @@ impl Map<MapStateUninitialized>{
 
     pub fn add_link(&mut self, position_from: Position, position_to: Position,
                     direction_from: Direction, direction_to: Direction,
-                    length: u32, max_speed: u32, switch: Option<(Switch,SwitchPosition)>
+                    length: u32, max_speed: i8, switch: Option<(Switch,SwitchPosition)>
     ) -> Result<()>{
 
         if let Some(switch) = &switch{
@@ -135,8 +134,8 @@ impl Map<MapStateUninitialized>{
             }
         };
 
-        node_from.add_link(node_to_ref, direction_from, length, max_speed, switch.clone())?;
-        node_to.add_link(node_from_ref, direction_to, length, max_speed, switch)?;
+        node_from.add_link(node_to_ref, direction_from, max_speed,length, switch.clone())?;
+        node_to.add_link(node_from_ref, direction_to, max_speed,length, switch)?;
 
         Ok(())
     }

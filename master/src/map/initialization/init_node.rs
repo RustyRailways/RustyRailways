@@ -1,7 +1,6 @@
 use super::{CompleteInitializationMut,CompleteInitialization, Initialize, UnInitialize};
 use crate::map::nodes::{AdjacentNodes, Node, NodeStatus};
 use crate::map::Map;
-use crate::map::references::IntiNodeRef;
 use crate::map::states::{MapStateInitialized, MapStateUninitialized};
 
 impl CompleteInitialization for Node<MapStateInitialized>{
@@ -25,10 +24,11 @@ impl Initialize for Node<MapStateUninitialized> {
 impl UnInitialize for Node<MapStateInitialized> {
     type UninitializedType = Node<MapStateUninitialized>;
     fn un_initialize(self) -> Self::UninitializedType {
+        unimplemented!();/*
         Node{
             position: self.position,
-            adjacent_nodes: todo!(),
-            status: todo!(),
-        }
+            adjacent_nodes: self.adjacent_nodes.into_inner().un_initialize().into(),
+            status: self.status.into_inner().un_initialize().into()
+        }*/
     }
 }

@@ -1,9 +1,8 @@
 use crate::map::devices::SwitchControllerOption;
-use crate::map::initialization::UnInitialize;
 use super::CompleteInitializationMut;
 use crate::map::nodes::{AdjacentNodes, Link};
 use crate::map::Map;
-use crate::map::references::{IntiNodeRef, UnIntiNodeRef};
+use crate::map::references::IntiNodeRef;
 use crate::map::states::{MapStateInitialized, MapStateUninitialized};
 
 impl CompleteInitializationMut for AdjacentNodes<MapStateInitialized>{

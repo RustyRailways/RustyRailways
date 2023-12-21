@@ -10,7 +10,6 @@ use std::fmt::Debug;
 use serde::{Serialize, Deserialize};
 use crate::map::Map;
 use crate::map::references::*;
-use std::marker::PhantomData;
 
 pub trait ReferenceState {
     type InitializedType: ReferenceStateInitialized;

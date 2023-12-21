@@ -1,10 +1,8 @@
 use std::cell::RefCell;
-use std::marker::PhantomData;
 use serde::{Deserialize, Serialize};
-use common_infrastructure::devices::Switch;
 use common_infrastructure::Position;
 use crate::map::references::*;
-use crate::map::states::{MapState, MapStateInitialized, MapStateUninitialized};
+use crate::map::states::{MapState, MapStateUninitialized};
 use crate::map::devices::SwitchControllerOption;
 use anyhow::Result;
 use crate::map::map_creation_error::MapCreationError;
@@ -54,7 +52,7 @@ impl<T: MapState> AdjacentNodes<T>{
 #[derive(Debug,Serialize,Deserialize,Clone)]
 pub struct Link<T: MapState>{
     pub length: u32,
-    pub max_speed: u32,
+    pub max_speed: i8,
     pub node: T::NodeRefType,
     /// If this track travels through a switch, this is the switch
     /// it can be used to set the correct pat
@@ -63,8 +61,12 @@ pub struct Link<T: MapState>{
 }
 
 impl Link<MapStateUninitialized>{
-    pub fn new(length: u32, max_speed: u32, node: UnIntiNodeRef,
+    pub fn new(length: u32, max_speed: i8, node: UnIntiNodeRef,
                controller: SwitchControllerOption<MapStateUninitialized>, direction: Direction) -> Self {
+
+        if max_speed < 0{
+            panic!("max_speed must be positive");
+        }
 
         Link {
             length,
@@ -106,8 +108,57 @@ impl Node<MapStateUninitialized>{
         Ok(())
     }
 
-    pub fn add_link(&self, to: UnIntiNodeRef, direction: Direction, max_speed: u32,
+    /// The nodes can be of two types:
+    ///  - switch nodes
+    ///  - non-switch nodes
+    /// when a link is added it must follow a few rules:
+    ///  - a non-switch node can have at most one link forward
+    ///  - a non-switch node can have at most one link backward
+    ///  - a switch node must have exactly two links forward, (one for each switch position)
+    ///  - a switch node can have at most one link backward
+    /// this function enforce all those rules, except the third one, which is enforced
+    /// inside map_creation_view
+    pub fn add_link(&self, to: UnIntiNodeRef, direction: Direction, max_speed: i8,
                     length: u32, controller: SwitchControllerOption<MapStateUninitialized>) -> Result<()>{
+
+        let mut node_backward = None;
+        let mut node_forward = None;
+
+        let adjacent_nodes = self.adjacent_nodes.borrow();
+
+        for node in adjacent_nodes.get_adjacent_nodes(){
+            if node.node.position == to.position{
+                return Err(MapCreationError::new("Impossible to add a link to a node that is already linked").into());
+            }
+            match node.direction{
+                Direction::Forward => node_forward = Some(node),
+                Direction::Backward => node_backward = Some(node),
+            }
+        }
+
+        if direction == Direction::Backward && node_backward.is_some(){
+            return Err(MapCreationError::new("Impossible to add a link backward to a node that already has a link backward").into());
+        }
+
+        // be shure that if two links are added to the same node, forward, they points to the same switch,
+        // and one of them is diverted and the other is straight
+        if direction == Direction::Forward && node_forward.is_some(){
+            let node_forward = node_forward.unwrap();
+            match (&node_forward.controller,&controller) {
+                (SwitchControllerOption::SwitchToSetDiverted(s1), SwitchControllerOption::SwitchToSetStraight(s2)) => {
+                    if s1 != s2{
+                        return Err(MapCreationError::new("the node dose not respect the switch pattern").into());
+                    }
+                }
+                (SwitchControllerOption::SwitchToSetStraight(s1), SwitchControllerOption::SwitchToSetDiverted(s2)) => {
+                    if s1 != s2{
+                        return Err(MapCreationError::new("the node dose not respect the switch pattern").into());
+                    }
+                }
+                (_,_) => return Err(MapCreationError::new("the node dose not respect the switch pattern").into())
+
+            }
+        }
 
         self.adjacent_nodes.borrow_mut().add_link(to, controller, direction, max_speed, length)?;
 
@@ -116,22 +167,9 @@ impl Node<MapStateUninitialized>{
 }
 
 
-////////////////////// Implementation of initialized Node //////////////////////
-
-impl Node<MapStateInitialized>{
-
-    fn new(position: Position) -> Self{
-        Node{
-            position,
-            adjacent_nodes: AdjacentNodes::None.into(),
-            status: NodeStatus::Unlocked.into(),
-        }
-    }
-}
-
 impl AdjacentNodes<MapStateUninitialized> {
     pub fn add_link(&mut self, to: UnIntiNodeRef, controller: SwitchControllerOption<MapStateUninitialized>,
-                    direction: Direction, max_speed: u32, length: u32) -> Result<()>{
+                    direction: Direction, max_speed: i8, length: u32) -> Result<()>{
 
         for node in self.get_adjacent_nodes(){
             if node.node.position == to.position{

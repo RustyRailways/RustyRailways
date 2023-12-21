@@ -38,7 +38,7 @@ impl<'de> Deserialize<'de> for IntiTrainRef {
 }
 
 impl<'de> Deserialize<'de> for IntiSwitchRef {
-    fn deserialize<D>(deserializer: D) -> Result<Self, <D as serde::Deserializer<'de>>::Error> where
+    fn deserialize<D>(_: D) -> Result<Self, <D as serde::Deserializer<'de>>::Error> where
         D: serde::Deserializer<'de> {
         unimplemented!("Initialized switch references can't be deserialized, use the uninitialized version instead")
     }

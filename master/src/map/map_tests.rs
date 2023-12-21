@@ -1,5 +1,6 @@
 use super::*;
 use crate::map::initialization::{Initialize};
+#[allow(unused_imports)]
 use super::map_creation_object::*;
 use serde_json;
 #[test]

@@ -2,7 +2,6 @@ use std::cell::RefCell;
 use std::rc::Rc;
 use crate::map::Map;
 use crate::map::states::{MapStateInitialized, MapStateUninitialized};
-use std::convert::Into;
 use serde_json;
 use crate::map::initialization::Initialize;
 use anyhow;

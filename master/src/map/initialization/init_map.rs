@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use crate::map::initialization::{CompleteInitialization,CompleteInitializationMut, Initialize, UnInitialize};
+use crate::map::initialization::{CompleteInitialization, Initialize};
 use crate::map::Map;
 use crate::map::states::{MapStateInitialized, MapStateUninitialized};
 

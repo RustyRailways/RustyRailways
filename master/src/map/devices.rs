@@ -8,7 +8,7 @@ use common_infrastructure::messages::SwitchMessage;
 use common_infrastructure::Position;
 use crate::map::map_creation_object::Direction;
 use crate::map::nodes::Node;
-use crate::map::references::{IntiNodeRef, NodeRef, UnIntiNodeRef};
+use crate::map::references::{IntiNodeRef, UnIntiNodeRef};
 use crate::map::states::{MapState, MapStateInitialized, MapStateUninitialized};
 #[derive(Debug,Serialize,Deserialize,Clone)]
 pub struct TrainController<T: MapState>{
