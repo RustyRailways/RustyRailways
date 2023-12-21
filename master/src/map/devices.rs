@@ -5,19 +5,23 @@ use common_infrastructure::devices::{Switch, Train};
 use common_infrastructure::hals::MasterHal;
 use common_infrastructure::messages::SwitchMessage;
 use common_infrastructure::Position;
+use crate::map::map_creation_object::Direction;
 use crate::map::references::{NodeRef, UnIntiNodeRef};
 use crate::map::states::{MapState, MapStateInitialized, MapStateUninitialized};
 #[derive(Debug,Serialize,Deserialize,Clone)]
 pub struct TrainController<T: MapState>{
     pub train: Train,
-    pub current_speed: RefCell<i8>,
+    pub current_speed: i8,
+    pub direction: Direction,
     pub current_position: RefCell<T::NodeRefType>
 }
 
+
 impl TrainController<MapStateUninitialized> {
-    pub fn new(train: Train) -> Self{
+    pub fn new(train: Train, direction: Direction) -> Self{
         TrainController{
             train,
+            direction,
             current_speed: 0.into(),
             current_position: UnIntiNodeRef{
                 position: Position::P1

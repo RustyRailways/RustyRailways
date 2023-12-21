@@ -53,7 +53,7 @@ impl Map<MapStateUninitialized>{
         }
     }
 
-    pub fn add_train(&mut self, train: Train, position: Position) -> Result<(),&str>{
+    pub fn add_train(&mut self, train: Train, train_direction: Direction, position: Position) -> Result<(),&str>{
         if self.trains.contains_key(&train){
             return Err("Train already exists");
         }
@@ -61,7 +61,7 @@ impl Map<MapStateUninitialized>{
             return Err("Position does not exist");
         }
 
-        self.trains.insert(train, TrainController::new(train));
+        self.trains.insert(train, TrainController::new(train,train_direction));
         self.get_node(position).set_train(UnIntiTrainRef{train})?;
 
         Ok(())

@@ -11,9 +11,9 @@ fn test_creation(){
 
     map.add_link(Position::P1, Position::P2, Direction::Backward,Direction::Backward,0,0,None).unwrap();
 
-    map.add_train(Train::T1, Position::P1).unwrap();
+    map.add_train(Train::T1, Direction::Forward,Position::P1).unwrap();
 
-    //println!("{}",serde_json::to_string_pretty(&map).unwrap());
+    println!("{}",serde_json::to_string_pretty(&map).unwrap());
 
     let map = map.initialize();
 }

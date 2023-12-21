@@ -16,6 +16,7 @@ impl Initialize for TrainController<MapStateUninitialized> {
     type InitializedType = TrainController<MapStateInitialized>;
     fn initialize(self) -> Self::InitializedType {
         TrainController{
+            direction: self.direction,
             train: self.train,
             current_speed: self.current_speed,
             current_position: unsafe{IntiNodeRef::new_null().into()},
@@ -26,6 +27,7 @@ impl UnInitialize for TrainController<MapStateInitialized> {
     type UninitializedType = TrainController<MapStateUninitialized>;
     fn un_initialize(self) -> Self::UninitializedType {
         TrainController{
+            direction: self.direction,
             train: self.train,
             current_speed: self.current_speed,
             current_position: self.current_position.into_inner().un_initialize().into(),
