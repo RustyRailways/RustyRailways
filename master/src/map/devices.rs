@@ -1,4 +1,5 @@
 use std::cell::RefCell;
+use std::ops::Deref;
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
 use common_infrastructure::devices::{Switch, Train};
@@ -6,7 +7,8 @@ use common_infrastructure::hals::MasterHal;
 use common_infrastructure::messages::SwitchMessage;
 use common_infrastructure::Position;
 use crate::map::map_creation_object::Direction;
-use crate::map::references::{NodeRef, UnIntiNodeRef};
+use crate::map::nodes::Node;
+use crate::map::references::{IntiNodeRef, NodeRef, UnIntiNodeRef};
 use crate::map::states::{MapState, MapStateInitialized, MapStateUninitialized};
 #[derive(Debug,Serialize,Deserialize,Clone)]
 pub struct TrainController<T: MapState>{
@@ -27,6 +29,20 @@ impl TrainController<MapStateUninitialized> {
                 position: Position::P1
             }.into()
         }
+    }
+}
+
+impl TrainController<MapStateInitialized> {
+    pub fn set_position(&self, new_position: &Node<MapStateInitialized>){
+        *self.current_position.borrow_mut() = new_position.into();
+    }
+
+    pub fn get_position(&self) -> Position{
+        self.current_position.borrow().position
+    }
+
+    pub fn get_current_node(&self)-> IntiNodeRef{
+        self.current_position.borrow().deref().clone()
     }
 }
 

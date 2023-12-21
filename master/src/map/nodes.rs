@@ -38,7 +38,7 @@ pub enum AdjacentNodes<T: MapState>{
 }
 
 impl<T: MapState> AdjacentNodes<T>{
-    fn get_adjacent_nodes(& self) ->&[Link<T>]{
+    pub fn get_adjacent_nodes(& self) ->&[Link<T>]{
         match self {
             AdjacentNodes::None => &[],
             AdjacentNodes::One(nodes) => nodes,
@@ -128,7 +128,7 @@ impl Node<MapStateInitialized>{
 }
 
 impl AdjacentNodes<MapStateUninitialized> {
-    fn add_link(&mut self, to: UnIntiNodeRef, controller: SwitchControllerOption<MapStateUninitialized>, direction: Direction, max_speed: u32, length: u32) -> Result<(),&'static str>{
+    pub fn add_link(&mut self, to: UnIntiNodeRef, controller: SwitchControllerOption<MapStateUninitialized>, direction: Direction, max_speed: u32, length: u32) -> Result<(),&'static str>{
 
         for node in self.get_adjacent_nodes(){
             if node.node.position == to.position{

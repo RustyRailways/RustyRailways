@@ -63,3 +63,11 @@ impl ReferenceState for IntiNodeRef{
     type InitializedType = IntiNodeRef;
     type UninitializedType = UnIntiNodeRef;
 }
+
+impl Into<IntiNodeRef> for &Node<MapStateInitialized>{
+    fn into(self) -> IntiNodeRef {
+        IntiNodeRef{
+            node: self
+        }
+    }
+}
