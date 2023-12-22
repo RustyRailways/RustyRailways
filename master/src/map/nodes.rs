@@ -160,6 +160,10 @@ impl Node<MapStateUninitialized>{
             }
         }
 
+        // drop this, otherwise the next line will panic
+        // because we are borrowing adjacent_nodes as immutable
+        drop(adjacent_nodes);
+
         self.adjacent_nodes.borrow_mut().add_link(to, controller, direction, max_speed, length)?;
 
         Ok(())
