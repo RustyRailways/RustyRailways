@@ -2,9 +2,80 @@ use std::collections::HashSet;
 use super::*;
 use std::ops::Deref;
 use crate::map::initialization::{Initialize};
-#[allow(unused_imports)]
-use super::map_creation_object::*;
 use serde_json;
+use crate::map::nodes::Link;
+#[allow(unused_imports)]
+use crate::map::views::map_creation_view::*;
+
+#[derive(Debug,Clone,Eq, PartialEq,Hash)]
+struct LinkLite{
+    length: u32,
+    max_speed: i8,
+    node: Position,
+}
+impl LinkLite{
+    fn new(length: u32, max_speed: i8, node: Position) -> Self{
+        LinkLite{
+            length,
+            max_speed,
+            node
+        }
+    }
+}
+
+impl From<&Link<MapStateUninitialized>> for LinkLite{
+    fn from(value: &Link<MapStateUninitialized>) -> Self {
+        Self::new(value.length,value.max_speed,value.node.position)
+    }
+}
+impl From<&Link<MapStateInitialized>> for LinkLite{
+    fn from(value: &Link<MapStateInitialized>) -> Self {
+        Self::new(value.length,value.max_speed,value.node.position)
+    }
+}
+
+
+#[derive(Debug,Clone,Eq, PartialEq,Hash)]
+struct LinkLiteWithDirection{
+    length: u32,
+    max_speed: i8,
+    node: Position,
+    direction: Direction,
+    switch: Option<(Switch,SwitchPosition)>
+}
+impl LinkLiteWithDirection{
+    fn new(length: u32, max_speed: i8, node: Position, direction: Direction,
+           switch: Option<(Switch,SwitchPosition)>) -> Self{
+        LinkLiteWithDirection{
+            length,
+            max_speed,
+            node,
+            direction,
+            switch
+        }
+    }
+}
+
+impl From<&Link<MapStateUninitialized>> for LinkLiteWithDirection{
+    fn from(value: &Link<MapStateUninitialized>) -> Self {
+        let switch = match value.controller{
+            SwitchControllerOption::NoSwitch => None,
+            SwitchControllerOption::SwitchToSetDiverted(x) => Some((x.switch,SwitchPosition::Diverted)),
+            SwitchControllerOption::SwitchToSetStraight(x) => Some((x.switch,SwitchPosition::Straight)),
+        };
+        Self::new(value.length,value.max_speed,value.node.position,value.direction,switch)
+    }
+}
+impl From<&Link<MapStateInitialized>> for LinkLiteWithDirection{
+    fn from(value: &Link<MapStateInitialized>) -> Self {
+        let switch = match &value.controller{
+            SwitchControllerOption::NoSwitch => None,
+            SwitchControllerOption::SwitchToSetDiverted(x) => Some((x.deref().switch,SwitchPosition::Diverted)),
+            SwitchControllerOption::SwitchToSetStraight(x) => Some((x.deref().switch,SwitchPosition::Straight)),
+        };
+        Self::new(value.length,value.max_speed,value.node.position,value.direction,switch)
+    }
+}
 
 #[test]
 fn test_creation(){
@@ -41,7 +112,6 @@ fn test_creation(){
 
 #[test]
 fn test_map_creation_view_nodes(){
-    use crate::map::views::map_creation_view::*;
 
     let mut mcv = MapCreationView::new();
 
@@ -67,7 +137,6 @@ fn test_map_creation_view_nodes(){
 
 #[test]
 fn test_map_creation_view_nodes_switches(){
-    use crate::map::views::map_creation_view::*;
 
     let mut mcv = MapCreationView::new();
 
@@ -94,7 +163,6 @@ fn test_map_creation_view_nodes_switches(){
 
 #[test]
 fn test_map_creation_view_links(){
-    use crate::map::views::map_creation_view::*;
 
     let mut mcv = MapCreationView::new();
 
@@ -125,23 +193,6 @@ fn test_map_creation_view_links(){
         let adjacent_nodes = node.adjacent_nodes.borrow();
         let adjacent_nodes_slice = adjacent_nodes.get_adjacent_nodes();
         assert_eq!(adjacent_nodes_slice.len(),2);
-
-
-        #[derive(Debug,Clone,Eq, PartialEq,Hash)]
-        struct LinkLite{
-            length: u32,
-            max_speed: i8,
-            node: Position,
-        }
-        impl LinkLite{
-            fn new(length: u32, max_speed: i8, node: Position) -> Self{
-                LinkLite{
-                    length,
-                    max_speed,
-                    node
-                }
-            }
-        }
 
         assert_ne!(adjacent_nodes_slice[0].direction, adjacent_nodes_slice[1].direction);
 
@@ -187,4 +238,119 @@ fn test_map_creation_view_links(){
             _ => panic!("Impossible")
         }
     }
+}
+
+
+#[test]
+fn test_map_creation_view_switch_station(){
+
+    use crate::constants::{DEFAULT_SWITCH_DISTANCE,DEFAULT_SWITCH_SPEED};
+
+    let mut mcv = MapCreationView::new();
+
+    mcv.add_nodes(
+        &[Position::P1,Position::P2,Position::P3,Position::P4,Position::P5,Position::P6]
+    ).unwrap();
+
+    mcv.add_switches(&[Switch::S1,Switch::S2]).unwrap();
+
+    let s = mcv.add_switch_station(
+        Switch::S3,Position::P1,Position::P2,Position::P3
+    ).unwrap_err().to_string();
+    assert_eq!(s,"Switch does not exist");
+
+    mcv.add_switch_station(
+        Switch::S1,Position::P1,Position::P2,Position::P3
+    ).unwrap();
+
+    let s = mcv.add_switch_station(
+        Switch::S1,Position::P4,Position::P5,Position::P6
+    ).unwrap_err().to_string();
+
+    assert_eq!(s,"Switch already used");
+
+    mcv.add_switch_station(
+        Switch::S2,Position::P4,Position::P5,Position::P6
+    ).unwrap();
+
+
+    mcv.add_link(Position::P1, Position::P4, 1,10).unwrap();
+    mcv.add_link(Position::P2, Position::P5, 2,20).unwrap();
+    mcv.add_link(Position::P3, Position::P6, 3,30).unwrap();
+
+
+    let map = mcv.to_map().initialize();
+
+    let get_links = |position: Position| -> HashSet<LinkLiteWithDirection>{
+        map.get_node(position).unwrap()
+            .adjacent_nodes.borrow()
+            .get_adjacent_nodes()
+            .iter().map(
+            |x| LinkLiteWithDirection::from(x)
+        ).collect()
+    };
+
+    let links_p1 = get_links(Position::P1);
+
+    assert_eq!(
+        links_p1,
+        [
+            LinkLiteWithDirection::new(DEFAULT_SWITCH_DISTANCE,DEFAULT_SWITCH_SPEED,Position::P2,Direction::Forward,Some((Switch::S1,SwitchPosition::Diverted))),
+            LinkLiteWithDirection::new(DEFAULT_SWITCH_DISTANCE,DEFAULT_SWITCH_SPEED,Position::P3,Direction::Forward,Some((Switch::S1,SwitchPosition::Straight))),
+            LinkLiteWithDirection::new(10,1,Position::P4,Direction::Backward,None),
+        ].iter().map(|x|x.clone()).collect()
+    );
+
+    let links_p2 = get_links(Position::P2);
+
+    assert_eq!(
+        links_p2,
+        [
+            LinkLiteWithDirection::new(DEFAULT_SWITCH_DISTANCE,DEFAULT_SWITCH_SPEED,Position::P1,Direction::Backward,Some((Switch::S1,SwitchPosition::Diverted))),
+            LinkLiteWithDirection::new(20,2,Position::P5,Direction::Forward,None),
+        ].iter().map(|x|x.clone()).collect()
+    );
+
+    let links_p3 = get_links(Position::P3);
+
+    assert_eq!(
+        links_p3,
+        [
+            LinkLiteWithDirection::new(DEFAULT_SWITCH_DISTANCE,DEFAULT_SWITCH_SPEED,Position::P1,Direction::Backward,Some((Switch::S1,SwitchPosition::Straight))),
+            LinkLiteWithDirection::new(30,3,Position::P6,Direction::Forward,None),
+        ].iter().map(|x|x.clone()).collect()
+    );
+
+    let links_p4 = get_links(Position::P4);
+
+    assert_eq!(
+        links_p4,
+        [
+            LinkLiteWithDirection::new(10,1,Position::P1,Direction::Backward,None),
+            LinkLiteWithDirection::new(DEFAULT_SWITCH_DISTANCE,DEFAULT_SWITCH_SPEED,Position::P5,Direction::Forward,Some((Switch::S2,SwitchPosition::Diverted))),
+            LinkLiteWithDirection::new(DEFAULT_SWITCH_DISTANCE,DEFAULT_SWITCH_SPEED,Position::P6,Direction::Forward,Some((Switch::S2,SwitchPosition::Straight))),
+        ].iter().map(|x|x.clone()).collect()
+    );
+
+    let links_p5 = get_links(Position::P5);
+
+    assert_eq!(
+        links_p5,
+        [
+            LinkLiteWithDirection::new(20,2,Position::P2,Direction::Forward,None),
+            LinkLiteWithDirection::new(DEFAULT_SWITCH_DISTANCE,DEFAULT_SWITCH_SPEED,Position::P4,Direction::Backward,Some((Switch::S2,SwitchPosition::Diverted))),
+        ].iter().map(|x|x.clone()).collect()
+    );
+
+    let links_p6 = get_links(Position::P6);
+
+    assert_eq!(
+        links_p6,
+        [
+            LinkLiteWithDirection::new(30,3,Position::P3,Direction::Forward,None),
+            LinkLiteWithDirection::new(DEFAULT_SWITCH_DISTANCE,DEFAULT_SWITCH_SPEED,Position::P4,Direction::Backward,Some((Switch::S2,SwitchPosition::Straight))),
+        ].iter().map(|x|x.clone()).collect()
+    );
+
+
 }

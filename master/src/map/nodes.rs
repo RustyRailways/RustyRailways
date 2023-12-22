@@ -81,7 +81,7 @@ impl Link<MapStateUninitialized>{
 
 /// When you are in a node (aka station) you can go only int two directions
 /// this enum represent those 2 directions, forward and backward.
-#[derive(Copy, Clone, PartialEq, Eq, Debug, Serialize,Deserialize)]
+#[derive(Copy, Clone, PartialEq, Eq, Debug, Serialize,Deserialize, Hash)]
 pub enum Direction{
     Forward,
     Backward,

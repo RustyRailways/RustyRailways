@@ -105,7 +105,7 @@ impl MapCreationView{
         self.map.add_link(position_center, position_straight,
                           Direction::Forward, Direction::Backward,
                           DEFAULT_SWITCH_DISTANCE,DEFAULT_SWITCH_SPEED ,
-                          Some((switch, SwitchPosition::Diverted)))?;
+                          Some((switch, SwitchPosition::Straight)))?;
 
         self.used_switches.insert(switch);
 
