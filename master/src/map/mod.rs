@@ -144,11 +144,7 @@ pub mod map_creation_object{
     pub use common_infrastructure::Position;
     pub use common_infrastructure::devices::{Switch, Train};
     pub use crate::map::nodes::Direction;
-
-    #[derive(Debug,Clone,PartialEq,Eq,Hash)]
-    pub enum SwitchPosition{
-        Straight,
-        Diverted,
-    }
+    pub use crate::map::devices::SwitchPosition;
+    
 }
 

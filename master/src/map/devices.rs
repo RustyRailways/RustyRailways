@@ -65,7 +65,7 @@ pub enum SwitchControllerOption<T: MapState>{
     SwitchToSetDiverted(T::SwitchRefType),
 }
 
-#[derive(Debug,Serialize,Deserialize,Clone)]
+#[derive(Debug,Serialize,Deserialize,Clone,Eq, PartialEq,Hash)]
 pub enum SwitchPosition{
     Straight,
     Diverted

@@ -39,7 +39,7 @@ impl MapState for MapStateUninitialized{
     type TrainRefType = UnIntiTrainRef;
     type SwitchRefType = UnIntiSwitchRef;
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,Clone)]
 pub struct MapStateInitialized{}
 impl MapState for MapStateInitialized{
     type NodeRefType = IntiNodeRef;
