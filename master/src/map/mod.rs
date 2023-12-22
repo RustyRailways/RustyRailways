@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::ops::Deref;
 use serde::{Deserialize, Serialize};
 use common_infrastructure::Position;
 use common_infrastructure::devices::{Switch, Train};
