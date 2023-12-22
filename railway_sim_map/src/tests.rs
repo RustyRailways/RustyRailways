@@ -145,9 +145,5 @@ fn test_wrong_cross(){
         MasterMessage::TrainHasReachedPosition(TrainEnum::T1, Position::P3).into()
     );
 
-    map.send_message_to_switch(Switch::S1, SwitchMessage::SetPositionStraight).unwrap();
-
     map.sleep_for_ms(0);
-
-    println!("{:?}",map.get_message().unwrap());
 }
