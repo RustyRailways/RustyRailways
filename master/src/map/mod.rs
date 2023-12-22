@@ -35,14 +35,14 @@ pub struct Map<T: MapState>{
 }
 
 impl<T: MapState> Map<T> {
-    pub fn get_node(&self, position: Position) -> Result<&Node<T>,()>{
-        self.nodes.get(&position).ok_or(())
+    pub fn get_node(&self, position: Position) -> Result<&Node<T>>{
+        self.nodes.get(&position).ok_or(MapCreationError::new("Node does not exist").into())
     }
-    pub fn get_train(&self, train: Train) -> Result<&TrainController<T>,()>{
-        self.trains.get(&train).ok_or(())
+    pub fn get_train(&self, train: Train) -> Result<&TrainController<T>>{
+        self.trains.get(&train).ok_or(MapCreationError::new("Train does not exist").into())
     }
-    pub fn get_switch(&self, switch: Switch) -> Result<&SwitchController,()>{
-        self.switches.get(&switch).ok_or(())
+    pub fn get_switch(&self, switch: Switch) -> Result<&SwitchController>{
+        self.switches.get(&switch).ok_or(MapCreationError::new("Switch does not exist").into())
     }
 }
 

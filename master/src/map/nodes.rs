@@ -164,6 +164,26 @@ impl Node<MapStateUninitialized>{
 
         Ok(())
     }
+
+    pub fn get_next_available_direction(&self) -> Result<Direction>{
+        let mut has_forward = false;
+        let mut has_backward = false;
+        for link in self.adjacent_nodes.borrow().get_adjacent_nodes(){
+            if link.direction == Direction::Forward{
+                has_forward = true;
+            }
+            if link.direction == Direction::Backward{
+                has_backward = true;
+            }
+        }
+        if !has_forward{
+            return Ok(Direction::Forward);
+        }
+        if !has_backward{
+            return Ok(Direction::Backward);
+        }
+        Err(MapCreationError::new("The node already has two links").into())
+    }
 }
 
 
