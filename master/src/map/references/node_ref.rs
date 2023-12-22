@@ -26,6 +26,14 @@ impl ReferenceState for UnIntiNodeRef{
     type UninitializedType = Self;
 }
 
+impl From<Position> for UnIntiNodeRef{
+    fn from(value: Position) -> Self {
+        UnIntiNodeRef{
+            position: value
+        }
+    }
+}
+
 #[derive(Debug,Clone,PartialEq,Eq)]
 pub struct IntiNodeRef{
     pub node:  *const Node<MapStateInitialized>

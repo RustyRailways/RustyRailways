@@ -26,6 +26,13 @@ impl ReferenceState for UnIntiTrainRef{
     type InitializedType = IntiTrainRef;
     type UninitializedType = Self;
 }
+impl From<Train> for UnIntiTrainRef{
+    fn from(value: Train) -> Self {
+        UnIntiTrainRef{
+            train: value
+        }
+    }
+}
 
 #[derive(Debug,Clone,PartialEq,Eq)]
 pub struct IntiTrainRef{

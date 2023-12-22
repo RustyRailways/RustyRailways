@@ -3,9 +3,10 @@ use super::*;
 use std::ops::Deref;
 use crate::map::initialization::{Initialize};
 use serde_json;
-use crate::map::nodes::Link;
+use crate::map::nodes::{Link, NodeStatus};
 #[allow(unused_imports)]
 use crate::map::views::map_creation_view::*;
+use crate::map::views::map_factory::MapFactory;
 
 #[derive(Debug,Clone,Eq, PartialEq,Hash)]
 struct LinkLite{
@@ -652,4 +653,87 @@ fn test_add_train_9(){
     let link = adjacent_nodes.get_link_to(Position::P1).unwrap();
 
     assert_ne!(link.direction,train.direction);
+}
+
+
+mod fake_hal{
+    use common_infrastructure::devices::{Switch, Train};
+    use common_infrastructure::hals::{GenericHal, MasterHal};
+    use common_infrastructure::messages::{MasterMessage, SwitchMessage, TrainMessage};
+
+    pub struct Hal{}
+
+    impl GenericHal for Hal {
+        fn new() -> anyhow::Result<Self> {
+            Ok(Self{})
+        }
+        fn sleep_for_ms(&self, ms: u32) {
+            println!("Sleeping for {} ms",ms)
+        }
+    }
+
+    impl MasterHal for Hal {
+        fn get_message(&self) -> anyhow::Result<Option<MasterMessage>> {
+            unimplemented!()
+        }
+        fn send_message_to_train(&self, train: Train, message: TrainMessage) -> anyhow::Result<()> {
+            println!("Train {:?} received message {:?}",train,message);
+            Ok(())
+        }
+        fn send_message_to_switch(&self, switch: Switch, message: SwitchMessage) -> anyhow::Result<()> {
+            println!("Switch {:?} received message {:?}",switch,message);
+            Ok(())
+        }
+    }
+}
+
+fn get_test_map_for_controller()-> MapFactory{
+
+    let mut mcv = MapCreationView::new();
+
+    mcv.add_nodes(&[Position::P1,Position::P2,Position::P3,Position::P4,Position::P5]).unwrap();
+
+    mcv.add_train(Train::T1,Position::P1,None).unwrap();
+    mcv.add_train(Train::T2,Position::P5,None).unwrap();
+
+    MapFactory::from(mcv)
+}
+
+#[test]
+fn test_move_train(){
+    use common_infrastructure::hals::GenericHal;
+    use fake_hal::Hal;
+
+    let hal = Hal::new().unwrap();
+    // all nodes from 1 to 5 with T1 in 1 and T2 in 5
+    let factory = get_test_map_for_controller();
+    let mcv = factory.build_controller_view(&hal);
+    let mvv = factory.build_visualization_view();
+
+    let s = mcv.lock_node(Position::P1,Train::T1).unwrap_err().to_string();
+    assert_eq!(s,"Node P1 is not unlocked");
+
+    mcv.lock_node(Position::P2,Train::T1).unwrap();
+    let s = mvv.get_node_status(Position::P2).unwrap();
+    assert_eq!(s,NodeStatus::LockedByTrain(Train::T1.into()));
+
+    let s = mcv.lock_node(Position::P2,Train::T2).unwrap_err().to_string();
+    assert_eq!(s,"Node P2 is not unlocked");
+
+    let s = mcv.move_train(Train::T2,Position::P2).unwrap_err().to_string();
+    assert_eq!(s,"Node P2 is locked by train T1");
+
+    mcv.move_train(Train::T1,Position::P2).unwrap();
+    let s = mvv.get_node_status(Position::P1).unwrap();
+    assert_eq!(s,NodeStatus::Unlocked);
+
+    let s = mvv.get_node_status(Position::P2).unwrap();
+    assert_eq!(s,NodeStatus::OccupiedByTrain(Train::T1.into()));
+
+    mcv.lock_node(Position::P4,Train::T2).unwrap();
+    let s = mvv.get_node_status(Position::P4).unwrap();
+    assert_eq!(s,NodeStatus::LockedByTrain(Train::T2.into()));
+    mcv.unlock_node(Position::P4).unwrap();
+    let s = mvv.get_node_status(Position::P4).unwrap();
+    assert_eq!(s,NodeStatus::Unlocked);
 }
