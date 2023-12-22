@@ -351,6 +351,305 @@ fn test_map_creation_view_switch_station(){
             LinkLiteWithDirection::new(DEFAULT_SWITCH_DISTANCE,DEFAULT_SWITCH_SPEED,Position::P4,Direction::Backward,Some((Switch::S2,SwitchPosition::Straight))),
         ].iter().map(|x|x.clone()).collect()
     );
+}
+
+#[test]
+#[should_panic(expected = "max_speed must be positive")]
+fn test_negative_link_speed(){
+
+    let mut mcv = MapCreationView::new();
+
+    mcv.add_nodes(&[Position::P1,Position::P2]).unwrap();
+    mcv.add_link(Position::P1, Position::P2, -1,1).unwrap_err().to_string();
+}
+
+#[test]
+fn test_add_switch_after_link(){
+    let mut mcv = MapCreationView::new();
+    mcv.add_nodes(&[Position::P1,Position::P2,Position::P3,Position::P4,Position::P5]).unwrap();
+
+    mcv.add_link(Position::P1, Position::P2, 1,10).unwrap();
+
+    mcv.add_switch(Switch::S1).unwrap();
+
+    let s = mcv.add_switch_station(Switch::S1,Position::P2,Position::P3,Position::P4).unwrap_err().to_string();
+
+    assert_eq!(s,"all switch_stations must be added before any link is added");
+}
+
+#[test]
+fn test_add_link_after_train(){
+    let mut mcv = MapCreationView::new();
+    mcv.add_nodes(&[Position::P1,Position::P2,Position::P3]).unwrap();
+
+    mcv.add_link(Position::P1, Position::P2, 1,10).unwrap();
+
+    mcv.add_train(Train::T1,Position::P2,Some(Position::P1)).unwrap();
+
+    let s = mcv.add_link(Position::P2, Position::P3, 1,10).unwrap_err().to_string();
+
+    assert_eq!(s,"all links must be added before any train is added");
+}
+
+#[test]
+fn test_add_train_1(){
+    let mut mcv = MapCreationView::new();
+    mcv.add_nodes(&[Position::P1,Position::P2,Position::P3]).unwrap();
+
+    mcv.add_link(Position::P1, Position::P2, 0,0).unwrap();
+    mcv.add_link(Position::P2, Position::P3, 0,0).unwrap();
+
+    let s = mcv.add_train(Train::T1,Position::P2,None).unwrap_err().to_string();
+    assert_eq!(s,"The pointing_to has not be found");
+    let s = mcv.add_train(Train::T1,Position::P2,Some(Position::P2)).unwrap_err().to_string();
+    assert_eq!(s,"The pointing_to has not be found");
+
+    mcv.add_train(Train::T1,Position::P2,Some(Position::P1)).unwrap();
 
 
+    let s = mcv.add_train(Train::T2,Position::P2,Some(Position::P1)).unwrap_err().to_string();
+    assert_eq!(s,"Impossible to set train on a node that is not unlocked");
+
+    let s = mcv.add_train(Train::T1,Position::P1,None).unwrap_err().to_string();
+    assert_eq!(s,"Train already exists");
+}
+
+#[test]
+fn test_add_train_2(){
+    let mut mcv = MapCreationView::new();
+    mcv.add_nodes(&[Position::P1,Position::P2,Position::P3]).unwrap();
+
+    mcv.add_link(Position::P1, Position::P2, 0,0).unwrap();
+    mcv.add_link(Position::P2, Position::P3, 0,0).unwrap();
+
+    mcv.add_train(Train::T1,Position::P1,None).unwrap();
+
+    let map = mcv.to_map().initialize();
+
+
+    let train = map.trains.get(&Train::T1).unwrap();
+
+    let node_ref = train.current_position.borrow();
+    let node = node_ref.deref().deref();
+
+    let pos = node.position;
+    assert_eq!(pos,Position::P1);
+
+    let adjacent_nodes = node.adjacent_nodes.borrow();
+    let link = adjacent_nodes.get_link_to(Position::P2).unwrap();
+
+    assert_ne!(link.direction,train.direction);
+}
+
+#[test]
+fn test_add_train_3(){
+    let mut mcv = MapCreationView::new();
+    mcv.add_nodes(&[Position::P1,Position::P2,Position::P3]).unwrap();
+
+    mcv.add_link(Position::P1, Position::P2, 0,0).unwrap();
+    mcv.add_link(Position::P2, Position::P3, 0,0).unwrap();
+
+    mcv.add_train(Train::T1,Position::P3,None).unwrap();
+
+    let map = mcv.to_map().initialize();
+
+    let train = map.trains.get(&Train::T1).unwrap();
+
+    let node_ref = train.current_position.borrow();
+    let node = node_ref.deref().deref();
+
+    let pos = node.position;
+    assert_eq!(pos,Position::P3);
+
+    let adjacent_nodes = node.adjacent_nodes.borrow();
+    let link = adjacent_nodes.get_link_to(Position::P2).unwrap();
+
+    assert_ne!(link.direction,train.direction);
+}
+
+#[test]
+fn test_add_train_4(){
+    let mut mcv = MapCreationView::new();
+    mcv.add_nodes(&[Position::P1,Position::P2,Position::P3]).unwrap();
+
+    mcv.add_link(Position::P1, Position::P2, 0,0).unwrap();
+    mcv.add_link(Position::P2, Position::P3, 0,0).unwrap();
+
+    mcv.add_train(Train::T1,Position::P1,Some(Position::P2)).unwrap();
+
+    let map = mcv.to_map().initialize();
+
+    let train = map.trains.get(&Train::T1).unwrap();
+
+    let node_ref = train.current_position.borrow();
+    let node = node_ref.deref().deref();
+
+    let pos = node.position;
+    assert_eq!(pos,Position::P1);
+
+    let adjacent_nodes = node.adjacent_nodes.borrow();
+    let link = adjacent_nodes.get_link_to(Position::P2).unwrap();
+
+    assert_eq!(link.direction,train.direction);
+}
+
+#[test]
+fn test_add_train_5(){
+    let mut mcv = MapCreationView::new();
+    mcv.add_nodes(&[Position::P1,Position::P2,Position::P3]).unwrap();
+
+    mcv.add_link(Position::P1, Position::P2, 0,0).unwrap();
+    mcv.add_link(Position::P2, Position::P3, 0,0).unwrap();
+
+    mcv.add_train(Train::T1,Position::P3,Some(Position::P2)).unwrap();
+
+    let map = mcv.to_map().initialize();
+
+    let train = map.trains.get(&Train::T1).unwrap();
+
+    let node_ref = train.current_position.borrow();
+    let node = node_ref.deref().deref();
+
+    let pos = node.position;
+    assert_eq!(pos,Position::P3);
+
+    let adjacent_nodes = node.adjacent_nodes.borrow();
+    let link = adjacent_nodes.get_link_to(Position::P2).unwrap();
+
+    assert_eq!(link.direction,train.direction);
+}
+
+#[test]
+fn test_add_train_6(){
+    let mut mcv = MapCreationView::new();
+    mcv.add_nodes(&[Position::P1,Position::P2,Position::P3]).unwrap();
+
+    mcv.add_link(Position::P1, Position::P2, 0,0).unwrap();
+    mcv.add_link(Position::P2, Position::P3, 0,0).unwrap();
+
+    mcv.add_train(Train::T1,Position::P2,Some(Position::P1)).unwrap();
+
+    let map = mcv.to_map().initialize();
+
+    let train = map.trains.get(&Train::T1).unwrap();
+
+    let node_ref = train.current_position.borrow();
+    let node = node_ref.deref().deref();
+
+    let pos = node.position;
+    assert_eq!(pos,Position::P2);
+
+    let adjacent_nodes = node.adjacent_nodes.borrow();
+    let link = adjacent_nodes.get_link_to(Position::P1).unwrap();
+
+    assert_eq!(link.direction,train.direction);
+}
+
+#[test]
+fn test_add_train_7(){
+    let mut mcv = MapCreationView::new();
+    mcv.add_nodes(&[Position::P1,Position::P2,Position::P3]).unwrap();
+
+    mcv.add_link(Position::P1, Position::P2, 0,0).unwrap();
+    mcv.add_link(Position::P2, Position::P3, 0,0).unwrap();
+
+    mcv.add_train(Train::T1,Position::P2,Some(Position::P3)).unwrap();
+
+    let map = mcv.to_map().initialize();
+
+
+    let train = map.trains.get(&Train::T1).unwrap();
+
+    let node_ref = train.current_position.borrow();
+    let node = node_ref.deref().deref();
+
+    let pos = node.position;
+    assert_eq!(pos,Position::P2);
+
+    let adjacent_nodes = node.adjacent_nodes.borrow();
+    let link = adjacent_nodes.get_link_to(Position::P3).unwrap();
+
+    assert_eq!(link.direction,train.direction);
+}
+
+#[test]
+fn test_add_train_8(){
+    let mut mcv = MapCreationView::new();
+    mcv.add_nodes(&[Position::P1,Position::P2,Position::P3]).unwrap();
+
+    mcv.add_switch(Switch::S1).unwrap();
+
+    mcv.add_switch_station(Switch::S1,Position::P1,Position::P2,Position::P3).unwrap();
+
+    mcv.add_train(Train::T1,Position::P1,Some(Position::P3)).unwrap();
+    mcv.add_train(Train::T2,Position::P2,Some(Position::P1)).unwrap();
+
+    let map = mcv.to_map().initialize();
+
+    let train = map.trains.get(&Train::T1).unwrap();
+
+    let node_ref = train.current_position.borrow();
+    let node = node_ref.deref().deref();
+
+    let pos = node.position;
+    assert_eq!(pos,Position::P1);
+
+    let adjacent_nodes = node.adjacent_nodes.borrow();
+    let link = adjacent_nodes.get_link_to(Position::P3).unwrap();
+
+    assert_eq!(link.direction,train.direction);
+
+    let train = map.trains.get(&Train::T2).unwrap();
+
+    let node_ref = train.current_position.borrow();
+    let node = node_ref.deref().deref();
+
+    let pos = node.position;
+    assert_eq!(pos,Position::P2);
+
+    let adjacent_nodes = node.adjacent_nodes.borrow();
+    let link = adjacent_nodes.get_link_to(Position::P1).unwrap();
+
+    assert_eq!(link.direction,train.direction);
+}
+
+#[test]
+fn test_add_train_9(){
+    let mut mcv = MapCreationView::new();
+    mcv.add_nodes(&[Position::P1,Position::P2,Position::P3]).unwrap();
+
+    mcv.add_switch(Switch::S1).unwrap();
+
+    mcv.add_switch_station(Switch::S1,Position::P1,Position::P2,Position::P3).unwrap();
+
+    mcv.add_train(Train::T1,Position::P1,None).unwrap();
+    mcv.add_train(Train::T2,Position::P2,None).unwrap();
+
+    let map = mcv.to_map().initialize();
+
+    let train = map.trains.get(&Train::T1).unwrap();
+
+    let node_ref = train.current_position.borrow();
+    let node = node_ref.deref().deref();
+
+    let pos = node.position;
+    assert_eq!(pos,Position::P1);
+
+    let adjacent_nodes = node.adjacent_nodes.borrow();
+    let link = adjacent_nodes.get_link_to(Position::P3).unwrap();
+
+    assert_ne!(link.direction,train.direction);
+
+    let train = map.trains.get(&Train::T2).unwrap();
+
+    let node_ref = train.current_position.borrow();
+    let node = node_ref.deref().deref();
+
+    let pos = node.position;
+    assert_eq!(pos,Position::P2);
+
+    let adjacent_nodes = node.adjacent_nodes.borrow();
+    let link = adjacent_nodes.get_link_to(Position::P1).unwrap();
+
+    assert_ne!(link.direction,train.direction);
 }

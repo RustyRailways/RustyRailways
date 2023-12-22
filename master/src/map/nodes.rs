@@ -2,7 +2,7 @@ use std::cell::RefCell;
 use serde::{Deserialize, Serialize};
 use common_infrastructure::Position;
 use crate::map::references::*;
-use crate::map::states::{MapState, MapStateUninitialized};
+use crate::map::states::{MapState, MapStateInitialized, MapStateUninitialized};
 use crate::map::devices::SwitchControllerOption;
 use anyhow::Result;
 use crate::map::map_creation_error::MapCreationError;
@@ -44,6 +44,17 @@ impl<T: MapState> AdjacentNodes<T>{
             AdjacentNodes::Two(nodes) => nodes,
             AdjacentNodes::Tree(nodes) => nodes,
         }
+    }
+}
+
+impl AdjacentNodes<MapStateInitialized> {
+    pub fn get_link_to(&self, to: Position) -> Option<&Link<MapStateInitialized>>{
+        for link in self.get_adjacent_nodes(){
+            if link.node.position == to{
+                return Some(link);
+            }
+        }
+        None
     }
 }
 
