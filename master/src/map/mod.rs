@@ -45,6 +45,18 @@ impl<T: MapState> Map<T> {
     }
 }
 
+impl Map<MapStateInitialized>{
+    pub fn get_node_mut(&mut self, position: Position) -> Result<&mut Node<MapStateInitialized>>{
+        self.nodes.get_mut(&position).ok_or(MapCreationError::new("Node does not exist").into())
+    }
+    pub fn get_train_mut(&mut self, train: Train) -> Result<&mut TrainController<MapStateInitialized>>{
+        self.trains.get_mut(&train).ok_or(MapCreationError::new("Train does not exist").into())
+    }
+    pub fn get_switch_mut(&mut self, switch: Switch) -> Result<&mut SwitchController>{
+        self.switches.get_mut(&switch).ok_or(MapCreationError::new("Switch does not exist").into())
+    }
+}
+
 impl Map<MapStateUninitialized>{
     pub fn new() -> Self{
         Map{
@@ -145,6 +157,6 @@ pub mod map_creation_object{
     pub use common_infrastructure::devices::{Switch, Train};
     pub use crate::map::nodes::Direction;
     pub use crate::map::devices::SwitchPosition;
-    
+
 }
 
