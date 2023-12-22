@@ -49,7 +49,7 @@ impl<T: MapState> AdjacentNodes<T>{
 
 /// This struct represent a link between 2 nodes.
 /// in the real world this is a rail track between 2 stations (aka tag rfid)
-#[derive(Debug,Serialize,Deserialize,Clone)]
+#[derive(Debug,Serialize,Deserialize,Clone, PartialEq, Eq)]
 pub struct Link<T: MapState>{
     pub length: u32,
     pub max_speed: i8,

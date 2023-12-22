@@ -27,7 +27,7 @@ impl ReferenceState for UnIntiTrainRef{
     type UninitializedType = Self;
 }
 
-#[derive(Debug,Clone)]
+#[derive(Debug,Clone,PartialEq,Eq)]
 pub struct IntiTrainRef{
     pub train: *const TrainController<MapStateInitialized>
 }

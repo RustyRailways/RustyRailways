@@ -27,9 +27,9 @@ pub trait ReferenceStateInitialized: ReferenceState {
 
 
 pub trait MapState{
-    type NodeRefType: NodeRef + Debug + Serialize + for<'a> Deserialize<'a> + Clone;
-    type TrainRefType: TrainRef + Debug + Serialize + for<'a> Deserialize<'a> + Clone;
-    type SwitchRefType: SwitchRef + Debug + Serialize + for<'a> Deserialize<'a> + Clone;
+    type NodeRefType: NodeRef + Debug + Serialize + for<'a> Deserialize<'a> + Clone + Eq + PartialEq;
+    type TrainRefType: TrainRef + Debug + Serialize + for<'a> Deserialize<'a> + Clone + Eq + PartialEq;
+    type SwitchRefType: SwitchRef + Debug + Serialize + for<'a> Deserialize<'a> + Clone + Eq + PartialEq;
 }
 
 #[derive(Debug,Serialize,Deserialize,Clone,Eq, PartialEq)]

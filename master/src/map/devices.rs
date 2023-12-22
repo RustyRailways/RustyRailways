@@ -58,7 +58,7 @@ impl SwitchController {
         }
     }
 }
-#[derive(Debug,Serialize,Deserialize,Clone)]
+#[derive(Debug,Serialize,Deserialize,Clone,PartialEq,Eq)]
 pub enum SwitchControllerOption<T: MapState>{
     NoSwitch,
     SwitchToSetStraight(T::SwitchRefType),
