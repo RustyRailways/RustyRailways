@@ -691,10 +691,15 @@ fn get_test_map_for_controller()-> MapFactory{
 
     let mut mcv = MapCreationView::new();
 
-    mcv.add_nodes(&[Position::P1,Position::P2,Position::P3,Position::P4,Position::P5]).unwrap();
+    mcv.add_nodes(&[Position::P1,Position::P2,Position::P3,Position::P4]).unwrap();
+
+    mcv.add_link(Position::P1, Position::P2, 1,10).unwrap();
+    mcv.add_link(Position::P2, Position::P3, 2,20).unwrap();
+    mcv.add_link(Position::P3, Position::P4, 3,30).unwrap();
+
 
     mcv.add_train(Train::T1,Position::P1,None).unwrap();
-    mcv.add_train(Train::T2,Position::P5,None).unwrap();
+    mcv.add_train(Train::T2,Position::P3,Some(Position::P4)).unwrap();
 
     MapFactory::from(mcv)
 }

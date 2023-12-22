@@ -43,7 +43,7 @@ impl MapFactory{
         MapVisualizationView::new(self.map.clone())
     }
     pub fn build_navigation_view(&self) -> MapNavigationView{
-        MapNavigationView::new(self.map.clone())
+        MapNavigationView::new(self.map.borrow())
     }
     pub fn build_controller_view<'a,T: MasterHal>(&self, hal: &'a T) -> MapControllerView<'a,T>{
         MapControllerView::new(self.map.clone(),hal)

@@ -216,5 +216,4 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
             Ok(-link.max_speed)
         }
     }
-
 }

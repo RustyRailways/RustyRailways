@@ -17,7 +17,7 @@ pub enum NodeStatus<T: MapState>{
     OccupiedByTrain(T::TrainRefType),
 }
 
-#[derive(Debug,Serialize, Deserialize,Clone)]
+#[derive(Debug,Serialize, Deserialize,Clone, PartialEq, Eq)]
 pub struct Node<T: MapState>{
     pub position: Position,
     pub adjacent_nodes: RefCell<AdjacentNodes<T>>,
@@ -28,7 +28,7 @@ pub struct Node<T: MapState>{
 /// so instead of using a vector, we use an enum to represent
 /// to avoid accessing the heap for small vectors.
 
-#[derive(Debug,Serialize,Deserialize,Clone)]
+#[derive(Debug,Serialize,Deserialize,Clone, PartialEq, Eq)]
 pub enum AdjacentNodes<T: MapState>{
     None,
     One([Link<T>;1]),
