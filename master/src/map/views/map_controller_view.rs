@@ -25,7 +25,7 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
     }
 
     /// # Sets the speed of a train
-    /// # Errors
+    /// ## Errors
     /// Returns an error if the connection to the train is lost
     /// Returns an error if the train does not exist
     pub fn set_train_speed(&self, train: Train, speed: i8) -> Result<()>{
@@ -35,7 +35,7 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
     }
 
     /// # Stops a train by setting the speed to 0
-    /// # Errors
+    /// ## Errors
     /// Returns an error if the connection to the train is lost
     /// Returns an error if the train does not exist
     pub fn stop_train(&self, train: Train) -> Result<()>{
@@ -43,7 +43,7 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
     }
 
     /// # Sets the position of a switch
-    /// # Errors
+    /// ## Errors
     /// Returns an error if the connection to the switch is lost
     /// Returns an error if the switch does not exist
     pub fn set_switch(&self, switch: Switch, position: SwitchPosition) -> Result<()>{
@@ -54,7 +54,7 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
     }
 
     /// # Sets the position of a switch to straight
-    /// # Errors
+    /// ## Errors
     /// Returns an error if the connection to the switch is lost
     /// Returns an error if the switch does not exist
     pub fn set_switch_straight(&self, switch: Switch) -> Result<()>{
@@ -64,7 +64,7 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
     }
 
     /// # Sets the position of a switch to diverted
-    /// # Errors
+    /// ## Errors
     /// Returns an error if the connection to the switch is lost
     /// Returns an error if the switch does not exist
     pub fn set_switch_diverted(&self, switch: Switch) -> Result<()>{
@@ -74,14 +74,14 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
     }
 
     /// # Sets the switch between two nodes in a way that the train can pass between them
-    /// # args:
+    /// ## args:
     ///  - p1: Position of the first node
     ///  - p2: Position of the second node
-    /// # Errors
+    /// ## Errors
     ///  - Returns an error if the nodes do not exist
     ///  - Returns an error if there is no link between the two nodes
     ///  - Returns an error if the connection to the switch is lost
-    /// # Nodes
+    /// ## Nodes
     ///  if there is no switch between the two nodes, this function does nothing
     pub fn set_switch_between(&self, p1: Position, p2: Position) -> Result<()>{
         let map = self.map.borrow_mut();
