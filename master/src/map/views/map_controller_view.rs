@@ -9,6 +9,7 @@ use common_infrastructure::devices::{Switch, Train};
 use common_infrastructure::messages::{SwitchMessage, TrainMessage};
 use common_infrastructure::Position;
 use crate::map::devices::SwitchPosition;
+use crate::map::map_creation_object::Direction;
 use crate::map::nodes::NodeStatus;
 use crate::map::references::{IntiNodeRef, IntiTrainRef};
 
@@ -84,7 +85,7 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
     /// ## Nodes
     ///  if there is no switch between the two nodes, this function does nothing
     pub fn set_switch_between(&self, p1: Position, p2: Position) -> Result<()>{
-        let map = self.map.borrow_mut();
+        let map = self.map.borrow();
         let node1 = map.get_node(p1)?;
         let adjacent_nodes = node1.adjacent_nodes.borrow();
         let link = adjacent_nodes.get_link_to(p2);
@@ -101,6 +102,7 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
     /// - Returns an error if the train does not exist
     /// - Returns an error if the node does not exist
     /// - Returns an error if the node is occupied or locked by another train
+    /// - Returns an error if the position is not adjacent to the current position of the train
     /// ## notes
     /// - if the train is already in the position, this function does nothing
     /// - this function dose not move the train "in the real world", only in the map
@@ -108,14 +110,17 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
     pub fn move_train(&self, train: Train, position: Position) -> Result<()>{
         let mut map = self.map.borrow_mut();
         let this_train = map.get_train(train)?;
+        let direction_link_forward = this_train.current_position.borrow().adjacent_nodes.borrow().get_link_to(position).ok_or(
+            anyhow::anyhow!("No link between {:?} and {:?}",this_train.current_position.borrow().position,position)
+        )?.direction;
         let this_train = IntiTrainRef{
             train: this_train
         };
-        let current_position = map.get_train(train)?.get_position();
-        if current_position == position {
+        let original_position = map.get_train(train)?.get_position();
+        if original_position == position {
             return Ok(());
         }
-        let next_node = map.get_node_mut(position)?;
+        let next_node = map.get_node(position)?;
         match next_node.status.borrow().deref(){
             NodeStatus::Unlocked => {},
             NodeStatus::OccupiedByTrain(_) => {
@@ -132,10 +137,24 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
         let next_node = IntiNodeRef{
             node: next_node
         };
-        let current_node = map.get_node_mut(current_position)?;
+        let current_node = map.get_node(original_position)?;
         *current_node.status.borrow_mut() = NodeStatus::Unlocked;
 
-        map.get_train_mut(train)?.current_position = next_node.into();
+        let this_train = map.get_train_mut(train)?;
+        this_train.current_position = next_node.into();
+
+        let direction_link_backward = this_train.current_position.borrow().adjacent_nodes.borrow().get_link_to(original_position).ok_or(
+            anyhow::anyhow!("No link between {:?} and {:?}",this_train.current_position.borrow().position,original_position)
+        )?.direction;
+
+        // if the direction is the same, it means that i need to
+        // flip the relative orientation of the train
+        if direction_link_forward == direction_link_backward{
+            this_train.direction = match this_train.direction {
+                Direction::Forward => Direction::Backward,
+                Direction::Backward => Direction::Forward
+            };
+        }
 
         Ok(())
     }
@@ -175,4 +194,27 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
         };
         Ok(())
     }
+
+    /// # Gets the speed that a train needs to reach a node
+    /// the function keeps track of the direction of the train, as well as the max
+    /// speed of the link between the two nodes
+    /// ## Errors
+    /// - Returns an error if the train does not exist
+    /// - Returns an error if the node does not exist
+    /// - Returns an error if the node is not adjacent to the current position of the train
+    pub fn get_speed_to_reach(&self, train: Train, node: Position) -> Result<i8>{
+        let map = self.map.borrow();
+        let train = map.get_train(train)?;
+        let current_node = train.current_position.borrow();
+        let adjacent_nodes = current_node.adjacent_nodes.borrow();
+        let link = adjacent_nodes.get_link_to(node).ok_or(
+            anyhow::anyhow!("No link between {:?} and {:?}",current_node.position,node)
+        )?;
+        if train.direction == link.direction {
+            Ok(link.max_speed)
+        }else{
+            Ok(-link.max_speed)
+        }
+    }
+
 }
