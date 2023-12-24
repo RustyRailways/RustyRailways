@@ -1,4 +1,3 @@
-use std::iter::Map;
 use common_infrastructure::devices::Train;
 use common_infrastructure::hals::MasterHal;
 use common_infrastructure::Position;
@@ -9,7 +8,7 @@ pub struct LowLevelController<'a, T: MasterHal> {
     map_controller: MapControllerView<'a, T>,
 }
 
-impl<'a,T:MasterHal> LowLevelController<T> {
+impl<'a,T:MasterHal> LowLevelController<'a,T> {
     pub fn new(hal: &'a T, map_controller: MapControllerView<'a,T>) -> Self{
         Self{
             hal,
