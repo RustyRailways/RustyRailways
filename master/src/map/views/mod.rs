@@ -6,4 +6,12 @@ pub mod map_navigation_view;
 pub mod map_visualization_view;
 /// the creation view is use to create the graph
 pub mod map_creation_view;
+/// allows to build the views
 pub mod map_factory;
+
+pub use map_controller_view::MapControllerView;
+pub use map_navigation_view::MapNavigationView;
+pub use map_visualization_view::MapVisualizationView;
+pub use map_creation_view::MapCreationView;
+pub use map_factory::MapFactory;
+
