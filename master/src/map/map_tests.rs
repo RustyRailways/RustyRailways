@@ -791,3 +791,4 @@ fn test_train_direction(){
     mcv.move_train(Train::T1,Position::P1).unwrap();
     assert_eq!(factory.map.borrow().trains.get(&Train::T1).unwrap().direction,Direction::Backward);
 }
+
