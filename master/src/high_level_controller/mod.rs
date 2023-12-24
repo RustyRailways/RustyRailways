@@ -7,6 +7,15 @@ pub struct Request{
     pub destination: Position,
 }
 
+impl Request{
+    pub fn new(train_id: Train, destination: Position) -> Self{
+        Self{
+            train_id,
+            destination,
+        }
+    }
+}
+
 pub struct HighLevelController{
 
 }
