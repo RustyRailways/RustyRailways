@@ -4,6 +4,7 @@ use crate::low_level_controller::LowLevelController;
 use crate::map::views::map_controller_view::MapControllerView;
 use crate::map::views::map_factory::MapFactory;
 use crate::map::views::map_navigation_view::MapNavigationView;
+mod move_recorder;
 
 pub struct PathFinderAndScheduler<'a, T: MasterHal> {
     hal: &'a T,

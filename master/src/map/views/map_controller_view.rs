@@ -216,4 +216,31 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
             Ok(-link.max_speed)
         }
     }
+
+
+    /// move the train to a position
+    /// this function is unsafe because it does not check if the position can be reached
+    /// it also don't update the direction of the train, to this function must be always
+    /// reverted after been used
+    pub unsafe fn move_train_unchecked(&mut self, train: Train, position: Position) -> Result<()>{
+        let mut map = self.map.borrow_mut();
+
+        // update destination
+        let train_ref: IntiTrainRef = map.get_train(train)?.into();
+        let mut destination = map.get_node_mut(position)?.status.borrow_mut();
+        if destination.deref() != &NodeStatus::Unlocked && destination.deref() != &NodeStatus::LockedByTrain(train_ref.clone()) {
+            return Err(anyhow::anyhow!("Node {:?} is not unlocked", position));
+        }
+        *destination= NodeStatus::OccupiedByTrain(train_ref);
+        drop(destination);
+
+        // update start position and train position
+        let node_ref = map.get_node(position)?.into();
+        let start_position = map.get_train(train)?.get_position();
+        let this_train = map.get_train_mut(train)?;
+        *this_train.current_position.borrow_mut() = node_ref;
+        *map.get_node_mut(start_position)?.status.borrow_mut() = NodeStatus::Unlocked;
+
+        Ok(())
+    }
 }
