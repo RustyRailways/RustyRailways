@@ -1,9 +1,9 @@
 use std::collections::HashSet;
 use super::*;
-use std::ops::Deref;
+use std::ops::{Deref, DerefMut};
 use crate::map::initialization::{Initialize};
 use serde_json;
-use crate::map::nodes::{Link, NodeStatus};
+use crate::map::nodes::{AdjacentNodes, Link, NodeStatus};
 #[allow(unused_imports)]
 use crate::map::views::map_creation_view::*;
 use crate::map::views::map_factory::MapFactory;
@@ -656,7 +656,7 @@ fn test_add_train_9(){
 }
 
 
-mod fake_hal{
+pub (crate) mod fake_hal{
     use common_infrastructure::devices::{Switch, Train};
     use common_infrastructure::hals::{GenericHal, MasterHal};
     use common_infrastructure::messages::{MasterMessage, SwitchMessage, TrainMessage};
@@ -742,3 +742,53 @@ fn test_move_train(){
     let s = mvv.get_node_status(Position::P4).unwrap();
     assert_eq!(s,NodeStatus::Unlocked);
 }
+
+#[test]
+fn test_train_direction(){
+    use common_infrastructure::hals::GenericHal;
+    use fake_hal::Hal;
+
+    let hal = Hal::new().unwrap();
+    // all nodes from 1 to 5 with T1 in 1 and T2 in 5
+    let factory = get_test_map_for_controller();
+    let mcv = factory.build_controller_view(&hal);
+    //let mvv = factory.build_visualization_view();
+
+
+    let s = mcv.get_speed_to_reach(Train::T2,Position::P4).unwrap();
+    assert_eq!(s,3);
+
+    mcv.move_train(Train::T2,Position::P4).unwrap();
+    let s = mcv.get_speed_to_reach(Train::T2,Position::P3).unwrap();
+    assert_eq!(s,-3);
+
+    let s = mcv.get_speed_to_reach(Train::T1,Position::P2).unwrap();
+    assert_eq!(s,-1);
+
+    factory.map.borrow_mut().trains.get_mut(&Train::T1).unwrap().direction = Direction::Forward;
+
+    let s = mcv.get_speed_to_reach(Train::T1,Position::P2).unwrap();
+    assert_eq!(s,1);
+
+    mcv.move_train(Train::T1,Position::P2).unwrap();
+    assert_eq!(factory.map.borrow().trains.get(&Train::T1).unwrap().direction,Direction::Backward);
+
+    let mut map = factory.map.borrow_mut();
+    let mut n = map.nodes.get_mut(&Position::P1).unwrap().adjacent_nodes.borrow_mut();
+    let n2 = n.deref_mut();
+    if let AdjacentNodes::One([link]) = n2{
+        assert_eq!(link.direction,Direction::Forward);
+        link.direction = Direction::Backward;
+    }else{
+        panic!("Impossible");
+    }
+    drop(n);
+    drop(map);
+
+    let s = mcv.get_speed_to_reach(Train::T1,Position::P1).unwrap();
+    assert_eq!(s,-1);
+
+    mcv.move_train(Train::T1,Position::P1).unwrap();
+    assert_eq!(factory.map.borrow().trains.get(&Train::T1).unwrap().direction,Direction::Backward);
+}
+

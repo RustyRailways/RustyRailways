@@ -24,7 +24,7 @@ pub mod devices;
 pub mod initialization;
 pub mod serde_impls;
 #[cfg(test)]
-mod map_tests;
+pub(crate) mod map_tests;
 
 #[derive(Debug,Serialize,Deserialize)]
 pub struct Map<T: MapState>{
@@ -157,6 +157,6 @@ pub mod map_creation_object{
     pub use common_infrastructure::devices::{Switch, Train};
     pub use crate::map::nodes::Direction;
     pub use crate::map::devices::SwitchPosition;
-
+    pub use crate::map::devices::TrainStatus;
 }
 

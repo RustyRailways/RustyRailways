@@ -59,4 +59,12 @@ impl ReferenceState for IntiTrainRef{
     type UninitializedType = UnIntiTrainRef;
 }
 
+impl From<&TrainController<MapStateInitialized>> for IntiTrainRef{
+    fn from(value: &TrainController<MapStateInitialized>) -> Self {
+        IntiTrainRef{
+            train: value
+        }
+    }
+
+}
 

@@ -12,7 +12,7 @@ use crate::map::views::map_navigation_view::MapNavigationView;
 use crate::map::views::map_visualization_view::MapVisualizationView;
 
 pub struct MapFactory{
-    map: Rc<RefCell<Map<MapStateInitialized>>>
+    pub(crate) map: Rc<RefCell<Map<MapStateInitialized>>>
 }
 
 impl MapFactory{

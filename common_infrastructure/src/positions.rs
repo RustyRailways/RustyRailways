@@ -72,6 +72,41 @@ impl Position {
             _ => Err(Error::new(PositionCreationError))
         }
     }
+
+    pub fn to_id(&self)->[i32;4]{
+        match self {
+            Position::P1 => ID_P1,
+            Position::P2 => ID_P2,
+            Position::P3 => ID_P3,
+            Position::P4 => ID_P4,
+            Position::P5 => ID_P5,
+            Position::P6 => ID_P6,
+            Position::P7 => ID_P7,
+            Position::P8 => ID_P8,
+            Position::P9 => ID_P9,
+            Position::P10 => ID_P10,
+            Position::P11 => ID_P11,
+            Position::P12 => ID_P12,
+            Position::P13 => ID_P13,
+            Position::P14 => ID_P14,
+            Position::P15 => ID_P15,
+            Position::P16 => ID_P16,
+            Position::P17 => ID_P17,
+            Position::P18 => ID_P18,
+            Position::P19 => ID_P19,
+            Position::P20 => ID_P20,
+            Position::P21 => ID_P21,
+            Position::P22 => ID_P22,
+            Position::P23 => ID_P23,
+            Position::P24 => ID_P24,
+            Position::P25 => ID_P25,
+            Position::P26 => ID_P26,
+            Position::P27 => ID_P27,
+            Position::P28 => ID_P28,
+            Position::P29 => ID_P29,
+            Position::P30 => ID_P30,
+        }
+    }
 }
 #[derive(Debug,Clone)]
 struct PositionCreationError;
