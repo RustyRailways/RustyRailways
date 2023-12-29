@@ -19,6 +19,9 @@ impl<'a,T:MasterHal> LowLevelController<'a,T> {
     pub fn move_train(&mut self, train: Train, stations: &[Position]) -> Result<()>{
         println!("moving train {:?} to {:?} path: {:?}", train, stations.last().unwrap(),stations);
         unsafe {
+            // nota per federico: questa non é l'implementazione corretta, mi serviva soltanto
+            // per testare lo scheduler... cavala pure... Non servirá usare unsafe nell' implementazione
+            // finale
             self.map_controller.move_train_unchecked(train, *stations.last().unwrap())?;
         }
         Ok(())
