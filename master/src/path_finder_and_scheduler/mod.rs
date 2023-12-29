@@ -14,6 +14,9 @@ use crate::path_finder_and_scheduler::map_navigation_functions::path_to_switch_p
 
 mod map_navigation_functions;
 
+#[cfg(test)]
+mod tests;
+
 pub struct PathFinderAndScheduler<'a, T: MasterHal> {
     hal: &'a T,
     factory: &'a MapFactory,

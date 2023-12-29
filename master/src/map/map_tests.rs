@@ -656,7 +656,7 @@ fn test_add_train_9(){
 }
 
 
-mod fake_hal{
+pub (crate) mod fake_hal{
     use common_infrastructure::devices::{Switch, Train};
     use common_infrastructure::hals::{GenericHal, MasterHal};
     use common_infrastructure::messages::{MasterMessage, SwitchMessage, TrainMessage};

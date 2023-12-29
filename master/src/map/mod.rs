@@ -24,7 +24,7 @@ pub mod devices;
 pub mod initialization;
 pub mod serde_impls;
 #[cfg(test)]
-mod map_tests;
+pub(crate) mod map_tests;
 
 #[derive(Debug,Serialize,Deserialize)]
 pub struct Map<T: MapState>{
