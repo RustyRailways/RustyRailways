@@ -71,11 +71,16 @@ fn test_scheduler(){
 
     let mf = get_test_map();
 
+    let mvv = mf.build_visualization_view();
+
     let llc = LowLevelController::new(&hal, mf.build_controller_view(&hal));
 
     let mut pfes = PathFinderAndScheduler::new(&hal, &mf);
 
     pfes.execute_request(Request::new(Train::T1, Position::P16)).unwrap();
+
+    println!("{:?}", mvv.get_train_position(Train::T1).unwrap());
+    println!("{:?}", mvv.get_node_status(Position::P16).unwrap());
 
     pfes.execute_request(Request::new(Train::T2, Position::P16)).unwrap();
 

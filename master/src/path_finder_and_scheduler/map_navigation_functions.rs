@@ -33,7 +33,8 @@ impl PartialOrd for OrderedPosition {
 }
 
 impl Ord for OrderedPosition {
+    // this is reversed because the node with the highest priority should be closest one
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        self.priority.cmp(&other.priority)
+        other.priority.cmp(&self.priority)
     }
 }

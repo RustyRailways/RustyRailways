@@ -53,9 +53,9 @@ pub fn find_best_path(
                 continue
             }
 
-            let locking_train = neighbor.get_node().get_locking_train();
+            let occupying_train = neighbor.get_node().get_occupying_train();
 
-            if let Some(t) = locking_train{
+            if let Some(t) = occupying_train {
                 let status = vv.get_train_status(t)?;
                 // can't move a locked train under any circumstances
                 if status == TrainStatus::Locked{
