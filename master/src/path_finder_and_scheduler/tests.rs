@@ -79,9 +79,10 @@ fn test_scheduler(){
 
     pfes.execute_request(Request::new(Train::T1, Position::P16)).unwrap();
 
-    println!("{:?}", mvv.get_train_position(Train::T1).unwrap());
-    println!("{:?}", mvv.get_node_status(Position::P16).unwrap());
-
     pfes.execute_request(Request::new(Train::T2, Position::P16)).unwrap();
+
+    pfes.execute_request(Request::new(Train::T1, Position::P15)).unwrap();
+
+    pfes.execute_request(Request::new(Train::T1, Position::P16)).unwrap();
 
 }
