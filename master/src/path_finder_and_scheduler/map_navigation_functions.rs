@@ -5,7 +5,7 @@ pub use path_to_position::get_path_to_position;
 pub mod path_to_move_out_of_the_way;
 pub use path_to_move_out_of_the_way::find_path_to_move_out_of_the_way;
 
-//pub mod path_to_intersection;
+pub mod path_to_intersection;
 
 pub mod path_finder;
 #[derive(PartialEq, Eq, Debug)]
