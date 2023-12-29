@@ -6,7 +6,7 @@ use super::path_finder::find_best_path;
 
 /// return the shortest path from the current position to the destination
 /// you can decide to include the trains that are locked in the path finding
-pub fn get_path_to_position(
+pub fn find_path_to_position(
     from: Train,
     to: Position,
     vv: &MapVisualizationView,
