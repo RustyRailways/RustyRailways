@@ -4,6 +4,7 @@ use common_infrastructure::devices::{Switch, Train};
 use common_infrastructure::Position;
 use crate::map::Map;
 use anyhow::Result;
+use crate::map::devices::TrainStatus;
 use crate::map::initialization::UnInitialize;
 use crate::map::map_creation_object::SwitchPosition;
 use crate::map::nodes::NodeStatus;
@@ -50,5 +51,10 @@ impl MapVisualizationView{
     pub fn get_node_status(&self, position: Position) -> Result<NodeStatus<MapStateUninitialized>>{
         let status = self.map.borrow().get_node(position)?.status.borrow().clone();
         Ok(status.un_initialize())
+    }
+
+    pub fn get_train_status(&self, train: Train) -> Result<TrainStatus>{
+        let status = self.map.borrow().get_train(train)?.status.clone();
+        Ok(status)
     }
 }

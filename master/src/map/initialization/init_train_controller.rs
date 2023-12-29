@@ -19,6 +19,7 @@ impl Initialize for TrainController<MapStateUninitialized> {
             train: self.train,
             current_speed: self.current_speed,
             current_position: unsafe{IntiNodeRef::new_null().into()},
+            status: self.status,
         }
     }
 }
@@ -30,6 +31,7 @@ impl UnInitialize for TrainController<MapStateInitialized> {
             train: self.train,
             current_speed: self.current_speed,
             current_position: self.current_position.into_inner().un_initialize().into(),
+            status: self.status,
         }
     }
 }

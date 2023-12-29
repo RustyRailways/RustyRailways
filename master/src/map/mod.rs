@@ -157,6 +157,6 @@ pub mod map_creation_object{
     pub use common_infrastructure::devices::{Switch, Train};
     pub use crate::map::nodes::Direction;
     pub use crate::map::devices::SwitchPosition;
-
+    pub use crate::map::devices::TrainStatus;
 }
 

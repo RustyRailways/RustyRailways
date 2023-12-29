@@ -15,7 +15,15 @@ pub struct TrainController<T: MapState>{
     pub train: Train,
     pub current_speed: i8,
     pub direction: Direction,
-    pub current_position: RefCell<T::NodeRefType>
+    pub current_position: RefCell<T::NodeRefType>,
+    pub status: TrainStatus
+}
+
+#[derive(Debug,Serialize,Deserialize,Clone, PartialEq, Eq, Hash)]
+pub enum TrainStatus{
+    Locked,
+    Unlocked,
+    Moving,
 }
 
 
@@ -25,7 +33,8 @@ impl TrainController<MapStateUninitialized> {
             train,
             direction,
             current_speed: 0.into(),
-            current_position: UnIntiNodeRef{position}.into()
+            current_position: UnIntiNodeRef{position}.into(),
+            status: TrainStatus::Unlocked
         }
     }
 }

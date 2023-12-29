@@ -9,7 +9,7 @@ use common_infrastructure::devices::{Switch, Train};
 use common_infrastructure::messages::{SwitchMessage, TrainMessage};
 use common_infrastructure::Position;
 use crate::map::devices::SwitchPosition;
-use crate::map::map_creation_object::Direction;
+use crate::map::map_creation_object::{Direction, TrainStatus};
 use crate::map::nodes::NodeStatus;
 use crate::map::references::{IntiNodeRef, IntiTrainRef};
 
@@ -215,6 +215,16 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
         }else{
             Ok(-link.max_speed)
         }
+    }
+
+    /// # Sets the status of a train
+    /// ## Errors
+    /// - Returns an error if the train does not exist
+    pub fn set_train_status(&mut self, train: Train, status: TrainStatus) -> Result<()>{
+        let mut map = self.map.borrow_mut();
+        let train = map.get_train_mut(train)?;
+        train.status = status;
+        Ok(())
     }
 
 
