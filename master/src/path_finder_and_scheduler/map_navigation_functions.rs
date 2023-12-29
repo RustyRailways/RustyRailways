@@ -2,8 +2,8 @@ use common_infrastructure::Position;
 
 pub mod path_to_position;
 pub use path_to_position::get_path_to_position;
-pub mod move_out_of_the_way;
-pub use move_out_of_the_way::move_out_of_the_way;
+pub mod path_to_move_out_of_the_way;
+pub use path_to_move_out_of_the_way::find_path_to_move_out_of_the_way;
 
 //pub mod path_to_intersection;
 
