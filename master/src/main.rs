@@ -8,6 +8,8 @@ mod low_level_controller;
 mod high_level_controller;
 mod path_finder_and_scheduler;
 
+mod hal;
+
 type Hal = SimulatedMap;
 fn main(){
     let r = run();

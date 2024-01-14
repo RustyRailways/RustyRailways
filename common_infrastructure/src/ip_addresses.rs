@@ -2,7 +2,7 @@
 pub trait HasIpAddress {
     fn get_ip_address(&self)->&'static str;
 }
-
+pub const COMMON_PORT: &str = "443";
 pub const IP_MASTER: &str = "xxx";
 pub const IP_T1: &str = "xxx";
 pub const IP_T2: &str = "xxx";
