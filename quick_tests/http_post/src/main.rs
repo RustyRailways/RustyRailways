@@ -1,47 +1,24 @@
-use std::{thread::sleep, time::Duration, collections::VecDeque};
+use std::thread::sleep;
+use std::time::Duration;
 use anyhow::Result;
-
-use embedded_svc::{
-    http::Method,
-    wifi::{AuthMethod, ClientConfiguration, Configuration}
-};
-use embedded_svc::utils::mutex::{Mutex,StdRawMutex};
+use embedded_svc::wifi::{AuthMethod, ClientConfiguration, Configuration};
 use esp_idf_svc::hal::peripherals::Peripherals;
-use esp_idf_svc::http::server::{EspHttpServer,Configuration as ServerConfigurations, HandlerResult};
 use esp_idf_svc::log::EspLogger;
 use esp_idf_svc::wifi::{BlockingWifi, EspWifi};
 use esp_idf_svc::{eventloop::EspSystemEventLoop, nvs::EspDefaultNvsPartition};
-use log::{error, info};
+use log::info;
 
+mod message_receiver;
+use message_receiver::MessageReceiver;
+use common_infrastructure::messages::TrainMessage;
 
 // set up for the 
 const SSID: &str = "Rete Pra Alto";
 const PASSWORD: &str = "teonilla";
-const URL: &str = "http://192.168.1.118:9000";
-
-static MESSAGE_QUEUE: Mutex<StdRawMutex,VecDeque<(Box<[u8;100]>,usize)>> = Mutex::new(VecDeque::new());
-
-
-fn push_message(message: Box<[u8;100]>, len: usize){
-    let mut queue = MESSAGE_QUEUE.lock();
-    queue.push_back((message,len))
-}
-fn pop_message() -> Option<Result<String>>{
-    let mut queue = MESSAGE_QUEUE.lock();
-    let (message,len) = queue.pop_front()?;
-    let (bites,_) = message.split_at(len);
-    let string = std::str::from_utf8(bites);
-    let string = match string {
-        Ok(v) => v,
-        Err(_) => return Some(Err(anyhow::anyhow!("message is not in valid UTF-8")))
-    };
-    return Some(Ok(string.to_owned()));
-}
 
 
 
-
-fn main() -> anyhow::Result<()> {
+fn main() -> Result<()> {
     esp_idf_svc::sys::link_patches();
     EspLogger::initialize_default();
 
@@ -56,26 +33,15 @@ fn main() -> anyhow::Result<()> {
     )?;
     connect_wifi(&mut wifi)?;
 
-    let mut server = EspHttpServer::new(&ServerConfigurations::default())?;
-
-    server.fn_handler("/message",Method::Post,|mut x| {
-        let mut buff = Box::new([0 as u8;100]);
-        let n: usize = x.read(&mut *buff)?;
-        push_message(buff,n);
-        HandlerResult::Ok(())
-    })?;
+    let mr = MessageReceiver::<TrainMessage>::new("/train_message")?;
 
     loop {
-        
-        sleep(Duration::from_millis(1000));
-        while let Some(m) = pop_message() {
-            info!("Message: {}",m?)
+        while let Some(m) = mr.get_message() {
+            info!("Got message: {:?}", m?);
         }
+        sleep(Duration::from_millis(100));
     }
-
-    Ok(())
 }
-
 
 
  
