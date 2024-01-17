@@ -2,7 +2,7 @@ use std::{thread::sleep, time::Duration, sync::Arc};
 
 use anyhow::Ok;
 use embedded_svc::{
-    http::{client::Client as HttpClient, Method},
+    http::{client::Client as HttpClient, Method, server::Handler},
     io::Write,
     utils::io,
     wifi::{AuthMethod, ClientConfiguration, Configuration},
@@ -10,7 +10,7 @@ use embedded_svc::{
 
 use esp_idf_svc::hal::{peripherals::Peripherals, units::Hertz};
 use esp_idf_svc::hal;
-use esp_idf_svc::http::client::{EspHttpConnection, Configuration as HttpConfiguration};
+use esp_idf_svc::http::server::{EspHttpServer,Configuration as ServerConfigurations, HandlerResult};
 use esp_idf_svc::log::EspLogger;
 use esp_idf_svc::wifi::{BlockingWifi, EspWifi};
 use esp_idf_svc::{eventloop::EspSystemEventLoop, nvs::EspDefaultNvsPartition};
@@ -48,16 +48,46 @@ fn main() -> anyhow::Result<()> {
     )?;
     connect_wifi(&mut wifi)?;
 
-    // Create HTTP(S) client
-    let mut config = HttpConfiguration::default();
-    config.timeout = Some(core::time::Duration::from_millis(10_000));
-    // POST 
-    for _ in 0..100{
-        let mut client = HttpClient::wrap(EspHttpConnection::new(&config)?);
-        post_request(&mut client,"Hello from ESP!")?;
+    let mut server = EspHttpServer::new(&ServerConfigurations::default())?;
+
+    server.fn_handler("/message",Method::Post,|mut x| {
+        let mut buff = [0 as u8;100];
+        let n: usize = x.read(&mut buff)?;
+        let (data,_) = buff.as_slice().split_at(n);
+        println!("{:?}",std::str::from_utf8(data));
+        HandlerResult::Ok(())
+    })?;
+
+    loop {
+        info!("alive");
         sleep(Duration::from_millis(1000))
     }
 
+    Ok(())
+}
+
+
+
+ 
+fn connect_wifi(wifi: &mut BlockingWifi<EspWifi<'static>>) -> anyhow::Result<()> {
+    let wifi_configuration: Configuration = Configuration::Client(ClientConfiguration {
+        ssid: SSID.into(),
+        bssid: None,
+        auth_method: AuthMethod::WPA2Personal,
+        password: PASSWORD.into(),
+        channel: None,
+    });
+
+    wifi.set_configuration(&wifi_configuration)?;
+
+    wifi.start()?;
+    info!("Wifi started");
+
+    wifi.connect()?;
+    info!("Wifi connected");
+
+    wifi.wait_netif_up()?;
+    info!("Wifi netif up");
 
     Ok(())
 }
