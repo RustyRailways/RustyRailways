@@ -1,27 +1,16 @@
-use std::{thread::sleep, time::Duration, sync::Arc};
+use std::{thread::sleep, time::Duration, collections::VecDeque};
+use anyhow::Result;
 
-use anyhow::Ok;
 use embedded_svc::{
-    http::{client::Client as HttpClient, Method, server::Handler},
-    io::Write,
-    utils::io,
-    wifi::{AuthMethod, ClientConfiguration, Configuration},
+    http::Method,
+    wifi::{AuthMethod, ClientConfiguration, Configuration}
 };
-
-use esp_idf_svc::hal::{peripherals::Peripherals, units::Hertz};
-use esp_idf_svc::hal;
+use embedded_svc::utils::mutex::{Mutex,StdRawMutex};
+use esp_idf_svc::hal::peripherals::Peripherals;
 use esp_idf_svc::http::server::{EspHttpServer,Configuration as ServerConfigurations, HandlerResult};
 use esp_idf_svc::log::EspLogger;
 use esp_idf_svc::wifi::{BlockingWifi, EspWifi};
 use esp_idf_svc::{eventloop::EspSystemEventLoop, nvs::EspDefaultNvsPartition};
-use enumset::enum_set;
-use hal::prelude::*;
-use hal::spi::*;
-use hal::task::*;
-
-use mfrc522::comm::eh02::spi::SpiInterface;
-use mfrc522::Mfrc522;
-
 use log::{error, info};
 
 
@@ -29,6 +18,25 @@ use log::{error, info};
 const SSID: &str = "Rete Pra Alto";
 const PASSWORD: &str = "teonilla";
 const URL: &str = "http://192.168.1.118:9000";
+
+static MESSAGE_QUEUE: Mutex<StdRawMutex,VecDeque<(Box<[u8;100]>,usize)>> = Mutex::new(VecDeque::new());
+
+
+fn push_message(message: Box<[u8;100]>, len: usize){
+    let mut queue = MESSAGE_QUEUE.lock();
+    queue.push_back((message,len))
+}
+fn pop_message() -> Option<Result<String>>{
+    let mut queue = MESSAGE_QUEUE.lock();
+    let (message,len) = queue.pop_front()?;
+    let (bites,_) = message.split_at(len);
+    let string = std::str::from_utf8(bites);
+    let string = match string {
+        Ok(v) => v,
+        Err(_) => return Some(Err(anyhow::anyhow!("message is not in valid UTF-8")))
+    };
+    return Some(Ok(string.to_owned()));
+}
 
 
 
@@ -51,16 +59,18 @@ fn main() -> anyhow::Result<()> {
     let mut server = EspHttpServer::new(&ServerConfigurations::default())?;
 
     server.fn_handler("/message",Method::Post,|mut x| {
-        let mut buff = [0 as u8;100];
-        let n: usize = x.read(&mut buff)?;
-        let (data,_) = buff.as_slice().split_at(n);
-        println!("{:?}",std::str::from_utf8(data));
+        let mut buff = Box::new([0 as u8;100]);
+        let n: usize = x.read(&mut *buff)?;
+        push_message(buff,n);
         HandlerResult::Ok(())
     })?;
 
     loop {
-        info!("alive");
-        sleep(Duration::from_millis(1000))
+        
+        sleep(Duration::from_millis(1000));
+        while let Some(m) = pop_message() {
+            info!("Message: {}",m?)
+        }
     }
 
     Ok(())
