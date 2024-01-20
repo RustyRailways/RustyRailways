@@ -19,7 +19,7 @@ impl From<i8> for Direction {
     }
 }
 
-pub struct Motor<'a>{
+pub struct MotorDriver<'a>{
     pwm_driver: LedcDriver<'a>,
     forward_pin: PinDriver<'a,Gpio26,Output>,
     backward_pin: PinDriver<'a,Gpio27,Output>
@@ -27,7 +27,7 @@ pub struct Motor<'a>{
 
 const MAX_PWM: u32 = 2u32.pow(14);
 
-impl Motor<'_> {
+impl MotorDriver<'_> {
     pub fn new(timer: TIMER0, pwm_pin: Gpio25, forward_pin: Gpio26, backward_pin: Gpio27, channel: CHANNEL0) -> Result<Self>{
 
         let timer_config: TimerConfig = TimerConfig::default()

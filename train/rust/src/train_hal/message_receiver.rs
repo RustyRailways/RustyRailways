@@ -51,17 +51,14 @@ impl<T: for<'b> Deserialize<'b> + Clone> MessageReceiver<'_,T> {
     }
 
 
-    pub fn get_message(&self) -> Option<Result<T>>{
-        let string = pop_message()?;
+    pub fn get_message(&self) -> Result<Option<T>>{
+        let string = pop_message();
         let string = match string {
-            Ok(v) => v,
-            Err(e) => return Some(Err(e.into()))
+            Some(s) => s?,
+            None => return Ok(None)
         };
-        let value: T = match serde_json::from_str(&string){
-            Ok(v) => v,
-            Err(e) => return Some(Err(e.into()))
-        };
-        return Some(Ok(value));
+        let value: T = serde_json::from_str(&string)?;
+        return Ok(Some(value))
     }
 
 }

@@ -10,14 +10,15 @@ use hal::units::Hertz;
 
 use anyhow::Result;
 
-pub struct NfcSpiDriver<'a>{
-    driver: SpiDriver<'a>,
+
+pub struct NfcReader<'a>{
+    reader: Mfrc522<SpiInterface<SpiDeviceDriver<'a, SpiDriver<'a>>, DummyNSS, DummyDelay>, Initialized>
 }
 
-impl<'a> NfcSpiDriver<'a>{
+impl NfcReader<'_>{
 
-    pub fn new(spi: SPI2,sclk: Gpio15, serial_in: Gpio16, serial_out: Gpio17)->Result<Self>{
-        
+    pub fn new(spi: SPI2,sclk: Gpio15, serial_in: Gpio16, serial_out: Gpio17, cs_1: Gpio18)->Result<Self>{
+
         let driver = SpiDriver::new::<SPI2>(
             spi,
             sclk,
@@ -25,21 +26,9 @@ impl<'a> NfcSpiDriver<'a>{
             Some(serial_in),
             &hal::spi::SpiDriverConfig::new(),
         )?;
-
-        Ok(Self{driver})
-    }
-}
-
-pub struct NfcReader<'a>{
-    reader: Mfrc522<SpiInterface<SpiDeviceDriver<'a, &'a SpiDriver<'a>>, DummyNSS, DummyDelay>, Initialized>
-}
-
-impl<'a> NfcReader<'a>{
-
-    pub fn new(cs_1: Gpio18, driver: &'a NfcSpiDriver)->Result<Self>{
         
         let reader = hal::spi::config::Config::new().baudrate(Hertz::from(10_000));
-        let reader = SpiDeviceDriver::new(&driver.driver, Some(cs_1), &reader)?;
+        let reader = SpiDeviceDriver::new(driver, Some(cs_1), &reader)?;
         let reader = SpiInterface::new(reader);
         let reader = Mfrc522::new(reader).init();
 
