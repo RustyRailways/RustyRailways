@@ -37,7 +37,7 @@ pub enum Position{
 }
 
 impl Position {
-    pub fn from_id(id: [i32;4]) -> Result<Position>{
+    pub fn from_id(id: [u8;4]) -> Result<Position>{
         match id {
             ID_P1 => Ok(Position::P1),
             ID_P2 => Ok(Position::P2),
@@ -88,33 +88,33 @@ impl std::error::Error for PositionCreationError {
 }
 
 
-const ID_P1: [i32;4] = [0,0,0,0];
-const ID_P2: [i32;4] = [0,0,0,1];
-const ID_P3: [i32;4] = [0,0,0,2];
-const ID_P4: [i32;4] = [0,0,0,3];
-const ID_P5: [i32;4] = [0,0,0,4];
-const ID_P6: [i32;4] = [0,0,0,5];
-const ID_P7: [i32;4] = [0,0,0,6];
-const ID_P8: [i32;4] = [0,0,0,7];
-const ID_P9: [i32;4] = [0,0,0,8];
-const ID_P10: [i32;4] = [0,0,0,9];
-const ID_P11: [i32;4] = [0,0,0,10];
-const ID_P12: [i32;4] = [0,0,0,11];
-const ID_P13: [i32;4] = [0,0,0,12];
-const ID_P14: [i32;4] = [0,0,0,13];
-const ID_P15: [i32;4] = [0,0,0,14];
-const ID_P16: [i32;4] = [0,0,0,15];
-const ID_P17: [i32;4] = [0,0,0,16];
-const ID_P18: [i32;4] = [0,0,0,17];
-const ID_P19: [i32;4] = [0,0,0,18];
-const ID_P20: [i32;4] = [0,0,0,19];
-const ID_P21: [i32;4] = [0,0,0,20];
-const ID_P22: [i32;4] = [0,0,0,21];
-const ID_P23: [i32;4] = [0,0,0,22];
-const ID_P24: [i32;4] = [0,0,0,23];
-const ID_P25: [i32;4] = [0,0,0,24];
-const ID_P26: [i32;4] = [0,0,0,25];
-const ID_P27: [i32;4] = [0,0,0,26];
-const ID_P28: [i32;4] = [0,0,0,27];
-const ID_P29: [i32;4] = [0,0,0,28];
-const ID_P30: [i32;4] = [0,0,0,29];
+const ID_P1: [u8;4] = [0,0,0,0];
+const ID_P2: [u8;4] = [0,0,0,1];
+const ID_P3: [u8;4] = [0,0,0,2];
+const ID_P4: [u8;4] = [0,0,0,3];
+const ID_P5: [u8;4] = [0,0,0,4];
+const ID_P6: [u8;4] = [0,0,0,5];
+const ID_P7: [u8;4] = [0,0,0,6];
+const ID_P8: [u8;4] = [0,0,0,7];
+const ID_P9: [u8;4] = [0,0,0,8];
+const ID_P10: [u8;4] = [0,0,0,9];
+const ID_P11: [u8;4] = [0,0,0,10];
+const ID_P12: [u8;4] = [0,0,0,11];
+const ID_P13: [u8;4] = [0,0,0,12];
+const ID_P14: [u8;4] = [0,0,0,13];
+const ID_P15: [u8;4] = [0,0,0,14];
+const ID_P16: [u8;4] = [0,0,0,15];
+const ID_P17: [u8;4] = [0,0,0,16];
+const ID_P18: [u8;4] = [0,0,0,17];
+const ID_P19: [u8;4] = [0,0,0,18];
+const ID_P20: [u8;4] = [0,0,0,19];
+const ID_P21: [u8;4] = [0,0,0,20];
+const ID_P22: [u8;4] = [0,0,0,21];
+const ID_P23: [u8;4] = [0,0,0,22];
+const ID_P24: [u8;4] = [0,0,0,23];
+const ID_P25: [u8;4] = [0,0,0,24];
+const ID_P26: [u8;4] = [0,0,0,25];
+const ID_P27: [u8;4] = [0,0,0,26];
+const ID_P28: [u8;4] = [0,0,0,27];
+const ID_P29: [u8;4] = [0,0,0,28];
+const ID_P30: [u8;4] = [0,0,0,29];
