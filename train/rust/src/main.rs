@@ -32,6 +32,9 @@ mod message_receiver;
 use message_receiver::MessageReceiver;
 use common_infrastructure::messages::TrainMessage;
 
+
+mod train_hal;
+
 use log::{error, info};
 
 // set up for the 
@@ -100,7 +103,7 @@ fn try_get_tag<T: mfrc522::comm::Interface>(mfrc522: &mut Mfrc522<T,mfrc522::Ini
         Result::Ok(v) => v,
         Err(_) => return None
     };
-    match mfrc522.select(&atqa) {
+    match mfrc522.select(&atqa) Configuration{
         Result::Ok(v) => Some(v),
         Err(_) => return None
     }
