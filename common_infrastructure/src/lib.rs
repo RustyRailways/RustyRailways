@@ -2,6 +2,7 @@
 mod ip_addresses;
 pub use ip_addresses::HasIpAddress;
 pub use ip_addresses::COMMON_PORT;
+pub use ip_addresses::IP_MASTER;
 
 pub mod devices;
 

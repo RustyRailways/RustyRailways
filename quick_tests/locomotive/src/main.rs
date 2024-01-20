@@ -30,7 +30,7 @@ const SSID: &str = "Rete Pra Alto";
 const PASSWORD: &str = "teonilla";
 const URL: &str = "http://192.168.1.118:9000";
 
-/*
+
 fn main() -> anyhow::Result<()> {
     //////////////////// configure basic stuff ////////////////////////
     esp_idf_svc::sys::link_patches();
@@ -83,7 +83,7 @@ fn main() -> anyhow::Result<()> {
         }
     }
     //return anyhow::Ok(())
-}*/
+}
 
 
 fn try_get_tag<T: mfrc522::comm::Interface>(mfrc522: &mut Mfrc522<T,mfrc522::Initialized>) -> Option<mfrc522::Uid>{
@@ -97,7 +97,7 @@ fn try_get_tag<T: mfrc522::comm::Interface>(mfrc522: &mut Mfrc522<T,mfrc522::Ini
     }
 }
 
-
+/*
 fn main() -> anyhow::Result<()> {
     esp_idf_svc::sys::link_patches();
     EspLogger::initialize_default();
@@ -127,7 +127,7 @@ fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-
+*/
 
 /// Send an HTTP POST request.
 fn post_request(client: &mut HttpClient<EspHttpConnection>, message: &str) -> anyhow::Result<()> {
