@@ -1,0 +1,4 @@
+.pio
+test/
+ENV/
+arduinoWebSockets/

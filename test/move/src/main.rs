@@ -1,3 +1,4 @@
+use embedded_svc::wifi;
 use esp_idf_hal::delay::FreeRtos;
 use esp_idf_hal::ledc::{config::TimerConfig, LedcDriver, LedcTimerDriver, Resolution};
 use esp_idf_hal::peripherals::Peripherals;
@@ -27,6 +28,10 @@ use hal::task::*;
 use mfrc522::comm::eh02::spi::SpiInterface;
 use mfrc522::Mfrc522;
 
+mod message_receiver;
+use message_receiver::MessageReceiver;
+use common_infrastructure::messages::TrainMessage;
+
 use log::{error, info};
 
 // set up for the 
@@ -34,6 +39,7 @@ const SSID: &str = "Rete abc";
 const PASSWORD: &str = "ciaociaocattai";
 
 enum speed_level{
+    stop,
     slow,
     mid_slow,
     moderate,
@@ -55,6 +61,9 @@ struct Motor{
 }
 
 fn set_speed(speed:speed_level, motor:Motor){
+    if speed==speed_level::stop{
+        set_direction(directions::stop, motor);
+    }
     if speed==speed_level::slow{
         motor::pwm_driver.set_duty(map(50, 0, 250)).unwrap();
     }else if speed==speed_level::mid_slow {
@@ -97,47 +106,30 @@ fn try_get_tag<T: mfrc522::comm::Interface>(mfrc522: &mut Mfrc522<T,mfrc522::Ini
     }
 }
 
-fn create_server() -> anyhow::Result<EspHttpServer<'static>> {
-    let peripherals = Peripherals::take()?;
-    let sys_loop = EspSystemEventLoop::take()?;
-    let nvs = EspDefaultNvsPartition::take()?;
 
-    let mut wifi = BlockingWifi::wrap(
-        EspWifi::new(peripherals.modem, sys_loop.clone(), Some(nvs))?,
-        sys_loop,
-    )?;
-
-    let wifi_configuration = wifi::Configuration::AccessPoint(AccessPointConfiguration {
+fn connect_wifi(wifi: &mut BlockingWifi<EspWifi<'static>>) -> anyhow::Result<()> {
+    let wifi_configuration: Configuration = Configuration::Client(ClientConfiguration {
         ssid: SSID.into(),
         bssid: None,
         auth_method: AuthMethod::WPA2Personal,
         password: PASSWORD.into(),
         channel: None,
-        ..Default::default()
     });
+
     wifi.set_configuration(&wifi_configuration)?;
+
     wifi.start()?;
+    info!("Wifi started");
+
+    wifi.connect()?;
+    info!("Wifi connected");
+
     wifi.wait_netif_up()?;
+    info!("Wifi netif up");
 
-    info!(
-        "Created Wi-Fi with WIFI_SSID `{}` and WIFI_PASS `{}`",
-        SSID, PASSWORD
-    );
-
-    let server_configuration = esp_idf_svc::http::server::Configuration {
-        stack_size: STACK_SIZE,
-        ..Default::default()
-    };
-
-    // Keep wifi running beyond when this function returns (forever)
-    // Do not call this if you ever want to stop or access it later.
-    // Otherwise it should be returned from this function and kept somewhere
-    // so it does not go out of scope.
-    // https://doc.rust-lang.org/stable/core/mem/fn.forget.html
-    core::mem::forget(wifi);
-
-    Ok(EspHttpServer::new(&server_configuration)?)
+    Ok(())
 }
+
 
 fn main() -> ! {
     esp_idf_sys::link_patches();
@@ -206,46 +198,39 @@ fn main() -> ! {
     let mut mfrc522 = Mfrc522::new(mfrc522).init().unwrap();
 
 
-    //server and wifi
-    let mut server = create_server()?;
+    //wifi
+    let mut wifi = BlockingWifi::wrap(
+        EspWifi::new(peripherals.modem, sys_loop.clone(), Some(nvs))?,
+        sys_loop,
+    )?;
+    connect_wifi(&mut wifi)?;
 
-    server.fn_handler("/", Method::Get, |req| {
-        req.into_ok_response()?.write("train".as_bytes())?;
-        Ok(())
-    })?;
-    server
-        .ws_handler("/", move |ws| {
-            if ws.is_new(){
-                info!("new session");
-                return Ok(());
-            }else if ws.is_closed(){
-                info!("end session");
-                set_direction(directions::stop, motor);
-                return Ok(());
-            }
-            let (_frame_type, len) = match ws.recv(&mut []) {
-                Ok(frame) => frame,
-                Err(e) => return Err(e),
-            };
-            if len > MAX_LEN {
-                ws.send(FrameType::Text(false), "Request too big".as_bytes())?;
-                ws.send(FrameType::Close, &[])?;
-                return Err(EspError::from_infallible::<ESP_ERR_INVALID_SIZE>());
-            }
-        })
-        /*
-        .ws_handler("/setSpeed", move |ws| {
-            set_speed(); 
-        }
-         */
+    let mr = MessageReceiver::<TrainMessage>::new("/train_message")?;
 
-    .unwrap();
-
-    // reading tag
     loop {
+        // read tag
         if let Some(v) = try_get_tag(&mut mfrc522){
             let tag: &[u8] = v.as_bytes();
             info!("Tag: {:?}",tag);
+        }
+        //read message
+        while let Some(m) = mr.get_message() {
+            info!("Got message: {:?}", m?);
+            let msg:TrainMessage = m;
+            if msg != Null{
+                let sp:i8 = msg.SetSpeed; 
+                if sp == 0{
+                    set_direction(stop, motor);
+                }else if sp<0 {
+                    sp = sp*-1;
+                    set_direction(directions::backward, motor);
+                    set_speed(speed, motor);
+                }else{
+                    set_direction(forward, motor);
+                    set_speed(speed, motor);
+                }
+                
+            }
         }
     }
     

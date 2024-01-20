@@ -3,7 +3,7 @@ pub trait HasIpAddress {
     fn get_ip_address(&self)->&'static str;
 }
 
-pub const IP_MASTER: &str = "xxx";
+pub const IP_MASTER: &str = "http://192.168.1.14:9000";
 pub const IP_T1: &str = "xxx";
 pub const IP_T2: &str = "xxx";
 pub const IP_S1: &str = "xxx";
