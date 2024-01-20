@@ -91,9 +91,9 @@ impl std::error::Error for PositionCreationError {
 }
 
 
-const ID_P1: [u8;4] = [0,0,0,0];
-const ID_P2: [u8;4] = [0,0,0,1];
-const ID_P3: [u8;4] = [0,0,0,2];
+const ID_P1: [u8;4] = [209, 205, 207, 49];
+const ID_P2: [u8;4] = [81, 38, 223, 49];
+const ID_P3: [u8;4] = [177, 10, 108, 49];
 const ID_P4: [u8;4] = [0,0,0,3];
 const ID_P5: [u8;4] = [0,0,0,4];
 const ID_P6: [u8;4] = [0,0,0,5];

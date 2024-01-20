@@ -5,6 +5,9 @@ use common_infrastructure::messages::{TrainMessage,MasterMessage};
 use common_infrastructure::Position;
 use anyhow::Result;
 use esp_idf_svc::hal;
+use esp_idf_svc::hal::task::watchdog::{WatchdogSubscription, TWDTDriver};
+use hal::task::watchdog::TWDTConfig;
+use enumset::enum_set;
 use esp_idf_svc::wifi::{BlockingWifi, EspWifi};
 use esp_idf_svc::eventloop::EspSystemEventLoop;
 use esp_idf_svc::nvs::EspDefaultNvsPartition;
@@ -28,11 +31,35 @@ struct EspController<'a>{
     motor_driver: MotorDriver<'a>,
     message_sender: MessageSender,
     message_receiver: MessageReceiver<'a,TrainMessage>,
+    #[allow(dead_code)]
+    wifi_manager: WiFiManager,
+    watchdog_driver: TWDTDriver<'a>,
 }
 
 impl EspController<'_> {    
     fn new() -> Result<Self> {    
         let peripherals = Peripherals::take()?;
+
+
+        let config = TWDTConfig {
+            duration: Duration::from_secs(1000000000),
+            panic_on_trigger: true,
+            subscribed_idle_tasks: enum_set!(hal::cpu::Core::Core0)
+        };
+        let mut watchdog_driver = hal::task::watchdog::TWDTDriver::new(
+            peripherals.twdt,
+            &config,
+        )?;
+    
+        let sys_loop = EspSystemEventLoop::take()?;
+        let nvs = EspDefaultNvsPartition::take()?;
+        let wifi = BlockingWifi::wrap(
+            EspWifi::new(peripherals.modem, sys_loop.clone(), Some(nvs))?,
+            sys_loop,
+        )?;
+        let mut wifi_manager = WiFiManager::new(wifi);
+        wifi_manager.connect_wifi_default()?;
+
 
         let spi = peripherals.spi2;
         let sclk = peripherals.pins.gpio15;
@@ -41,6 +68,7 @@ impl EspController<'_> {
         let cs_1 = peripherals.pins.gpio18;
         let nfc_reader = NfcReader::new(spi, sclk, serial_in, serial_out, cs_1)?;
 
+
         let timer = peripherals.ledc.timer0;
         let pwm_pin = peripherals.pins.gpio25;
         let forward_pin = peripherals.pins.gpio26;
@@ -48,22 +76,13 @@ impl EspController<'_> {
         let channel = peripherals.ledc.channel0;
         let motor_driver = MotorDriver::new(timer, pwm_pin, forward_pin, backward_pin, channel)?;
 
+
         let message_sender = MessageSender::new();
+
 
         let message_receiver = MessageReceiver::<TrainMessage>::new("/train_message")?;
 
-        let sys_loop = EspSystemEventLoop::take()?;
-        let nvs = EspDefaultNvsPartition::take()?;
-    
-        let wifi = BlockingWifi::wrap(
-            EspWifi::new(peripherals.modem, sys_loop.clone(), Some(nvs))?,
-            sys_loop,
-        )?;
-        let mut wifi_manager = WiFiManager::new(wifi);
-
-        wifi_manager.connect_wifi_default()?;
-
-        return Ok(Self{motor_driver,message_receiver,message_sender,nfc_reader});
+        return Ok(Self{motor_driver,message_receiver,message_sender,nfc_reader,wifi_manager,watchdog_driver});
     }
 
 }
@@ -71,6 +90,7 @@ impl EspController<'_> {
 pub struct EspTrainHal<'a>{
     controller: RefCell<EspController<'a>>
 }
+
 
 impl GenericHal for EspTrainHal<'_> {
     fn new() -> Result<Self> {

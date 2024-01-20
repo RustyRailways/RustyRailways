@@ -10,6 +10,14 @@ use hal::units::Hertz;
 
 use anyhow::Result;
 
+/*
+Pin configuration:
+- Gpio15: SCK
+- Gpio16: MISO
+- Gpio17: MOSI
+- Gpio18 SS
+*/
+
 
 pub struct NfcReader<'a>{
     reader: Mfrc522<SpiInterface<SpiDeviceDriver<'a, SpiDriver<'a>>, DummyNSS, DummyDelay>, Initialized>
