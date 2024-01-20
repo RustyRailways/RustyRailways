@@ -1,6 +1,7 @@
 // module that keeps the ips of the object as well as the trait to get the ip from a strict
 mod ip_addresses;
 pub use ip_addresses::HasIpAddress;
+pub use ip_addresses::COMMON_PORT;
 pub use ip_addresses::IP_MASTER;
 
 pub mod devices;
