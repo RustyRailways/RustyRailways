@@ -73,6 +73,9 @@ impl Position {
         }
     }
 }
+
+
+
 #[derive(Debug,Clone)]
 struct PositionCreationError;
 impl Display for PositionCreationError {
