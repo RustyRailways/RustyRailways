@@ -1,4 +1,4 @@
-use common_infrastructure::hals::TrainHal;
+use common_infrastructure::hals::{TrainHal,GenericHal};
 use anyhow::Result;
 
 
@@ -11,6 +11,15 @@ mod wifi_configuration;
 
 struct EspTrainHal{
 
+}
+
+impl GenericHal for EspTrainHal {
+    fn new() -> Result<Self> {
+        todo!()
+    }
+    fn sleep_for_ms(&self, ms: u32) {
+        todo!()
+    }
 }
 
 impl TrainHal for EspTrainHal {
