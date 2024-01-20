@@ -14,7 +14,7 @@ impl From<i8> for Direction {
         if value > 0{
             return Direction::Forward;
         }else{
-            return  Direction::Forward;
+            return  Direction::Backward;
         }
     }
 }
@@ -66,9 +66,10 @@ impl MotorDriver<'_> {
         return Ok(());
     }
 
+    /*
     pub fn emergency_stop(&mut self){
         let _ = self.backward_pin.set_low();
         let _ = self.forward_pin.set_low();
         let _ =  self.pwm_driver.set_duty(0);
-    }
+    }*/
 }

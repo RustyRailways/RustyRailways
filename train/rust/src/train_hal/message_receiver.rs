@@ -29,15 +29,15 @@ fn pop_message() -> Option<Result<String>>{
 
 pub struct MessageReceiver<'a, T: for<'b> Deserialize<'b>>{
     _pd: PhantomData<T>,
-    server: EspHttpServer<'a>
+    _server: EspHttpServer<'a>
 }
 
 impl<T: for<'b> Deserialize<'b> + Clone> MessageReceiver<'_,T> {
     pub fn new(handler: &str) -> Result<Self>{
         
-        let mut server = EspHttpServer::new(&Configurations::default())?;
+        let mut _server = EspHttpServer::new(&Configurations::default())?;
         
-        server.fn_handler(handler,Method::Post,|mut x| {
+        _server.fn_handler(handler,Method::Post,|mut x| {
             let mut buff = Box::new([0 as u8;100]);
             let n: usize = x.read(&mut *buff)?;
             push_message( buff,n);
@@ -46,7 +46,7 @@ impl<T: for<'b> Deserialize<'b> + Clone> MessageReceiver<'_,T> {
 
         Ok(Self{
             _pd: PhantomData::default(),
-            server
+            _server
         })
     }
 

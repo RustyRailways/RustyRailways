@@ -28,7 +28,6 @@ struct EspController<'a>{
     motor_driver: MotorDriver<'a>,
     message_sender: MessageSender,
     message_receiver: MessageReceiver<'a,TrainMessage>,
-    wifi_manager: WiFiManager
 }
 
 impl EspController<'_> {    
@@ -60,9 +59,11 @@ impl EspController<'_> {
             EspWifi::new(peripherals.modem, sys_loop.clone(), Some(nvs))?,
             sys_loop,
         )?;
-        let wifi_manager = WiFiManager::new(wifi);
+        let mut wifi_manager = WiFiManager::new(wifi);
 
-        return Ok(Self{motor_driver,message_receiver,message_sender,wifi_manager,nfc_reader});
+        wifi_manager.connect_wifi_default()?;
+
+        return Ok(Self{motor_driver,message_receiver,message_sender,nfc_reader});
     }
 
 }
