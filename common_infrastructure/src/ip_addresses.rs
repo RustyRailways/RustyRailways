@@ -4,7 +4,7 @@ pub trait HasIpAddress {
 }
 pub const COMMON_PORT: &str = "443";
 pub const IP_MASTER: &str = "http://192.168.1.14:9000/master_message";
-pub const IP_T1: &str = "xxx";
+pub const IP_T1: &str = "http://192.168.1.15/train_message";
 pub const IP_T2: &str = "xxx";
 pub const IP_S1: &str = "xxx";
 pub const IP_S2: &str = "xxx";

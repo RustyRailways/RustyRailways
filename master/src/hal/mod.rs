@@ -5,14 +5,16 @@ use anyhow::Result;
 use common_infrastructure::HasIpAddress;
 
 mod message_getter;
+use message_getter::MessageReceiver;
 
 pub struct MasterHalRaspberryPi{
-    client: reqwest::blocking::Client
+    client: reqwest::blocking::Client,
+    message_receiver: MessageReceiver<MasterMessage> 
 }
 
 impl MasterHalRaspberryPi {
-    fn send_message_to_ip(&self, ip: &str, message: String) -> Result<()> {
-        self.client.post(format!("http://{}:{}/", ip, common_infrastructure::COMMON_PORT))
+    fn send_message_to_url(&self, url: &str, message: String) -> Result<()> {
+        self.client.post(url)
             .body(message)
             .send()?;
         return Ok(());
@@ -24,7 +26,8 @@ impl GenericHal for MasterHalRaspberryPi{
     fn new() -> Result<Self> {
         return Ok(
             Self{
-                client: reqwest::blocking::Client::new()
+                client: reqwest::blocking::Client::new(),
+                message_receiver: MessageReceiver::new()
             }
         );
     }
@@ -35,16 +38,16 @@ impl GenericHal for MasterHalRaspberryPi{
 
 impl MasterHal for MasterHalRaspberryPi {
     fn get_message(&self) -> Result<Option<MasterMessage>> {
-        todo!()
+        self.message_receiver.try_get_message()
     }
     fn send_message_to_train(&self, train: Train, message: TrainMessage) -> Result<()> {
         let ip = train.get_ip_address();
         let message_json = serde_json::to_string(&message)?;
-        self.send_message_to_ip(ip, message_json)
+        self.send_message_to_url(ip, message_json)
     }
     fn send_message_to_switch(&self, switch: Switch, message: SwitchMessage) -> Result<()> {
         let ip = switch.get_ip_address();
         let message_json = serde_json::to_string(&message)?;
-        self.send_message_to_ip(ip, message_json)
+        self.send_message_to_url(ip, message_json)
     }
 }
