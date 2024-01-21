@@ -7,7 +7,7 @@ use embedded_svc::http::client::Client;
 use embedded_svc::io::Write;
 use log::info;
 
-const MASTER_URL: &str = common_infrastructure::IP_MASTER;
+const URL_MASTER: &str = common_infrastructure::URL_MASTER;
 
 pub struct MessageSender{
     config: Configuration
@@ -38,10 +38,10 @@ impl MessageSender {
         ];
 
         // Send request
-        let mut request = client.post(MASTER_URL, &headers)?;
+        let mut request = client.post(URL_MASTER, &headers)?;
         request.write_all(payload)?;
         request.flush()?;
-        info!("-> POST {}", MASTER_URL);
+        info!("-> POST {}", URL_MASTER);
         let _ = request.submit()?;
 
         return Ok(());

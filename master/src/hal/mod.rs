@@ -2,7 +2,7 @@ use common_infrastructure::devices::{Switch, Train};
 use common_infrastructure::hals::{MasterHal, GenericHal};
 use common_infrastructure::messages::{MasterMessage, SwitchMessage, TrainMessage};
 use anyhow::Result;
-use common_infrastructure::HasIpAddress;
+use common_infrastructure::HasUrl;
 
 mod message_getter;
 use message_getter::MessageReceiver;
@@ -41,12 +41,12 @@ impl MasterHal for MasterHalRaspberryPi {
         self.message_receiver.try_get_message()
     }
     fn send_message_to_train(&self, train: Train, message: TrainMessage) -> Result<()> {
-        let ip = train.get_ip_address();
+        let ip = train.get_url();
         let message_json = serde_json::to_string(&message)?;
         self.send_message_to_url(ip, message_json)
     }
     fn send_message_to_switch(&self, switch: Switch, message: SwitchMessage) -> Result<()> {
-        let ip = switch.get_ip_address();
+        let ip = switch.get_url();
         let message_json = serde_json::to_string(&message)?;
         self.send_message_to_url(ip, message_json)
     }

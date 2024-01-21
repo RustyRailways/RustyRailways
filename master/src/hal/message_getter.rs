@@ -8,7 +8,7 @@ use std::thread;
 use serde::Deserialize;
 use serde_json;
 use anyhow::Result;
-
+use common_infrastructure::URL_MASTER;
 pub struct MessageReceiver<T: for<'a> Deserialize<'a>>{
     _pd: PhantomData<T>,
     rx: Receiver<String>
@@ -20,7 +20,8 @@ impl<T: for<'a> Deserialize<'a>> MessageReceiver<T> {
         // required by the server library since more that one handler could try to use tx at the same time
         let tx = Mutex::new(tx);
         thread::spawn(move ||{
-            rouille::start_server("192.168.1.14:9000", move|request| {
+            // slice here is to remove http:// /master_message handler the router 
+            rouille::start_server(&URL_MASTER[7..24], move|request| {
                 router!(request,
                     (POST) (/master_message) => {
                         let body: String = try_or_400!(rouille::input::plain_text_body(&request));
