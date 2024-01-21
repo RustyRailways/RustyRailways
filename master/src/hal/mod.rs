@@ -4,6 +4,8 @@ use common_infrastructure::messages::{MasterMessage, SwitchMessage, TrainMessage
 use anyhow::Result;
 use common_infrastructure::HasIpAddress;
 
+mod message_getter;
+
 pub struct MasterHalRaspberryPi{
     client: reqwest::blocking::Client
 }

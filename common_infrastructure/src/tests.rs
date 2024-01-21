@@ -12,7 +12,7 @@ fn test()->Result<()>{
     let d2 = serde_json::from_str::<Device>(&d_str)?;
     assert_eq!(d,d2);
 
-    let m = messages::MasterMessage::HeartBeatFrom(Device::Switch(devices::Switch::S1));
+    let m = messages::MasterMessage::RequestHeartBeat;
 
     let m = serde_json::to_string(&m)?;
     print!("{m}");

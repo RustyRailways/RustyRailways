@@ -73,7 +73,7 @@ impl Position {
         }
     }
 
-    pub fn to_id(&self)->[i32;4]{
+    pub fn to_id(&self)->[u8;4]{
         match self {
             Position::P1 => ID_P1,
             Position::P2 => ID_P2,
