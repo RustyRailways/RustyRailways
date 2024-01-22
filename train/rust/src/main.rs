@@ -4,6 +4,7 @@ use common_infrastructure::devices::Train;
 use esp_idf_svc::log::EspLogger;
 use esp_idf_svc::sys;
 use anyhow::Result;
+use common_infrastructure::Position;
 use log::info;
 
 mod train_hal;
@@ -16,6 +17,7 @@ fn main() -> Result<()> {
     EspLogger::initialize_default();
 
     let hal = EspTrainHal::new()?;
+    let mut stop_position = Option::None;
 
     loop {
         
@@ -25,12 +27,21 @@ fn main() -> Result<()> {
                 MasterMessage::TrainHasReachedPosition(THIS_TRAIN, position)
             )?
         }
+
+        if (stop_position == position && stop_position != None) {
+            hal.set_speed(0)?;
+            stop_position = None;
+        }
         
 
         let message = hal.get_message()?;
         if let Some(message) = message{
             match message {
-                TrainMessage::SetSpeed(seed) => hal.set_speed(seed)?,
+                TrainMessage::SetSpeed(speed) => hal.set_speed(speed)?,
+                TrainMessage::SetSpeedAndStopAt(speed,position) => {
+                    hal.set_speed(speed)?;
+                    stop_position = Some(position);
+                }
                 _ => {}
             }
         }
