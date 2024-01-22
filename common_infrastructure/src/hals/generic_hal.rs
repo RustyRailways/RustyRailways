@@ -8,5 +8,5 @@ pub trait GenericHal where Self: Sized{
 
     // put the controller to sleep for up to an amount of milliseconds.
     // the function sleep for less than that if an interrupt or a particular request arrives. 
-    fn sleep_for_ms(ms: u32);
+    fn sleep_for_ms(&self, ms: u32);
 }

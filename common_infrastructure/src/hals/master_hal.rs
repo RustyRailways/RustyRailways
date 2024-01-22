@@ -3,7 +3,7 @@ use crate::{messages::{MasterMessage, TrainMessage, SwitchMessage}, devices::{Tr
 use super::generic_hal::GenericHal;
 use anyhow::Result;
 
-pub trait MasterHal: GenericHal {
+pub trait MasterHal: GenericHal where Self: Sized{
     // returns the next message in the queue of messages, the function can fail if the queue has overflown.
     // the function can return None if the queue is empty;
     fn get_message(&self) -> Result<Option<MasterMessage>>;
