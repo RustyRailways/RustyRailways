@@ -32,7 +32,7 @@ fn run()-> anyhow::Result<()>{
     let hlc = high_level_controller::HighLevelController::new();
 
     loop{
-        let request = hlc.get_request();
+        let request = hlc.get_request()?;
         pfas.add_request(request)?;
         hal.sleep_for_ms(1000);
     }
