@@ -8,6 +8,8 @@ pub mod devices;
 mod positions;
 pub use positions::Position;
 
+pub mod wifi_credentials;
+
 pub mod messages;
 
 // hardware absraction layers for the varius components;
