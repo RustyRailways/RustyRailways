@@ -4,8 +4,8 @@ use esp_idf_svc::wifi::{BlockingWifi, EspWifi};
 use log::info;
 
 
-const DEFAULT_SSID: &str = "PosteMobile-70228269";
-const DEFAULT_PASSWORD: &str = "Pfut3fDRxEehGdhbFEH3bQZD";
+const DEFAULT_SSID: &str = common_infrastructure::wifi_credentials::SSID;
+const DEFAULT_PASSWORD: &str = common_infrastructure::wifi_credentials::PASSWORD;
 const DEFAULT_BSSID: Option<[u8; 6]> = None;
 const DEFAULT_AUTH_METHOD: AuthMethod = AuthMethod::WPA2Personal;
 const DEFAULT_CHANNEL: Option<u8> = None;

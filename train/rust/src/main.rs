@@ -17,15 +17,20 @@ fn main() -> Result<()> {
     EspLogger::initialize_default();
 
     let hal = EspTrainHal::new()?;
-    let mut stop_position = Option::None;
-
+    let mut stop_position = None;
+    let mut last_position_red = None;
     loop {
         
         let position = hal.read_position()?;
         if let Some(position) = position{
-            hal.send_message_to_master(
-                MasterMessage::TrainHasReachedPosition(THIS_TRAIN, position)
-            )?
+
+            if Some(position) != last_position_red{
+                hal.send_message_to_master(
+                    MasterMessage::TrainHasReachedPosition(THIS_TRAIN, position)
+                )?
+            }
+            
+            last_position_red = Some(position);
         }
 
         if (stop_position == position && stop_position != None) {
