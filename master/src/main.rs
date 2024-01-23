@@ -1,3 +1,4 @@
+use common_infrastructure::{Position, devices::{Switch, Train}};
 #[allow(unused_imports)]
 use railway_sim_map::SimulatedMap;
 #[allow(unused_imports)]
@@ -39,8 +40,12 @@ fn run()-> anyhow::Result<()>{
 }
 
 fn get_map()-> anyhow::Result<MapFactory>{
-    let map = map::views::MapCreationView::new();
+    let mut map = map::views::MapCreationView::new();
     // todo: create the acutal map
+    map.add_nodes(&[Position::P1,Position::P2,Position::P3])?;
+    map.add_switch(Switch::S1)?;
+    map.add_switch_station(Switch::S1, Position::P1, Position::P3, Position::P2)?;
+    map.add_train(Train::T1, Position::P1, Some(Position::P2))?;
     let factory: MapFactory = map.into();
     Ok(factory)
 }
