@@ -1,3 +1,5 @@
+use std::any;
+
 use common_infrastructure::devices::Train;
 use common_infrastructure::hals::MasterHal;
 use common_infrastructure::Position;
@@ -43,7 +45,7 @@ impl<'a,T:MasterHal> LowLevelController<'a,T> {
 
         let mut prev_position = &stations[0];
         for position in &stations[1..] {
-            self.map_controller.lock_node(*prev_position, train)?;
+            //self.map_controller.lock_node(*prev_position, train)?;
             self.map_controller.lock_node(*position, train)?;
             self.map_controller.set_switch_between(*prev_position, *position)?;
 
@@ -65,6 +67,7 @@ impl<'a,T:MasterHal> LowLevelController<'a,T> {
                 } else {
                     self.map_controller.stop_train(train)?;
                     self.map_controller.stop_train(moving_train)?;
+                    return Err(anyhow::anyhow!("expected train and tag: {:?}{:?}, got: {:?}{:?}",train,position,moving_train,reached_position));
                 }
             } else {
                 todo!("HeartBeat management");

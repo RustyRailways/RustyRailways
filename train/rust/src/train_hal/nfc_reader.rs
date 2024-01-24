@@ -35,7 +35,7 @@ impl NfcReader<'_>{
             &hal::spi::SpiDriverConfig::new(),
         )?;
         
-        let reader = hal::spi::config::Config::new().baudrate(Hertz::from(10_000));
+        let reader = hal::spi::config::Config::new().baudrate(Hertz::from(1_000_000));
         let reader = SpiDeviceDriver::new(driver, Some(cs_1), &reader)?;
         let reader = SpiInterface::new(reader);
         let reader = Mfrc522::new(reader).init();

@@ -190,7 +190,7 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
             NodeStatus::LockedByTrain(_) => {
                 *status = NodeStatus::Unlocked;
             },
-            _ => return Err(anyhow::anyhow!("Node {:?} is not locked", position))
+            _ => {}//return Err(anyhow::anyhow!("Node {:?} is not locked", position))
         };
         Ok(())
     }

@@ -1,6 +1,5 @@
 use common_infrastructure::devices::Train;
 use common_infrastructure::Position;
-use rouille::websocket::Message;
 use std::io;
 use anyhow::Result;
 use serde_json;
