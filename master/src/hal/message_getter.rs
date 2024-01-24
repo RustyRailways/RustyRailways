@@ -21,7 +21,7 @@ impl<T: for<'a> Deserialize<'a>> MessageReceiver<T> {
         let tx = Mutex::new(tx);
         thread::spawn(move ||{
             // slice here is to remove http:// /master_message handler the router 
-            rouille::start_server(&URL_MASTER[7..24], move|request| {
+            rouille::start_server(&URL_MASTER[7..25], move|request| {
                 router!(request,
                     (POST) (/master_message) => {
                         let body: String = try_or_400!(rouille::input::plain_text_body(&request));
