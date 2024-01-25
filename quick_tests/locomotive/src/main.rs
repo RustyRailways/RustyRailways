@@ -21,7 +21,7 @@ use hal::task::*;
 
 use mfrc522::comm::eh02::spi::SpiInterface;
 use mfrc522::Mfrc522;
-use mfrc522::register::Register;
+//use mfrc522::register::Register;
 
 use log::{error, info};
 
@@ -87,14 +87,14 @@ fn main() -> anyhow::Result<()> {
     //r |= 1 << 5;
     //mfrc522.write(Register::ComlEnReg, r).unwrap();
 
-    mfrc522.write(Register::ComIrqReg, 0x00).unwrap(); //Clear interrupts
+    //mfrc522.write(Register::ComIrqReg, 0x00).unwrap(); //Clear interrupts
     //mfrc522.write(Register::ComlEnReg, 0x20).unwrap(); //Enable all interrupts
-    mfrc522.write(Register::ComlEnReg, 0xA0); // enabler reader interupt
-    mfrc522.write(Register::DivlEnReg, 0x14 | 0x80).unwrap();
+    //mfrc522.write(Register::ComlEnReg, 0xA0); // enabler reader interupt
+    //mfrc522.write(Register::DivlEnReg, 0x14 | 0x80).unwrap();
 
 
 
-    mfrc522.write(Register::ComIrqReg, 0x00).unwrap(); //Clear interrupts
+    //mfrc522.write(Register::ComIrqReg, 0x00).unwrap(); //Clear interrupts
     /////////////////////////////////////////// Loop reading tags ////////////////////////////////////
     loop {
         
