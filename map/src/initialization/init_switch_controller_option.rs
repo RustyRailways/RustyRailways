@@ -1,8 +1,8 @@
 use super::CompleteInitializationMut;
-use crate::map::devices::SwitchControllerOption;
-use crate::map::Map;
-use crate::map::references::IntiSwitchRef;
-use crate::map::states::{MapStateInitialized, MapStateUninitialized};
+use crate::devices::SwitchControllerOption;
+use crate::Map;
+use crate::references::IntiSwitchRef;
+use crate::states::{MapStateInitialized, MapStateUninitialized};
 
 impl CompleteInitializationMut for SwitchControllerOption<MapStateInitialized>{
     type InitFromType = SwitchControllerOption<MapStateUninitialized>;

@@ -2,13 +2,13 @@ use std::thread::sleep;
 use common_infrastructure::hals::MasterHal;
 use crate::high_level_controller::Request;
 use crate::low_level_controller::LowLevelController;
-use crate::map::views::map_controller_view::MapControllerView;
-use crate::map::views::map_factory::MapFactory;
-use crate::map::views::map_navigation_view::MapNavigationView;
+use map::views::map_controller_view::MapControllerView;
+use map::views::map_factory::MapFactory;
+use map::views::map_navigation_view::MapNavigationView;
 use anyhow::Result;
 use common_infrastructure::devices::Train;
 use map_navigation_functions::{path_to_intersection, path_to_move_out_of_the_way, path_to_position, path_to_switch_point};
-use crate::map::views::MapVisualizationView;
+use map::views::MapVisualizationView;
 use crate::path_finder_and_scheduler::map_navigation_functions::{find_path_to_move_out_of_the_way, find_path_to_position};
 use crate::path_finder_and_scheduler::map_navigation_functions::path_to_switch_point::find_path_to_switch_point;
 

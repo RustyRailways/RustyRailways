@@ -2,9 +2,9 @@ use common_infrastructure::devices::Train;
 use common_infrastructure::Position;
 use std::collections::{HashMap, HashSet, VecDeque};
 use anyhow::Result;
-use crate::map::views::{MapNavigationView, MapVisualizationView};
+use map::views::{MapNavigationView, MapVisualizationView};
 use std::collections::binary_heap::BinaryHeap;
-use crate::map::map_creation_object::TrainStatus;
+use map::map_creation_object::TrainStatus;
 use super::OrderedPosition;
 /// find the best path (in therms of total distance) for a train to a position
 /// that satisfies a condition

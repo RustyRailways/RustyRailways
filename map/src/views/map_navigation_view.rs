@@ -2,9 +2,9 @@ use std::cell::Ref;
 use std::ops::Deref;
 use common_infrastructure::devices::Train;
 use common_infrastructure::Position;
-use crate::map::Map;
-use crate::map::nodes::{AdjacentNodes, Link, Node, NodeStatus};
-use crate::map::states::MapStateInitialized;
+use crate::Map;
+use crate::nodes::{AdjacentNodes, Link, Node, NodeStatus};
+use crate::states::MapStateInitialized;
 use anyhow::Result;
 /// # Map Navigation View
 /// struct that allows to navigate the map's graph easily.

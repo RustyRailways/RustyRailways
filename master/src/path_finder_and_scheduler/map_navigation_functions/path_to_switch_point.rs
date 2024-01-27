@@ -1,7 +1,7 @@
 use common_infrastructure::devices::Train;
 use common_infrastructure::Position;
 use anyhow::{anyhow, Result};
-use crate::map::views::{MapNavigationView, MapVisualizationView};
+use map::views::{MapNavigationView, MapVisualizationView};
 use crate::path_finder_and_scheduler::map_navigation_functions::path_finder::find_best_path;
 use super::{find_path_to_intersection,find_path_to_move_out_of_the_way, find_path_to_position};
 

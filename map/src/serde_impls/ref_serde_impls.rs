@@ -1,6 +1,6 @@
 
 use serde::{Serialize, Deserialize};
-use crate::map::references::{IntiNodeRef, IntiSwitchRef, IntiTrainRef};
+use crate::references::{IntiNodeRef, IntiSwitchRef, IntiTrainRef};
 
 impl Serialize for IntiNodeRef {
     fn serialize<S>(&self, serializer: S) -> Result<<S as serde::Serializer>::Ok, <S as serde::Serializer>::Error> where

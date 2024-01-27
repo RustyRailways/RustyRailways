@@ -1,8 +1,8 @@
 use super::CompleteInitializationMut;
-use crate::map::nodes::Link;
-use crate::map::Map;
-use crate::map::references::IntiNodeRef;
-use crate::map::states::{MapStateInitialized, MapStateUninitialized};
+use crate::nodes::Link;
+use crate::Map;
+use crate::references::IntiNodeRef;
+use crate::states::{MapStateInitialized, MapStateUninitialized};
 
 impl CompleteInitializationMut for Link<MapStateInitialized>{
     type InitFromType = Link<MapStateUninitialized>;

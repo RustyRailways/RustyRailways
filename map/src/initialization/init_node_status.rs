@@ -1,9 +1,9 @@
-use crate::map::initialization::UnInitialize;
+use crate::initialization::UnInitialize;
 use super::CompleteInitializationMut;
-use crate::map::nodes::NodeStatus;
-use crate::map::Map;
-use crate::map::references::IntiTrainRef;
-use crate::map::states::{MapStateInitialized, MapStateUninitialized, ReferenceStateInitialized};
+use crate::nodes::NodeStatus;
+use crate::Map;
+use crate::references::IntiTrainRef;
+use crate::states::{MapStateInitialized, MapStateUninitialized, ReferenceStateInitialized};
 
 impl CompleteInitializationMut for NodeStatus<MapStateInitialized>{
     type InitFromType = NodeStatus<MapStateUninitialized>;

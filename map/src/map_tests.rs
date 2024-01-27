@@ -1,12 +1,12 @@
 use std::collections::HashSet;
 use super::*;
 use std::ops::{Deref, DerefMut};
-use crate::map::initialization::{Initialize};
+use crate::initialization::{Initialize};
 use serde_json;
-use crate::map::nodes::{AdjacentNodes, Link, NodeStatus};
+use crate::nodes::{AdjacentNodes, Link, NodeStatus};
 #[allow(unused_imports)]
-use crate::map::views::map_creation_view::*;
-use crate::map::views::map_factory::MapFactory;
+use crate::views::map_creation_view::*;
+use crate::views::map_factory::MapFactory;
 
 #[derive(Debug,Clone,Eq, PartialEq,Hash)]
 struct LinkLite{

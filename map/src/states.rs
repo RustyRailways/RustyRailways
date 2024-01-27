@@ -8,8 +8,8 @@
 
 use std::fmt::Debug;
 use serde::{Serialize, Deserialize};
-use crate::map::Map;
-use crate::map::references::*;
+use crate::Map;
+use crate::references::*;
 
 pub trait ReferenceState {
     type InitializedType: ReferenceStateInitialized;

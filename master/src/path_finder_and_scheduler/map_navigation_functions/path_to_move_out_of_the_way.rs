@@ -1,7 +1,7 @@
 use common_infrastructure::devices::Train;
 use common_infrastructure::Position;
 use anyhow::Result;
-use crate::map::views::{MapNavigationView, MapVisualizationView};
+use map::views::{MapNavigationView, MapVisualizationView};
 use super::path_finder::find_best_path;
 
 /// This function moves a train away from a vector of positions

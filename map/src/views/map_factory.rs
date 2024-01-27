@@ -1,15 +1,15 @@
 use std::cell::RefCell;
 use std::rc::Rc;
-use crate::map::Map;
-use crate::map::states::{MapStateInitialized, MapStateUninitialized};
+use crate::Map;
+use crate::states::{MapStateInitialized, MapStateUninitialized};
 use serde_json;
-use crate::map::initialization::Initialize;
+use crate::initialization::Initialize;
 use anyhow;
 use common_infrastructure::hals::MasterHal;
-use crate::map::views::map_controller_view::MapControllerView;
-use crate::map::views::map_creation_view::MapCreationView;
-use crate::map::views::map_navigation_view::MapNavigationView;
-use crate::map::views::map_visualization_view::MapVisualizationView;
+use crate::views::map_controller_view::MapControllerView;
+use crate::views::map_creation_view::MapCreationView;
+use crate::views::map_navigation_view::MapNavigationView;
+use crate::views::map_visualization_view::MapVisualizationView;
 
 pub struct MapFactory{
     pub(crate) map: Rc<RefCell<Map<MapStateInitialized>>>

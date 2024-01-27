@@ -3,10 +3,10 @@ use std::any;
 use common_infrastructure::devices::Train;
 use common_infrastructure::hals::MasterHal;
 use common_infrastructure::Position;
-use crate::map::views::map_controller_view::MapControllerView;
+use map::views::map_controller_view::MapControllerView;
 use anyhow::Result;
 use common_infrastructure::messages::{MasterMessage, TrainMessage};
-use crate::map::map_creation_object::TrainStatus;
+use map::map_creation_object::TrainStatus;
 
 pub struct LowLevelController<'a, T: MasterHal> {
     hal: &'a T,

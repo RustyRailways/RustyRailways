@@ -1,7 +1,7 @@
 use common_infrastructure::Position;
 use anyhow::Result;
 use common_infrastructure::devices::Train;
-use crate::map::views::{MapNavigationView, MapVisualizationView};
+use map::views::{MapNavigationView, MapVisualizationView};
 use super::path_finder::find_best_path;
 
 /// return the shortest path from the current position to the destination

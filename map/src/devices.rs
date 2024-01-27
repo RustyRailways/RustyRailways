@@ -6,10 +6,10 @@ use common_infrastructure::devices::{Switch, Train};
 use common_infrastructure::hals::MasterHal;
 use common_infrastructure::messages::SwitchMessage;
 use common_infrastructure::Position;
-use crate::map::map_creation_object::Direction;
-use crate::map::nodes::Node;
-use crate::map::references::{IntiNodeRef, UnIntiNodeRef};
-use crate::map::states::{MapState, MapStateInitialized, MapStateUninitialized};
+use crate::map_creation_object::Direction;
+use crate::nodes::Node;
+use crate::references::{IntiNodeRef, UnIntiNodeRef};
+use crate::states::{MapState, MapStateInitialized, MapStateUninitialized};
 #[derive(Debug,Serialize,Deserialize,Clone)]
 pub struct TrainController<T: MapState>{
     pub train: Train,

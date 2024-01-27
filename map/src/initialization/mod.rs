@@ -1,5 +1,5 @@
-use crate::map::Map;
-use crate::map::states::MapStateInitialized;
+use crate::Map;
+use crate::states::MapStateInitialized;
 
 /// Complete the initialization of an object (Train, Switch, Node,...) after it has been
 /// created from an uninitialized version of the same object.

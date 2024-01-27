@@ -3,12 +3,9 @@ use common_infrastructure::{Position, devices::{Switch, Train}};
 use railway_sim_map::SimulatedMap;
 #[allow(unused_imports)]
 use common_infrastructure::hals::{GenericHal, MasterHal};
-use crate::map::views::map_factory::MapFactory;
+use map::views::map_factory::MapFactory;
 #[macro_use]
 extern crate rouille;
-
-mod map;
-mod constants;
 mod low_level_controller;
 mod high_level_controller;
 mod path_finder_and_scheduler;

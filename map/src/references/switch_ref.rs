@@ -1,6 +1,6 @@
-use crate::map::{Map,MapStateInitialized};
-use crate::map::devices::SwitchController;
-use crate::map::states::{ReferenceStateInitialized, ReferenceState, ReferenceStateUninitialized};
+use crate::{Map,MapStateInitialized};
+use crate::devices::SwitchController;
+use crate::states::{ReferenceStateInitialized, ReferenceState, ReferenceStateUninitialized};
 use common_infrastructure::devices::Switch;
 use serde::{Deserialize, Serialize};
 use std::ops::Deref;

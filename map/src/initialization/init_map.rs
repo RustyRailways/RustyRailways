@@ -1,7 +1,7 @@
 use std::collections::HashMap;
-use crate::map::initialization::{CompleteInitialization, Initialize};
-use crate::map::Map;
-use crate::map::states::{MapStateInitialized, MapStateUninitialized};
+use crate::initialization::{CompleteInitialization, Initialize};
+use crate::Map;
+use crate::states::{MapStateInitialized, MapStateUninitialized};
 
 impl Initialize for Map<MapStateUninitialized>{
     type InitializedType = Map<MapStateInitialized>;

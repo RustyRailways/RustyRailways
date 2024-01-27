@@ -2,13 +2,13 @@ use std::cell::RefCell;
 use std::rc::Rc;
 use common_infrastructure::devices::{Switch, Train};
 use common_infrastructure::Position;
-use crate::map::Map;
+use crate::Map;
 use anyhow::Result;
-use crate::map::devices::TrainStatus;
-use crate::map::initialization::UnInitialize;
-use crate::map::map_creation_object::SwitchPosition;
-use crate::map::nodes::NodeStatus;
-use crate::map::states::{MapStateInitialized, MapStateUninitialized};
+use crate::devices::TrainStatus;
+use crate::initialization::UnInitialize;
+use crate::map_creation_object::SwitchPosition;
+use crate::nodes::NodeStatus;
+use crate::states::{MapStateInitialized, MapStateUninitialized};
 
 pub struct MapVisualizationView{
     map: Rc<RefCell<Map<MapStateInitialized>>>

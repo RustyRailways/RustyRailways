@@ -1,8 +1,8 @@
-use crate::map::devices::TrainController;
+use crate::devices::TrainController;
 use super::{CompleteInitialization, Initialize, UnInitialize};
-use crate::map::Map;
-use crate::map::references::IntiNodeRef;
-use crate::map::states::{MapStateInitialized, MapStateUninitialized, ReferenceStateInitialized};
+use crate::Map;
+use crate::references::IntiNodeRef;
+use crate::states::{MapStateInitialized, MapStateUninitialized, ReferenceStateInitialized};
 
 impl CompleteInitialization for TrainController<MapStateInitialized>{
     type InitFromType = TrainController<MapStateUninitialized>;

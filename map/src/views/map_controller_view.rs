@@ -2,16 +2,16 @@ use std::cell::RefCell;
 use std::ops::Deref;
 use std::rc::Rc;
 use common_infrastructure::hals::MasterHal;
-use crate::map::Map;
-use crate::map::states::MapStateInitialized;
+use crate::Map;
+use crate::states::MapStateInitialized;
 use anyhow::Result;
 use common_infrastructure::devices::{Switch, Train};
 use common_infrastructure::messages::{SwitchMessage, TrainMessage};
 use common_infrastructure::Position;
-use crate::map::devices::SwitchPosition;
-use crate::map::map_creation_object::{Direction, TrainStatus};
-use crate::map::nodes::NodeStatus;
-use crate::map::references::{IntiNodeRef, IntiTrainRef};
+use crate::devices::SwitchPosition;
+use crate::map_creation_object::{Direction, TrainStatus};
+use crate::nodes::NodeStatus;
+use crate::references::{IntiNodeRef, IntiTrainRef};
 
 /// # allows you to control the map
 pub struct MapControllerView<'a,T:MasterHal>{

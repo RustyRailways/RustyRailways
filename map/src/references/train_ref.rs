@@ -1,6 +1,6 @@
-use crate::map::{Map,MapStateInitialized};
-use crate::map::devices::TrainController;
-use crate::map::states::{ReferenceStateInitialized, ReferenceState, ReferenceStateUninitialized};
+use crate::{Map,MapStateInitialized};
+use crate::devices::TrainController;
+use crate::states::{ReferenceStateInitialized, ReferenceState, ReferenceStateUninitialized};
 use common_infrastructure::devices::Train;
 use serde::{Deserialize, Serialize};
 use std::ops::Deref;

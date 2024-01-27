@@ -1,10 +1,10 @@
 use std::collections::HashSet;
-use crate::map::Map;
-use crate::map::states::MapStateUninitialized;
+use crate::Map;
+use crate::states::MapStateUninitialized;
 use anyhow::Result;
-pub use crate::map::map_creation_object::*;
+pub use crate::map_creation_object::*;
 use crate::constants::{DEFAULT_SWITCH_DISTANCE, DEFAULT_SWITCH_SPEED};
-use crate::map::map_creation_error::MapCreationError;
+use crate::map_creation_error::MapCreationError;
 
 /// # This struct is used to create a map
 pub struct MapCreationView{

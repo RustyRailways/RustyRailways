@@ -1,11 +1,11 @@
 use std::cell::RefCell;
 use serde::{Deserialize, Serialize};
 use common_infrastructure::Position;
-use crate::map::references::*;
-use crate::map::states::{MapState, MapStateInitialized, MapStateUninitialized};
-use crate::map::devices::SwitchControllerOption;
+use crate::references::*;
+use crate::states::{MapState, MapStateInitialized, MapStateUninitialized};
+use crate::devices::SwitchControllerOption;
 use anyhow::Result;
-use crate::map::map_creation_error::MapCreationError;
+use crate::map_creation_error::MapCreationError;
 
 #[derive(Debug,Serialize,Deserialize,Clone,PartialEq,Eq)]
 pub enum NodeStatus<T: MapState>{
