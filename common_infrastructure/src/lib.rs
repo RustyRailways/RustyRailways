@@ -3,6 +3,9 @@ mod urls;
 pub use urls::HasUrl;
 pub use urls::URL_MASTER;
 
+#[macro_use]
+extern crate num_derive;
+
 pub mod devices;
 
 mod positions;

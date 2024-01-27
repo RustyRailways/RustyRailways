@@ -2,7 +2,7 @@ use std::fmt::Display;
 use serde::{Deserialize,Serialize};
 use anyhow::{Result, Error};
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, Deserialize, Serialize)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, Deserialize, Serialize,FromPrimitive,ToPrimitive)]
 pub enum Position{
     P1,
     P2,

@@ -2,13 +2,13 @@ use crate::urls;
 use crate::urls::HasUrl;
 use serde::{Deserialize,Serialize};
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, Deserialize, Serialize)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, Deserialize, Serialize,FromPrimitive,ToPrimitive)]
 pub enum Train{
     T1,
     T2
 }
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, Deserialize, Serialize)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, Deserialize, Serialize,FromPrimitive,ToPrimitive)]
 pub enum Switch {
     S1,
     S2,
