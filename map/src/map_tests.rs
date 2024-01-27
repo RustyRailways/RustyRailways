@@ -89,9 +89,9 @@ fn test_creation(){
     map.add_switch(Switch::S1).unwrap();
 
     map.add_link(Position::P1, Position::P2, Direction::Backward,
-                 Direction::Backward,0,0,Some((Switch::S1,SwitchPosition::Diverted))).unwrap();
+                 Direction::Backward,0,0,0,Some((Switch::S1,SwitchPosition::Diverted))).unwrap();
     map.add_link(Position::P2, Position::P3, Direction::Forward,
-                 Direction::Backward,0,0,Some((Switch::S1,SwitchPosition::Straight))).unwrap();
+                 Direction::Backward,0,0,0,Some((Switch::S1,SwitchPosition::Straight))).unwrap();
 
     map.add_train(Train::T1, Direction::Forward,Position::P1).unwrap();
 
@@ -169,23 +169,23 @@ fn test_map_creation_view_links(){
 
     mcv.add_nodes(&[Position::P1,Position::P2,Position::P3,Position::P4]).unwrap();
 
-    mcv.add_link(Position::P1, Position::P2, 1,10).unwrap();
+    mcv.add_link(Position::P1, Position::P2, 1,1,10).unwrap();
 
-    let s = mcv.add_link(Position::P1, Position::P2, 1,10).unwrap_err().to_string();
+    let s = mcv.add_link(Position::P1, Position::P2, 1,1,10).unwrap_err().to_string();
     assert_eq!(s,"Impossible to add a link to a node that is already linked");
 
-    mcv.add_link(Position::P2, Position::P3, 2,20).unwrap();
-    mcv.add_link(Position::P3, Position::P4, 3,30).unwrap();
+    mcv.add_link(Position::P2, Position::P3, 2,2,20).unwrap();
+    mcv.add_link(Position::P3, Position::P4, 3,3,30).unwrap();
 
-    let s = mcv.add_link(Position::P1, Position::P3, 1,10).unwrap_err().to_string();
+    let s = mcv.add_link(Position::P1, Position::P3, 1,1,10).unwrap_err().to_string();
     assert_eq!(s,"The node already has two links");
 
-    let s = mcv.add_link(Position::P3, Position::P1, 1,10).unwrap_err().to_string();
+    let s = mcv.add_link(Position::P3, Position::P1, 1,1,10).unwrap_err().to_string();
     assert_eq!(s,"The node already has two links");
 
-    mcv.add_link(Position::P4, Position::P1, 4,40).unwrap();
+    mcv.add_link(Position::P4, Position::P1, 4,4,40).unwrap();
 
-    let s = mcv.add_link(Position::P1, Position::P3, 1,10).unwrap_err().to_string();
+    let s = mcv.add_link(Position::P1, Position::P3, 1,1,10).unwrap_err().to_string();
     assert_eq!(s,"The node already has two links");
 
     let map = mcv.to_map().initialize();
@@ -275,9 +275,9 @@ fn test_map_creation_view_switch_station(){
     ).unwrap();
 
 
-    mcv.add_link(Position::P1, Position::P4, 1,10).unwrap();
-    mcv.add_link(Position::P2, Position::P5, 2,20).unwrap();
-    mcv.add_link(Position::P3, Position::P6, 3,30).unwrap();
+    mcv.add_link(Position::P1, Position::P4, 1,1,10).unwrap();
+    mcv.add_link(Position::P2, Position::P5, 2,2,20).unwrap();
+    mcv.add_link(Position::P3, Position::P6, 3,3,30).unwrap();
 
 
     let map = mcv.to_map().initialize();
@@ -361,7 +361,7 @@ fn test_negative_link_speed(){
     let mut mcv = MapCreationView::new();
 
     mcv.add_nodes(&[Position::P1,Position::P2]).unwrap();
-    mcv.add_link(Position::P1, Position::P2, -1,1).unwrap_err().to_string();
+    mcv.add_link(Position::P1, Position::P2, -1,-1,1).unwrap_err().to_string();
 }
 
 #[test]
@@ -369,7 +369,7 @@ fn test_add_switch_after_link(){
     let mut mcv = MapCreationView::new();
     mcv.add_nodes(&[Position::P1,Position::P2,Position::P3,Position::P4,Position::P5]).unwrap();
 
-    mcv.add_link(Position::P1, Position::P2, 1,10).unwrap();
+    mcv.add_link(Position::P1, Position::P2, 1,1,10).unwrap();
 
     mcv.add_switch(Switch::S1).unwrap();
 
@@ -383,11 +383,11 @@ fn test_add_link_after_train(){
     let mut mcv = MapCreationView::new();
     mcv.add_nodes(&[Position::P1,Position::P2,Position::P3]).unwrap();
 
-    mcv.add_link(Position::P1, Position::P2, 1,10).unwrap();
+    mcv.add_link(Position::P1, Position::P2, 1,1,10).unwrap();
 
     mcv.add_train(Train::T1,Position::P2,Some(Position::P1)).unwrap();
 
-    let s = mcv.add_link(Position::P2, Position::P3, 1,10).unwrap_err().to_string();
+    let s = mcv.add_link(Position::P2, Position::P3, 1,1,10).unwrap_err().to_string();
 
     assert_eq!(s,"all links must be added before any train is added");
 }
@@ -397,8 +397,8 @@ fn test_add_train_1(){
     let mut mcv = MapCreationView::new();
     mcv.add_nodes(&[Position::P1,Position::P2,Position::P3]).unwrap();
 
-    mcv.add_link(Position::P1, Position::P2, 0,0).unwrap();
-    mcv.add_link(Position::P2, Position::P3, 0,0).unwrap();
+    mcv.add_link(Position::P1, Position::P2, 0,0,0).unwrap();
+    mcv.add_link(Position::P2, Position::P3, 0,0,0).unwrap();
 
     let s = mcv.add_train(Train::T1,Position::P2,None).unwrap_err().to_string();
     assert_eq!(s,"The pointing_to has not be found");
@@ -420,8 +420,8 @@ fn test_add_train_2(){
     let mut mcv = MapCreationView::new();
     mcv.add_nodes(&[Position::P1,Position::P2,Position::P3]).unwrap();
 
-    mcv.add_link(Position::P1, Position::P2, 0,0).unwrap();
-    mcv.add_link(Position::P2, Position::P3, 0,0).unwrap();
+    mcv.add_link(Position::P1, Position::P2, 0,0,0).unwrap();
+    mcv.add_link(Position::P2, Position::P3, 0,0,0).unwrap();
 
     mcv.add_train(Train::T1,Position::P1,None).unwrap();
 
@@ -447,8 +447,8 @@ fn test_add_train_3(){
     let mut mcv = MapCreationView::new();
     mcv.add_nodes(&[Position::P1,Position::P2,Position::P3]).unwrap();
 
-    mcv.add_link(Position::P1, Position::P2, 0,0).unwrap();
-    mcv.add_link(Position::P2, Position::P3, 0,0).unwrap();
+    mcv.add_link(Position::P1, Position::P2, 0,0,0).unwrap();
+    mcv.add_link(Position::P2, Position::P3, 0,0,0).unwrap();
 
     mcv.add_train(Train::T1,Position::P3,None).unwrap();
 
@@ -473,8 +473,8 @@ fn test_add_train_4(){
     let mut mcv = MapCreationView::new();
     mcv.add_nodes(&[Position::P1,Position::P2,Position::P3]).unwrap();
 
-    mcv.add_link(Position::P1, Position::P2, 0,0).unwrap();
-    mcv.add_link(Position::P2, Position::P3, 0,0).unwrap();
+    mcv.add_link(Position::P1, Position::P2, 0,0,0).unwrap();
+    mcv.add_link(Position::P2, Position::P3, 0,0,0).unwrap();
 
     mcv.add_train(Train::T1,Position::P1,Some(Position::P2)).unwrap();
 
@@ -499,8 +499,8 @@ fn test_add_train_5(){
     let mut mcv = MapCreationView::new();
     mcv.add_nodes(&[Position::P1,Position::P2,Position::P3]).unwrap();
 
-    mcv.add_link(Position::P1, Position::P2, 0,0).unwrap();
-    mcv.add_link(Position::P2, Position::P3, 0,0).unwrap();
+    mcv.add_link(Position::P1, Position::P2, 0,0,0).unwrap();
+    mcv.add_link(Position::P2, Position::P3, 0,0,0).unwrap();
 
     mcv.add_train(Train::T1,Position::P3,Some(Position::P2)).unwrap();
 
@@ -525,8 +525,8 @@ fn test_add_train_6(){
     let mut mcv = MapCreationView::new();
     mcv.add_nodes(&[Position::P1,Position::P2,Position::P3]).unwrap();
 
-    mcv.add_link(Position::P1, Position::P2, 0,0).unwrap();
-    mcv.add_link(Position::P2, Position::P3, 0,0).unwrap();
+    mcv.add_link(Position::P1, Position::P2, 0,0,0).unwrap();
+    mcv.add_link(Position::P2, Position::P3, 0,0,0).unwrap();
 
     mcv.add_train(Train::T1,Position::P2,Some(Position::P1)).unwrap();
 
@@ -551,8 +551,8 @@ fn test_add_train_7(){
     let mut mcv = MapCreationView::new();
     mcv.add_nodes(&[Position::P1,Position::P2,Position::P3]).unwrap();
 
-    mcv.add_link(Position::P1, Position::P2, 0,0).unwrap();
-    mcv.add_link(Position::P2, Position::P3, 0,0).unwrap();
+    mcv.add_link(Position::P1, Position::P2, 0,0,0).unwrap();
+    mcv.add_link(Position::P2, Position::P3, 0,0,0).unwrap();
 
     mcv.add_train(Train::T1,Position::P2,Some(Position::P3)).unwrap();
 
@@ -693,9 +693,9 @@ fn get_test_map_for_controller()-> MapFactory{
 
     mcv.add_nodes(&[Position::P1,Position::P2,Position::P3,Position::P4]).unwrap();
 
-    mcv.add_link(Position::P1, Position::P2, 1,10).unwrap();
-    mcv.add_link(Position::P2, Position::P3, 2,20).unwrap();
-    mcv.add_link(Position::P3, Position::P4, 3,30).unwrap();
+    mcv.add_link(Position::P1, Position::P2, 1,1,10).unwrap();
+    mcv.add_link(Position::P2, Position::P3, 2,2,20).unwrap();
+    mcv.add_link(Position::P3, Position::P4, 3,3,30).unwrap();
 
 
     mcv.add_train(Train::T1,Position::P1,None).unwrap();

@@ -99,12 +99,14 @@ impl MapCreationView{
         self.map.add_link(position_center, position_diverted,
                           Direction::Forward, Direction::Backward,
                           DEFAULT_SWITCH_DISTANCE,DEFAULT_SWITCH_SPEED ,
+                          DEFAULT_SWITCH_SPEED,
                           Some((switch, SwitchPosition::Diverted)))?;
 
         // from main to straight
         self.map.add_link(position_center, position_straight,
                           Direction::Forward, Direction::Backward,
                           DEFAULT_SWITCH_DISTANCE,DEFAULT_SWITCH_SPEED ,
+                          DEFAULT_SWITCH_SPEED,
                           Some((switch, SwitchPosition::Straight)))?;
 
         self.used_switches.insert(switch);
@@ -123,9 +125,10 @@ impl MapCreationView{
     ///   linked to something else
     /// - can return an error if at least one train has already been added to the map
     pub fn add_link(&mut self,
-                    from: Position,
-                    to: Position,
-                    max_speed: i8,
+                    n1: Position,
+                    n2: Position,
+                    max_speed_n1_to_n2: i8,
+                    max_speed_n2_to_n1: i8,
                     length: u32,
                     ) -> Result<()>{
 
@@ -136,13 +139,13 @@ impl MapCreationView{
 
         self.has_added_links = true;
 
-        let from_ptr = self.map.get_node(from)?;
-        let to_ptr = self.map.get_node(to)?;
+        let n1_ptr = self.map.get_node(n1)?;
+        let n2_ptr = self.map.get_node(n2)?;
 
-        let direction_from = from_ptr.get_next_available_direction()?;
-        let direction_to = to_ptr.get_next_available_direction()?;
+        let direction_n1 = n1_ptr.get_next_available_direction()?;
+        let direction_n2 = n2_ptr.get_next_available_direction()?;
 
-        self.map.add_link(from, to, direction_from, direction_to, length,max_speed, None).into()
+        self.map.add_link(n1, n2, direction_n1, direction_n2, length, max_speed_n1_to_n2,max_speed_n2_to_n1, None).into()
     }
 
     /// # add one train to the map
