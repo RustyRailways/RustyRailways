@@ -8,7 +8,7 @@ use embedded_svc::{
     wifi::{AuthMethod, ClientConfiguration, Configuration},
 };
 
-use esp_idf_svc::hal::{peripherals::Peripherals, units::Hertz};
+use esp_idf_svc::hal::{gpio::PinDriver, peripherals::Peripherals, units::Hertz};
 use esp_idf_svc::hal;
 use esp_idf_svc::http::client::{EspHttpConnection, Configuration as HttpConfiguration};
 use esp_idf_svc::log::EspLogger;
@@ -21,6 +21,7 @@ use hal::task::*;
 
 use mfrc522::comm::eh02::spi::SpiInterface;
 use mfrc522::Mfrc522;
+//use mfrc522::register::Register;
 
 use log::{error, info};
 
@@ -30,7 +31,7 @@ const SSID: &str = "Rete Pra Alto";
 const PASSWORD: &str = "teonilla";
 const URL: &str = "http://192.168.1.118:9000";
 
-/*
+
 fn main() -> anyhow::Result<()> {
     //////////////////// configure basic stuff ////////////////////////
     esp_idf_svc::sys::link_patches();
@@ -60,6 +61,12 @@ fn main() -> anyhow::Result<()> {
     let serial_out = peripherals.pins.gpio17; // SDO or MOSI
     let cs_1 = peripherals.pins.gpio18; // NSS
 
+    let interupt_pin = peripherals.pins.gpio22;
+    let interupt_pin = PinDriver::input(interupt_pin)?;
+
+
+    
+
     println!("Starting SPI loopback test");
 
     let driver = hal::spi::SpiDriver::new::<hal::spi::SPI2>(
@@ -75,15 +82,50 @@ fn main() -> anyhow::Result<()> {
     let mfrc522: SpiInterface<SpiDeviceDriver<'_, &SpiDriver<'_>>, mfrc522::comm::eh02::spi::DummyNSS, mfrc522::comm::eh02::spi::DummyDelay> = SpiInterface::new(mfrc522);
     let mut mfrc522 = Mfrc522::new(mfrc522).init().unwrap();
 
+
+    //let mut r = mfrc522.read(Register::ComlEnReg).unwrap();
+    //r |= 1 << 5;
+    //mfrc522.write(Register::ComlEnReg, r).unwrap();
+
+    //mfrc522.write(Register::ComIrqReg, 0x00).unwrap(); //Clear interrupts
+    //mfrc522.write(Register::ComlEnReg, 0x20).unwrap(); //Enable all interrupts
+    //mfrc522.write(Register::ComlEnReg, 0xA0); // enabler reader interupt
+    //mfrc522.write(Register::DivlEnReg, 0x14 | 0x80).unwrap();
+
+
+
+    //mfrc522.write(Register::ComIrqReg, 0x00).unwrap(); //Clear interrupts
     /////////////////////////////////////////// Loop reading tags ////////////////////////////////////
     loop {
+        
+        /*
+        let r = mfrc522.read(Register::ComIrqReg).unwrap();
+
+        let interrupt = r & 1<<6 != 0;
+
+        println !("interrupt: {}", interrupt);
+
+        println !("{} - {:b}", interupt_pin.is_high(),r);
+
+        if interrupt{
+            mfrc522.write(Register::ComIrqReg, 0x00).unwrap(); //Clear interrupts
+            sleep(Duration::from_millis(1000));
+        }
+        */
+
+
+        //while interupt_pin.is_high() {
+        //    mfrc522.write(Register::ComIrqReg, 0x00).unwrap(); //Clear interrupts
+        //}
+        //info!("pass");
+    
         if let Some(v) = try_get_tag(&mut mfrc522){
             let tag: &[u8] = v.as_bytes();
             info!("Tag: {:?}",tag);
         }
     }
     //return anyhow::Ok(())
-}*/
+}
 
 
 fn try_get_tag<T: mfrc522::comm::Interface>(mfrc522: &mut Mfrc522<T,mfrc522::Initialized>) -> Option<mfrc522::Uid>{
@@ -97,7 +139,7 @@ fn try_get_tag<T: mfrc522::comm::Interface>(mfrc522: &mut Mfrc522<T,mfrc522::Ini
     }
 }
 
-
+/*
 fn main() -> anyhow::Result<()> {
     esp_idf_svc::sys::link_patches();
     EspLogger::initialize_default();
@@ -192,3 +234,4 @@ fn connect_wifi(wifi: &mut BlockingWifi<EspWifi<'static>>) -> anyhow::Result<()>
 
     Ok(())
 }
+*/

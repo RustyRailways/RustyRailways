@@ -14,5 +14,5 @@ pub trait TrainHal: GenericHal {
     fn read_position(&self) -> Result<Option<Position>>;
 
     // set the speed of the train
-    fn set_speed(&self, speed: i8);
+    fn set_speed(&self, speed: i8) -> Result<()>;
 }
