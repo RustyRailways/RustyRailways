@@ -19,7 +19,7 @@ pub struct TrainController<T: MapState>{
     pub status: TrainStatus
 }
 
-#[derive(Debug,Serialize,Deserialize,Clone, PartialEq, Eq, Hash)]
+#[derive(Debug,Serialize,Deserialize,Copy, Clone, PartialEq, Eq, Hash)]
 pub enum TrainStatus{
     Locked,
     Unlocked,

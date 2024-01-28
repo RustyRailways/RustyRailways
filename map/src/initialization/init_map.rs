@@ -22,6 +22,7 @@ impl Initialize for Map<MapStateUninitialized>{
             nodes,
             trains,
             switches,
+            comunciator: None,
         };
         new_map.nodes.values().for_each(
             |node| node.complete_initialization(

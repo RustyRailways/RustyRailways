@@ -8,7 +8,7 @@ use anyhow::Result;
 use common_infrastructure::devices::{Switch, Train};
 use common_infrastructure::messages::{SwitchMessage, TrainMessage};
 use common_infrastructure::Position;
-use crate::devices::SwitchPosition;
+use crate::devices::{SwitchControllerOption, SwitchPosition};
 use crate::map_creation_object::{Direction, TrainStatus};
 use crate::nodes::NodeStatus;
 use crate::references::{IntiNodeRef, IntiTrainRef};
@@ -31,7 +31,11 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
     /// Returns an error if the train does not exist
     pub fn set_train_speed(&self, train: Train, speed: i8) -> Result<()>{
         self.hal.send_message_to_train(train, TrainMessage::SetSpeed(speed))?;
-        self.map.borrow_mut().get_train_mut(train)?.current_speed = speed;
+        let mut map = self.map.borrow_mut();
+        map.get_train_mut(train)?.current_speed = speed;
+        if let Some(c) = &mut map.comunciator{
+            c.set_train_speed(train, speed);
+        }
         Ok(())
     }
 
@@ -60,7 +64,11 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
     /// Returns an error if the switch does not exist
     pub fn set_switch_straight(&self, switch: Switch) -> Result<()>{
         self.hal.send_message_to_switch(switch, SwitchMessage::SetPositionStraight)?;
-        self.map.borrow_mut().get_switch_mut(switch)?.position = SwitchPosition::Straight.into();
+        let mut map = self.map.borrow_mut();
+        map.get_switch_mut(switch)?.position = SwitchPosition::Straight.into();
+        if let Some(c) = &mut map.comunciator{
+            c.set_switch(switch, SwitchPosition::Straight);
+        }
         Ok(())
     }
 
@@ -69,8 +77,12 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
     /// Returns an error if the connection to the switch is lost
     /// Returns an error if the switch does not exist
     pub fn set_switch_diverted(&self, switch: Switch) -> Result<()>{
-        self.hal.send_message_to_switch(switch, SwitchMessage::SetPositionDiverging)?;
-        self.map.borrow_mut().get_switch_mut(switch)?.position = SwitchPosition::Diverted.into();
+        self.hal.send_message_to_switch(switch, SwitchMessage::SetPositionStraight)?;
+        let mut map = self.map.borrow_mut();
+        map.get_switch_mut(switch)?.position = SwitchPosition::Diverted.into();
+        if let Some(c) = &mut map.comunciator{
+            c.set_switch(switch, SwitchPosition::Diverted);
+        }
         Ok(())
     }
 
@@ -93,7 +105,15 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
             None => return Err(anyhow::anyhow!("No link between {:?} and {:?}",p1,p2)),
             Some(link) => link
         };
-        link.controller.set(self.hal)?;
+        match &link.controller{
+            SwitchControllerOption::NoSwitch => {},
+            SwitchControllerOption::SwitchToSetStraight(switch) => {
+                self.set_switch_straight(switch.deref().switch)?;
+            },
+            SwitchControllerOption::SwitchToSetDiverted(switch) => {
+                self.set_switch_diverted(switch.deref().switch)?;
+            }
+        }
         Ok(())
     }
 
@@ -155,7 +175,9 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
                 Direction::Backward => Direction::Forward
             };
         }
-
+        if let Some(c) = &mut map.comunciator{
+            c.set_train_position(train, position);
+        }
         Ok(())
     }
 
@@ -222,8 +244,11 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
     /// - Returns an error if the train does not exist
     pub fn set_train_status(&mut self, train: Train, status: TrainStatus) -> Result<()>{
         let mut map = self.map.borrow_mut();
-        let train = map.get_train_mut(train)?;
-        train.status = status;
+        let train_controller = map.get_train_mut(train)?;
+        train_controller.status = status;
+        if let Some(c) = &mut map.comunciator{
+            c.set_train_status(train, status);
+        }
         Ok(())
     }
 
