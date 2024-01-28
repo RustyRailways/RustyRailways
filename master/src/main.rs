@@ -47,6 +47,7 @@ fn get_map()-> anyhow::Result<MapFactory>{
     map.add_link(Position::P1, Position::P2, 35,35, 50)?;
     map.add_link(Position::P2, Position::P3, 35,35, 50)?;
     map.add_train(Train::T1, Position::P1, Some(Position::P2))?;
+    map.add_train(Train::T2, Position::P2, Some(Position::P1))?;
     let factory: MapFactory = map.into();
     Ok(factory)
 }

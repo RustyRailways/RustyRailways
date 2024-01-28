@@ -8,6 +8,7 @@ use map::views::map_navigation_view::MapNavigationView;
 use anyhow::Result;
 use common_infrastructure::devices::Train;
 use common_infrastructure::Position;
+use map::map_creation_object::TrainStatus;
 use map_navigation_functions::{path_to_intersection, path_to_move_out_of_the_way, path_to_position, path_to_switch_point};
 use map::views::MapVisualizationView;
 use crate::path_finder_and_scheduler::map_navigation_functions::{find_path_to_move_out_of_the_way, find_path_to_position};
@@ -61,11 +62,11 @@ impl<'a, T: MasterHal> PathFinderAndScheduler<'a, T> {
                 self.execute_move_request(train_id, destination)
             },
             Request::LockTrain{train_id} => {
-                todo!();
+                self.map_controller.set_train_status(train_id, TrainStatus::Locked)?;
                 Ok(true)
             },
             Request::UnlockTrain{train_id} => {
-                todo!();
+                self.map_controller.set_train_status(train_id, TrainStatus::Unlocked)?;
                 Ok(true)
             }
         }
