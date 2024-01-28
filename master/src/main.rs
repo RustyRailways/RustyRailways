@@ -1,4 +1,4 @@
-use common_infrastructure::{Position, devices::{Switch, Train}};
+use common_infrastructure::{Position, devices::Train};
 #[allow(unused_imports)]
 use railway_sim_map::SimulatedMap;
 #[allow(unused_imports)]
@@ -26,8 +26,10 @@ fn run()-> anyhow::Result<()>{
     let hal = Hal::new()?;
     let factory = get_map()?;
 
+    let com = factory.add_comunicator();
+    let hlc = high_level_controller::HighLevelController::new(com);
+
     let mut pfas = path_finder_and_scheduler::PathFinderAndScheduler::new(&hal, &factory);
-    let hlc = high_level_controller::HighLevelController::new();
 
     loop{
         let request = hlc.get_request()?;
@@ -38,12 +40,12 @@ fn run()-> anyhow::Result<()>{
 
 fn get_map()-> anyhow::Result<MapFactory>{
     let mut map = map::views::MapCreationView::new();
-    // todo: create the acutal map
+
     map.add_nodes(&[Position::P1,Position::P2,Position::P3])?;
     //map.add_switch(Switch::S1)?;
     //map.add_switch_station(Switch::S1, Position::P1, Position::P3, Position::P2)?;
-    map.add_link(Position::P1, Position::P2, 35, 50)?;
-    map.add_link(Position::P2, Position::P3, 35, 50)?;
+    map.add_link(Position::P1, Position::P2, 35,35, 50)?;
+    map.add_link(Position::P2, Position::P3, 35,35, 50)?;
     map.add_train(Train::T1, Position::P1, Some(Position::P2))?;
     let factory: MapFactory = map.into();
     Ok(factory)

@@ -2,6 +2,9 @@
 mod urls;
 pub use urls::HasUrl;
 pub use urls::URL_MASTER;
+pub use urls::IP_MASTER;
+pub use urls::MASTER_PORT_CONTROLLER;
+pub use urls::MASTER_PORT_VISUALIZER;
 
 #[macro_use]
 extern crate num_derive;

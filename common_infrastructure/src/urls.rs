@@ -3,6 +3,9 @@ pub trait HasUrl {
     fn get_url(&self)->&'static str;
 }
 pub const URL_MASTER: &str = "http://192.168.0.100:9000/master_message";
+pub const IP_MASTER: &str = "192.168.1.110";
+pub const MASTER_PORT_CONTROLLER: &str = "9000";
+pub const MASTER_PORT_VISUALIZER: &str = "9001";
 pub const URL_T1: &str = "http://192.168.0.101/train_message";
 pub const URL_T2: &str = "http://192.168.0.102/train_message";
 pub const URL_S1: &str = "xxx";

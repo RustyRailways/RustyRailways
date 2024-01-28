@@ -48,7 +48,7 @@ impl MapFactory{
     pub fn build_controller_view<'a,T: MasterHal>(&self, hal: &'a T) -> MapControllerView<'a,T>{
         MapControllerView::new(self.map.clone(),hal)
     }
-    pub fn add_comunicator(&mut self) -> MapComunicationSlave{
+    pub fn add_comunicator(&self) -> MapComunicationSlave{
         let (master,slave) = MapComunicationSlave::get_comunicators();
         self.map.borrow_mut().add_comunicator(master);
         slave

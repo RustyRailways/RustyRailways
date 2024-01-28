@@ -16,4 +16,5 @@ derive-where = "1.2.7"
 reqwest = { version = "0.11", features = ["blocking"] }
 log = { version = "0.4", default-features = false }
 rouille = "3.6.2"
+num-traits = "0.2"
 

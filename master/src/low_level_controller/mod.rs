@@ -1,5 +1,3 @@
-use std::any;
-
 use common_infrastructure::devices::Train;
 use common_infrastructure::hals::MasterHal;
 use common_infrastructure::Position;
