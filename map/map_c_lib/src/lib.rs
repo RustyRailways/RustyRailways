@@ -38,20 +38,20 @@ macro_rules! propage_error {
 
 macro_rules! int_to_enum {
     ($pos: ident) => {
-        match FromPrimitive::from_i32($pos){
+        match FromPrimitive::from_i32($pos-1){
             Some(pos) => pos,
             None => return 4,
         }
     };
     (*$pos: ident) => {
-        match FromPrimitive::from_i32(*$pos){
+        match FromPrimitive::from_i32(*$pos-1){
             Some(pos) => pos,
             None => return 4,
         }
     };
 }
 
-
+#[no_mangle]
 pub extern "C" fn map_init() -> i32{
     unsafe{
         MAP = Some(MapCreationView::new());
@@ -59,18 +59,21 @@ pub extern "C" fn map_init() -> i32{
     return 0
 }
 
+#[no_mangle]
 pub extern "C" fn add_node(position: i32) -> i32{
     let map = get_map!();
     propage_error!(map.add_node(int_to_enum!(position)));
     return 0;
 }
 
+#[no_mangle]
 pub extern "C" fn add_switch(position: i32) -> i32{
     let map = get_map!();
     propage_error!(map.add_switch(int_to_enum!(position)));
     return 0;
 }
 
+#[no_mangle]
 pub extern "C" fn add_switch_station(switch: i32, position_center: i32, position_diverted: i32, position_straight: i32) -> i32{
     let map = get_map!();
 
@@ -83,6 +86,7 @@ pub extern "C" fn add_switch_station(switch: i32, position_center: i32, position
     return 0;
 }
 
+#[no_mangle]
 pub extern "C" fn add_link(position_1: i32, position_2: i32, max_speed_1_to_2: i8, max_speed_2_to_1: i8, length: u32) -> i32{
     let map = get_map!();
 
@@ -100,6 +104,7 @@ pub extern "C" fn add_link(position_1: i32, position_2: i32, max_speed_1_to_2: i
 ///  - if is a number representing a node, the train will be pointing to this node
 ///  - if is -1, it wull be interpreder as None, witch measn the train will be pointing
 ///    the dead end of the link (if ther is one)
+#[no_mangle]
 pub extern "C" fn add_train(train: i32, position: i32, pointing_to: i32) -> i32{
     let map = get_map!();
 
@@ -117,6 +122,7 @@ pub extern "C" fn add_train(train: i32, position: i32, pointing_to: i32) -> i32{
     return 0;
 }
 
+#[no_mangle]
 pub extern "C" fn get_map_json(buffer: *mut u8, buffer_len: u32) -> i32{
     let map = get_map!();
     let json: String = propage_error!(map.to_json());
