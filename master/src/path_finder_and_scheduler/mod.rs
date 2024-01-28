@@ -7,6 +7,7 @@ use map::views::map_factory::MapFactory;
 use map::views::map_navigation_view::MapNavigationView;
 use anyhow::Result;
 use common_infrastructure::devices::Train;
+use common_infrastructure::Position;
 use map_navigation_functions::{path_to_intersection, path_to_move_out_of_the_way, path_to_position, path_to_switch_point};
 use map::views::MapVisualizationView;
 use crate::path_finder_and_scheduler::map_navigation_functions::{find_path_to_move_out_of_the_way, find_path_to_position};
@@ -52,10 +53,26 @@ impl<'a, T: MasterHal> PathFinderAndScheduler<'a, T> {
         self.execute_requests()
     }
 
+
     /// Try to execute a request, return true if the request was executed, false otherwise.
-    fn execute_request(&mut self, request: Request)-> Result<bool>{
-        let train = request.train_id;
-        let destination = request.destination;
+    fn execute_request(&mut self, request: Request) -> Result<bool>{
+        match request{
+            Request::MoveTrain{train_id, destination} => {
+                self.execute_move_request(train_id, destination)
+            },
+            Request::LockTrain{train_id} => {
+                todo!();
+                Ok(true)
+            },
+            Request::UnlockTrain{train_id} => {
+                todo!();
+                Ok(true)
+            }
+        }
+    }
+
+    /// Try to execute a move request, return true if the request was executed, false otherwise.
+    fn execute_move_request(&mut self, train: Train, destination: Position)-> Result<bool>{
 
         let nv = self.factory.build_navigation_view();
         let path = find_path_to_position(train, destination, &self.map_visualization, &nv, false)?;
@@ -107,7 +124,7 @@ impl<'a, T: MasterHal> PathFinderAndScheduler<'a, T> {
 
         // now the train is in a switch, the request should be able to be executed
         // with this recursive call, since now the second train can move out of the way
-        let r = self.execute_request(request)?;
+        let r = self.execute_move_request(train,destination)?;
         assert!(r);
         return Ok(true);
     }
