@@ -25,6 +25,10 @@ impl MapCreationView{
         }
     }
 
+    pub fn to_json(&self) -> Result<String>{
+        serde_json::to_string(&self.map).map_err(|e| e.into())
+    }
+
     /// # return an uninitialized map
     pub fn to_map(self) -> Map<MapStateUninitialized>{
         self.map
