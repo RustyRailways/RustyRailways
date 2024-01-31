@@ -1,0 +1,3 @@
+S1:
+#define STRAIGHT 180
+#define DIVERTED 20

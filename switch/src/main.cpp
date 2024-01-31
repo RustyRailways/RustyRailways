@@ -1,5 +1,6 @@
-//old version using rest API
-
+/*
+  To upload through terminal you can use: curl -F "image=@firmware.bin" esp8266-webupdate.local/update
+*/
 
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
@@ -14,12 +15,15 @@
 #define STASSID "Rusty Railways"
 #define STAPSK "rustyrailways"
 #endif
+#define STRAIGHT 180
+#define DIVERTED 20
 
 #define JSON_DIM 256 // Adjust the size based on your JSON message, default 256
 
-const char* host = "S1";
+const char* host = "s1";
 const char* ssid = STASSID;
 const char* password = STAPSK;
+
 
 
 ESP8266WebServer server(80);
@@ -32,7 +36,7 @@ Servo servo;
 // Handle client requests
 void handleRoot() {
     DynamicJsonDocument doc(JSON_DIM);
-    doc["type"] = "switch";
+    doc["type"] = host;
     doc["hardwareId"] = ESP.getChipId();
     String message;
     serializeJson(doc, message);
@@ -41,24 +45,24 @@ void handleRoot() {
 
 void  openSwitch() {
     String response = "switch open";
-    Serial.println("switch open");
-    servo.write(90);
+    //Serial.println("switch open");
+    servo.write(STRAIGHT);
     server.send(200, "text/plain", response);
 }
 
 void closeSwitch() {
     String response = "switch close";
-    Serial.println("switch close");
-    servo.write(0);
+    //Serial.println("switch close");
+    servo.write(DIVERTED);
     server.send(200, "text/plain", response);
 }
 
 void handlerPost(){
-    Serial.println("POST request arrived");
+    //Seri"SetPositionStraight"al.println("POST request arrived");
     String rawContent = server.arg("plain");
     if(rawContent == "\"SetPositionStraight\""){
         openSwitch();
-    }else if(rawContent == "\"SetPositionDiverging\""){
+    }else if(rawContent == "\"SetPositionDiverted\""){
         closeSwitch();
     }else{
         String response = "request not found";
@@ -69,9 +73,9 @@ void handlerPost(){
 
 
 void setup() {
-    Serial.begin(115200);
+    //Serial.begin(115200);
     servo.attach(2, 500, 2400);
-    servo.write(90);
+    servo.write(STRAIGHT);
     delay(100);
     WiFi.mode(WIFI_AP_STA);
     WiFi.begin(ssid, password);
@@ -85,7 +89,7 @@ void setup() {
         // ota update
         serverUpdate.on("/", HTTP_GET, []() {
             serverUpdate.sendHeader("Connection", "close");
-        serverUpdate.send(200, "text/html", serverIndex);
+                serverUpdate.send(200, "text/html", serverIndex);
         });
         serverUpdate.on("/update", HTTP_POST, []() {
             serverUpdate.sendHeader("Connection", "close");
@@ -93,24 +97,24 @@ void setup() {
             ESP.restart();
         },[]() { HTTPUpload& upload = serverUpdate.upload();
                 if (upload.status == UPLOAD_FILE_START) {
-                Serial.setDebugOutput(true);
+                //Serial.setDebugOutput(true);
                 WiFiUDP::stopAll();
-                Serial.printf("Update: %s\n", upload.filename.c_str());
+                //Serial.printf("Update: %s\n", upload.filename.c_str());
                 uint32_t maxSketchSpace = (ESP.getFreeSketchSpace() - 0x1000) & 0xFFFFF000;
                 if (!Update.begin(maxSketchSpace)) {  // start with max available size
-                    Update.printError(Serial);
+                    //Update.printError(Serial);
                 }
                 } else if (upload.status == UPLOAD_FILE_WRITE) {
                 if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
-                    Update.printError(Serial);
+                    //Update.printError(Serial);
                 }
                 } else if (upload.status == UPLOAD_FILE_END) {
                 if (Update.end(true)) {  // true to set the size to the current progress
-                    Serial.printf("Update Success: %u\nRebooting...\n", upload.totalSize);
+                    //Serial.printf("Update Success: %u\nRebooting...\n", upload.totalSize);
                 } else {
                     Update.printError(Serial);
                 }
-                Serial.setDebugOutput(false);
+                //Serial.setDebugOutput(false);
                 }
                 yield();
         });
@@ -120,10 +124,10 @@ void setup() {
         MDNS.addService("http", "tcp", 80);
         serverUpdate.begin();
         MDNS.addService("http", "tcp", 8266);
-        Serial.printf("Ready! Open http://%s.local:8266 in your browser\n", host);
-        Serial.println("HTTP server started");
+        //Serial.printf("Ready! Open http://%s.local:8266 in your browser\n", host);
+        //Serial.println("HTTP server started");
     } else {
-        Serial.println("WiFi Failed");
+        //Serial.println("WiFi Failed");
     }
 }
 
