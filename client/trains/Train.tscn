@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://cnule33nhmeqa"]
+
+[ext_resource type="Texture2D" uid="uid://dobj11ud2b0g4" path="res://trains/train-head.png" id="1_qorao"]
+
+[node name="Train" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_qorao")
