@@ -3,6 +3,7 @@ use hal::gpio::{Gpio27,Gpio26,Gpio25,PinDriver,Output};
 use hal::ledc::{config::TimerConfig, LedcDriver, LedcTimerDriver, Resolution,TIMER0, CHANNEL0};
 use hal::prelude::FromValueType;
 use anyhow::Result;
+use crate::SPEED_OFFSET;
 
 enum Direction{
     Forward,
@@ -44,9 +45,12 @@ impl MotorDriver<'_> {
         return Ok(Self{forward_pin,backward_pin,pwm_driver});
     }
 
-    pub fn set_speed(&mut self, speed: i8) -> Result<()>{
+    pub fn set_speed(&mut self, mut speed: i8) -> Result<()>{
         let direction: Direction = speed.into();
         // max(-127) is to avoid overflow
+        // for locomotive 2
+        speed=((speed as f32)*SPEED_OFFSET)as i8;
+
         let mut speed_abs = speed.max(-127).abs() as u32;
         speed_abs = speed_abs*MAX_PWM/127;
 
