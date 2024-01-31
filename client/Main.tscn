@@ -22,7 +22,7 @@
 [ext_resource type="PackedScene" uid="uid://b0w3ixbs5hk8o" path="res://train-track-pieces/Switch.tscn" id="18_ni8bv"]
 [ext_resource type="PackedScene" uid="uid://ijyrsh28ejdj" path="res://train-track-pieces/SwitchFlippedVertically.tscn" id="19_7peel"]
 [ext_resource type="PackedScene" uid="uid://ckxlfmmw0757c" path="res://train-track-pieces/SwitchHalfCurveFlippedVertically.tscn" id="21_igufp"]
-[ext_resource type="PackedScene" uid="uid://cnule33nhmeqa" path="res://Train.tscn" id="25_85y65"]
+[ext_resource type="PackedScene" uid="uid://cnule33nhmeqa" path="res://trains/Train.tscn" id="25_85y65"]
 [ext_resource type="PackedScene" uid="uid://crb32reckktf4" path="res://nfc-tags/NFCTag.tscn" id="26_qm2qs"]
 
 [sub_resource type="GDScript" id="GDScript_7igx0"]
