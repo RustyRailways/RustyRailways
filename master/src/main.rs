@@ -39,15 +39,22 @@ fn run()-> anyhow::Result<()>{
 }
 
 fn get_map()-> anyhow::Result<MapFactory>{
+
+    const DEFAULT_STRAIGHT_SPEED: i8 = 35;
+    const DEFAULT_UPHILL_SPEED: i8 = 50;
+    const DEFAULT_DOWNHILL_SPEED: i8 = 5;
+
     let mut map = map::views::MapCreationView::new();
 
-    map.add_nodes(&[Position::P1,Position::P2,Position::P3])?;
+    map.add_nodes(&[Position::P11,Position::P12,Position::P13,Position::P14,Position::P15,Position::P16])?;
     //map.add_switch(Switch::S1)?;
     //map.add_switch_station(Switch::S1, Position::P1, Position::P3, Position::P2)?;
-    map.add_link(Position::P1, Position::P2, 35,35, 50)?;
-    map.add_link(Position::P2, Position::P3, 35,35, 50)?;
-    map.add_train(Train::T1, Position::P1, Some(Position::P2))?;
-    map.add_train(Train::T2, Position::P2, Some(Position::P1))?;
+    map.add_link(Position::P11, Position::P12, DEFAULT_STRAIGHT_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
+    map.add_link(Position::P12, Position::P13, DEFAULT_UPHILL_SPEED,0, 50)?;
+    map.add_link(Position::P13, Position::P14, 25,25, 50)?;
+    map.add_link(Position::P14, Position::P15, 15,DEFAULT_UPHILL_SPEED, 50)?;
+    map.add_link(Position::P15, Position::P16, DEFAULT_STRAIGHT_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
+    map.add_train(Train::T2, Position::P16, Some(Position::P15))?;
     let factory: MapFactory = map.into();
     Ok(factory)
 }

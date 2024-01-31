@@ -10,7 +10,7 @@ use log::info;
 mod train_hal;
 use train_hal::EspTrainHal;
 
-const THIS_TRAIN: Train = Train::T1;
+const THIS_TRAIN: Train = Train::T2;
 
 fn main() -> Result<()> {
     sys::link_patches();
@@ -26,7 +26,8 @@ fn main() -> Result<()> {
             if Some(position) != last_position_red{
                 hal.send_message_to_master(
                     MasterMessage::TrainHasReachedPosition(THIS_TRAIN, position)
-                )?
+                )?;
+                last_position_red = Some(position);
             }
         }
 

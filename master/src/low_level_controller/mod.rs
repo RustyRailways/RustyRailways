@@ -49,11 +49,14 @@ impl<'a,T:MasterHal> LowLevelController<'a,T> {
 
             let wanted_train_speed = self.map_controller.get_speed_to_reach(train, *position)?;
             self.map_controller.move_train(train, *position)?;
+            let message;
             if position == final_destination {
-                self.hal.send_message_to_train(train, TrainMessage::SetSpeedAndStopAt(wanted_train_speed, *position))?;
+                message = TrainMessage::SetSpeedAndStopAt(wanted_train_speed, *position);
             } else {
-                self.hal.send_message_to_train(train, TrainMessage::SetSpeed(wanted_train_speed))?;
+                message = TrainMessage::SetSpeed(wanted_train_speed);
             }
+            println!("Sending message: {:?}",message);
+            self.hal.send_message_to_train(train, message)?;
 
             let mut option_recv_message = self.hal.get_message()?;
             while option_recv_message == None {
