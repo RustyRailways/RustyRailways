@@ -1,0 +1,240 @@
+[gd_scene load_steps=11 format=3 uid="uid://ckxlfmmw0757c"]
+
+[ext_resource type="Script" path="res://train-track-pieces/BaseTrainTrackPiece.gd" id="1_8tp74"]
+[ext_resource type="Script" path="res://train-track-pieces/ConnectionPoint.gd" id="2_wotf6"]
+[ext_resource type="Texture2D" uid="uid://d2wsklnqshceg" path="res://train-track-pieces/SwitchHalfCurve.svg" id="3_3thwk"]
+[ext_resource type="Texture2D" uid="uid://dmls1eufjhk03" path="res://arrow.png" id="4_3pq5e"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ofwjh"]
+radius = 25.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_4jn3p"]
+font_size = 15
+
+[sub_resource type="LabelSettings" id="LabelSettings_6rs1a"]
+line_spacing = -2.0
+font_size = 10
+
+[sub_resource type="LabelSettings" id="LabelSettings_udy3i"]
+font_size = 10
+
+[sub_resource type="Curve2D" id="Curve2D_ukfk6"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -127, 24, 0, 0, 0, 0, 126, 24)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_ctf22"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -127, 24, 0, 0, 47.6236, -4.97615, -103, 24, -40.9817, 29.9246, 40.9817, -29.9246, 46, -28)
+}
+point_count = 3
+
+[node name="BaseTrainTrackPiece" type="Node2D"]
+script = ExtResource("1_8tp74")
+
+[node name="ConnectionPoints" type="Node2D" parent="."]
+
+[node name="ConnectionPoint1Left" type="RayCast2D" parent="ConnectionPoints"]
+position = Vector2(-127, 24)
+exclude_parent = false
+target_position = Vector2(-10, 0)
+collision_mask = 2
+hit_from_inside = true
+collide_with_areas = true
+collide_with_bodies = false
+script = ExtResource("2_wotf6")
+
+[node name="ConnectionPointSnapArea" type="Area2D" parent="ConnectionPoints/ConnectionPoint1Left"]
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ConnectionPoints/ConnectionPoint1Left/ConnectionPointSnapArea"]
+shape = SubResource("CircleShape2D_ofwjh")
+disabled = true
+
+[node name="ColorRect" type="ColorRect" parent="ConnectionPoints/ConnectionPoint1Left"]
+offset_left = 4.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = -4.0
+mouse_filter = 2
+color = Color(1, 0, 0, 1)
+
+[node name="ID" type="Label" parent="ConnectionPoints/ConnectionPoint1Left"]
+offset_left = 4.0
+offset_top = -5.0
+offset_right = 19.0
+offset_bottom = 21.0
+text = "-1"
+label_settings = SubResource("LabelSettings_4jn3p")
+
+[node name="SoftConnectionInfo" type="Label" parent="ConnectionPoints/ConnectionPoint1Left"]
+offset_left = 27.0
+offset_top = 32.0
+offset_right = 115.0
+offset_bottom = 56.0
+text = "Soft Disconnected"
+label_settings = SubResource("LabelSettings_6rs1a")
+
+[node name="HardConnectionInfo" type="Label" parent="ConnectionPoints/ConnectionPoint1Left"]
+offset_left = 27.0
+offset_top = 56.0
+offset_right = 122.0
+offset_bottom = 80.0
+text = "Hard Disconnected"
+label_settings = SubResource("LabelSettings_6rs1a")
+
+[node name="ConnectionPoint2TopRight" type="RayCast2D" parent="ConnectionPoints"]
+position = Vector2(46, -28)
+exclude_parent = false
+target_position = Vector2(11, -8)
+collision_mask = 2
+hit_from_inside = true
+collide_with_areas = true
+collide_with_bodies = false
+script = ExtResource("2_wotf6")
+
+[node name="ConnectionPointSnapArea" type="Area2D" parent="ConnectionPoints/ConnectionPoint2TopRight"]
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ConnectionPoints/ConnectionPoint2TopRight/ConnectionPointSnapArea"]
+shape = SubResource("CircleShape2D_ofwjh")
+disabled = true
+
+[node name="ColorRect" type="ColorRect" parent="ConnectionPoints/ConnectionPoint2TopRight"]
+offset_left = -23.0
+offset_top = -5.0
+offset_right = -11.0
+offset_bottom = 7.0
+mouse_filter = 2
+color = Color(1, 0, 0, 1)
+
+[node name="ID" type="Label" parent="ConnectionPoints/ConnectionPoint2TopRight"]
+offset_left = -16.0
+offset_top = 2.0
+offset_right = -1.0
+offset_bottom = 28.0
+text = "-1"
+label_settings = SubResource("LabelSettings_4jn3p")
+
+[node name="SoftConnectionInfo" type="Label" parent="ConnectionPoints/ConnectionPoint2TopRight"]
+offset_left = -132.0
+offset_top = -59.0
+offset_right = -44.0
+offset_bottom = -35.0
+text = "Soft Disconnected"
+label_settings = SubResource("LabelSettings_6rs1a")
+
+[node name="HardConnectionInfo" type="Label" parent="ConnectionPoints/ConnectionPoint2TopRight"]
+offset_left = -132.0
+offset_top = -35.0
+offset_right = -37.0
+offset_bottom = -11.0
+text = "Hard Disconnected"
+label_settings = SubResource("LabelSettings_6rs1a")
+
+[node name="ConnectionPoint3BottomRight" type="RayCast2D" parent="ConnectionPoints"]
+position = Vector2(126, 24)
+exclude_parent = false
+target_position = Vector2(11, 0)
+collision_mask = 2
+hit_from_inside = true
+collide_with_areas = true
+collide_with_bodies = false
+script = ExtResource("2_wotf6")
+
+[node name="ConnectionPointSnapArea" type="Area2D" parent="ConnectionPoints/ConnectionPoint3BottomRight"]
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ConnectionPoints/ConnectionPoint3BottomRight/ConnectionPointSnapArea"]
+shape = SubResource("CircleShape2D_ofwjh")
+disabled = true
+
+[node name="ColorRect" type="ColorRect" parent="ConnectionPoints/ConnectionPoint3BottomRight"]
+offset_left = -20.0
+offset_top = -16.0
+offset_right = -8.0
+offset_bottom = -4.0
+mouse_filter = 2
+color = Color(1, 0, 0, 1)
+
+[node name="ID" type="Label" parent="ConnectionPoints/ConnectionPoint3BottomRight"]
+offset_left = -20.0
+offset_top = -5.0
+offset_right = -5.0
+offset_bottom = 21.0
+text = "-1"
+label_settings = SubResource("LabelSettings_4jn3p")
+
+[node name="SoftConnectionInfo" type="Label" parent="ConnectionPoints/ConnectionPoint3BottomRight"]
+offset_left = -120.0
+offset_top = 32.0
+offset_right = -32.0
+offset_bottom = 56.0
+text = "Soft Disconnected"
+label_settings = SubResource("LabelSettings_6rs1a")
+
+[node name="HardConnectionInfo" type="Label" parent="ConnectionPoints/ConnectionPoint3BottomRight"]
+offset_left = -120.0
+offset_top = 56.0
+offset_right = -25.0
+offset_bottom = 80.0
+text = "Hard Disconnected"
+label_settings = SubResource("LabelSettings_6rs1a")
+
+[node name="Image" type="Sprite2D" parent="."]
+texture = ExtResource("3_3thwk")
+flip_v = true
+
+[node name="ID" type="Label" parent="."]
+offset_left = -86.0
+offset_top = -39.0
+offset_right = -21.0
+offset_bottom = -25.0
+text = "null"
+label_settings = SubResource("LabelSettings_udy3i")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="SwitchStateStraight" type="Sprite2D" parent="."]
+position = Vector2(-34, 23.94)
+texture = ExtResource("4_3pq5e")
+
+[node name="SwitchStateNotStraight" type="Sprite2D" parent="."]
+position = Vector2(-37, 7.335)
+rotation = -0.324631
+texture = ExtResource("4_3pq5e")
+
+[node name="DebugRayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(0, 0)
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="HitBox"]
+visible = false
+polygon = PackedVector2Array(132, 51, 132, 12, 129.6, -12, 117.9, -12, 115.9, -4, 107.7, -4, 104.8, -12, 85, -12, 85, -7.4, 84, -4, 73.8, -4, 33.3, -57, 23, -57, 18, -52.9, 18, -49.5, 19, -45.6, -3, -42.5, -3, -32.5, -8.1, -29, -13.7, -35.7, -19, -33.8, -19, -32.7, -32, -27.7, -32, -22.7, -31.6, -20.7, -32.6, -20.3, -39.1, -26.7, -44, -24.7, -44, -24.1, -56, -21.1, -56, -17.5, -56.6, -13, -63.5, -19, -66.4, -19, -80, -16.3, -80, -12.6, -81.7, -8, -82.4, -8, -83, -7.9, -85.1, -57, -115, -57, -115, -56, -116.8, -6.9, -125.8, -12.6, -130, -10.4, -130, -8.1, -132, -4.8, -132, 11.8, -130.1, 15, -132, 23, -132, 36, -130.9, 38, -132, 39.3, -132, 50.4, -130, 54.9, -120.4, 55, -116.4, 51, -115.1, 55, -84.9, 55, -83.9, 51, -75.1, 51, -74.1, 55, -53.9, 55, -52.9, 51, -44.1, 51, -43.1, 55, -21.9, 55, -20.9, 51, -12.1, 51, -11.1, 55, 11, 55, 11, 54.4, 12, 51, 19, 51, 19, 55, 43, 55, 43, 54.4, 44, 51, 52, 51, 52, 55, 74, 55, 74, 54.4, 75, 51, 83, 51, 83, 55, 106, 55, 106, 54.4, 107, 51, 115, 51, 115, 55, 130, 55)
+
+[node name="PathStraight" type="Path2D" parent="."]
+curve = SubResource("Curve2D_ukfk6")
+
+[node name="PathNotStraight" type="Path2D" parent="."]
+curve = SubResource("Curve2D_ctf22")
+
+[connection signal="body_entered" from="ConnectionPoints/ConnectionPoint1Left" to="." method="_on_ConnectionPoint_body_entered"]
+[connection signal="body_exited" from="ConnectionPoints/ConnectionPoint1Left" to="." method="_on_ConnectionPoint_body_exited"]
+[connection signal="body_entered" from="ConnectionPoints/ConnectionPoint2TopRight" to="." method="_on_ConnectionPoint_body_entered"]
+[connection signal="body_exited" from="ConnectionPoints/ConnectionPoint2TopRight" to="." method="_on_ConnectionPoint_body_exited"]
+[connection signal="body_entered" from="ConnectionPoints/ConnectionPoint3BottomRight" to="." method="_on_ConnectionPoint_body_entered"]
+[connection signal="body_exited" from="ConnectionPoints/ConnectionPoint3BottomRight" to="." method="_on_ConnectionPoint_body_exited"]
+[connection signal="input_event" from="HitBox" to="." method="_on_HitBox_input_event"]
