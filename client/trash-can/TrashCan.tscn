@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://bmmt37ihxnnpc"]
+
+[ext_resource type="Script" path="res://trash-can/TrashCan.gd" id="1_8mv5q"]
+[ext_resource type="Texture2D" path="res://trash-can/trash-mode-mouse-icon.png" id="2_7w4k1"]
+[ext_resource type="Texture2D" uid="uid://dyc2itaxm8buh" path="res://trash-can/trash-can.png" id="3_0tryt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vuktl"]
+size = Vector2(56, 90)
+
+[node name="TrashCan" type="Area2D"]
+position = Vector2(41, 78)
+collision_layer = 4
+collision_mask = 4
+monitorable = false
+script = ExtResource("1_8mv5q")
+trash_mode_cursor_icon = ExtResource("2_7w4k1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_vuktl")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.224, 0.224)
+texture = ExtResource("3_0tryt")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -22.0
+offset_top = -67.0
+offset_right = 22.0
+offset_bottom = -44.0
+text = "Trash"
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="input_event" from="." to="." method="_on_input_event"]
