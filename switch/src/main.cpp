@@ -16,38 +16,38 @@
     #define STAPSK "rustyrailways"
 #endif
 
-#ifdef S1
+#if S1
     #define STRAIGHT 180
     #define DIVERTED 20
     #define SWITCH_NAME "s1"
 #endif
 
-#ifdef S2
+#if S2
    #define STRAIGHT 170
     #define DIVERTED 10
     #define SWITCH_NAME "s2"
 #endif
 
-#ifdef S3
+#if S3
     #define STRAIGHT 180
     #define DIVERTED 0
     #define SWITCH_NAME "s3"
 #endif
 
-#ifdef S4
+#if S4
    #define STRAIGHT 175
     #define DIVERTED 5
     #define SWITCH_NAME "s4"
 #endif
 
-#ifdef S5
+#if S5
     #define STRAIGHT 170
     #define DIVERTED 15
     #define SWITCH_NAME "s5"
 #endif
 
 
-#ifdef S6
+#if S6
     #define STRAIGHT 175
     #define DIVERTED 5
     #define SWITCH_NAME "s6"
