@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://crb32reckktf4"]
+
+[ext_resource type="Texture2D" uid="uid://b3oqp64mwypo3" path="res://nfc-tags/nfc-tag-card.png" id="1_70nys"]
+
+[node name="NFCTag" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_70nys")
