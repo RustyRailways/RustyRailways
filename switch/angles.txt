@@ -1,3 +1,6 @@
 S1:
 #define STRAIGHT 180
 #define DIVERTED 20
+S2:
+#define STRAIGHT 170
+#define DIVERTED 10
