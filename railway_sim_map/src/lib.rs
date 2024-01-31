@@ -72,7 +72,7 @@ impl MasterHal for SimulatedMap {
     }
     fn send_message_to_switch(&self, switch: Switch, message: SwitchMessage) -> anyhow::Result<()> {
         match message {
-            SwitchMessage::SetPositionDiverging => self.map.borrow_mut().set_diverted(switch),
+            SwitchMessage::SetPositionDiverted => self.map.borrow_mut().set_diverted(switch),
             SwitchMessage::SetPositionStraight => self.map.borrow_mut().set_straight(switch)
         };
         Ok(())

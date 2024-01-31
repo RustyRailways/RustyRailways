@@ -1,6 +1,7 @@
 use std::cell::RefCell;
 use std::ops::Deref;
 use std::rc::Rc;
+use std::thread::AccessError;
 use common_infrastructure::hals::MasterHal;
 use crate::Map;
 use crate::states::MapStateInitialized;
@@ -77,7 +78,7 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
     /// Returns an error if the connection to the switch is lost
     /// Returns an error if the switch does not exist
     pub fn set_switch_diverted(&self, switch: Switch) -> Result<()>{
-        self.hal.send_message_to_switch(switch, SwitchMessage::SetPositionStraight)?;
+        self.hal.send_message_to_switch(switch, SwitchMessage::SetPositionDiverted)?;
         let mut map = self.map.borrow_mut();
         map.get_switch_mut(switch)?.position = SwitchPosition::Diverted.into();
         if let Some(c) = &mut map.comunciator{
@@ -105,15 +106,26 @@ impl<'a,T:MasterHal> MapControllerView<'a,T>{
             None => return Err(anyhow::anyhow!("No link between {:?} and {:?}",p1,p2)),
             Some(link) => link
         };
-        match &link.controller{
-            SwitchControllerOption::NoSwitch => {},
+        let (action,switch) = match &link.controller{
+            SwitchControllerOption::NoSwitch => return Ok(()),
             SwitchControllerOption::SwitchToSetStraight(switch) => {
-                self.set_switch_straight(switch.deref().switch)?;
+                (SwitchPosition::Straight,switch.deref().switch)
             },
             SwitchControllerOption::SwitchToSetDiverted(switch) => {
-                self.set_switch_diverted(switch.deref().switch)?;
+                (SwitchPosition::Diverted,switch.deref().switch)
             }
+        };
+
+        drop(link);
+        drop(adjacent_nodes);
+        drop(node1);
+        drop(map);
+
+        match action {
+            SwitchPosition::Diverted => self.set_switch_diverted(switch)?,
+            SwitchPosition::Straight => self.set_switch_straight(switch)?,
         }
+
         Ok(())
     }
 

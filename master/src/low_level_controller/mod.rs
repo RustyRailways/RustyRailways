@@ -1,3 +1,5 @@
+use std::os::linux::raw::stat;
+
 use common_infrastructure::devices::Train;
 use common_infrastructure::hals::MasterHal;
 use common_infrastructure::Position;
@@ -5,6 +7,7 @@ use map::views::map_controller_view::MapControllerView;
 use anyhow::Result;
 use common_infrastructure::messages::{MasterMessage, TrainMessage};
 use map::map_creation_object::TrainStatus;
+use rouille::url::Position;
 
 pub struct LowLevelController<'a, T: MasterHal> {
     hal: &'a T,
@@ -42,7 +45,10 @@ impl<'a,T:MasterHal> LowLevelController<'a,T> {
         };
 
         let mut prev_position = &stations[0];
-        for position in &stations[1..] {
+        for i in 1..stations.len() {
+
+            let position = &stations[i];
+
             //self.map_controller.lock_node(*prev_position, train)?;
             self.map_controller.lock_node(*position, train)?;
             self.map_controller.set_switch_between(*prev_position, *position)?;
@@ -53,6 +59,8 @@ impl<'a,T:MasterHal> LowLevelController<'a,T> {
             if position == final_destination {
                 message = TrainMessage::SetSpeedAndStopAt(wanted_train_speed, *position);
             } else {
+                let next_position = &stations[i+1];
+                //let next_wanted_train_speed = self.map_controller.get_speed_to_reach(train, *position)?;
                 message = TrainMessage::SetSpeed(wanted_train_speed);
             }
             println!("Sending message: {:?}",message);

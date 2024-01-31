@@ -1,4 +1,4 @@
-use common_infrastructure::{Position, devices::Train, devices::Switch};
+use common_infrastructure::{devices::Switch, devices::Train, messages::SwitchMessage, Position};
 #[allow(unused_imports)]
 use railway_sim_map::SimulatedMap;
 #[allow(unused_imports)]
@@ -112,9 +112,9 @@ fn get_map()-> anyhow::Result<MapFactory>{
     map.add_link(Position::P15, Position::P16, 15,DEFAULT_UPHILL_SPEED, 50)?;
 
     //// dead track S1 ////
-    map.add_link(Position::P5, Position::P10, DEFAULT_UPHILL_SPEED,0, 50)?;
-    map.add_link(Position::P10, Position::P25, 25,25, 50)?;
-    map.add_link(Position::P25, Position::P18, 25,25, 50)?;
+    map.add_link(Position::P5, Position::P10, DEFAULT_UPHILL_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
+    map.add_link(Position::P10, Position::P25, DEFAULT_STRAIGHT_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
+    map.add_link(Position::P25, Position::P18, DEFAULT_STRAIGHT_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
     
 
     //// trains ////
@@ -127,8 +127,8 @@ fn get_map()-> anyhow::Result<MapFactory>{
     Ok(factory)
 }
 
-
-#[test]fn receiver_test(){
+#[test]
+fn receiver_test(){
     let hal = Hal::new().unwrap();
     loop {
         while let Some(m) = hal.get_message().unwrap() {
@@ -138,8 +138,10 @@ fn get_map()-> anyhow::Result<MapFactory>{
 }
 
 #[test]
-    fn test_send_message(){
+fn test_send_message(){
     let hal = Hal::new().unwrap();
+    hal.send_message_to_switch(Switch::S1, SwitchMessage::SetPositionStraight).unwrap();
+    return;
     loop {
         hal.send_message_to_train(common_infrastructure::devices::Train::T2, common_infrastructure::messages::TrainMessage::SetSpeed(0)).unwrap();
         hal.sleep_for_ms(2000);

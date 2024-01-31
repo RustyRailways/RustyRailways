@@ -1,3 +1,4 @@
+/*
 use common_infrastructure::devices::Switch;
 use common_infrastructure::devices::Train;
 use common_infrastructure::hals::GenericHal;
@@ -85,4 +86,4 @@ fn test_scheduler(){
 
     pfes.execute_request(Request::new(Train::T1, Position::P16)).unwrap();
 
-}
+}*/

@@ -88,7 +88,7 @@ impl SwitchControllerOption<MapStateInitialized> {
                 hal.send_message_to_switch((**switch).switch, SwitchMessage::SetPositionStraight)
             },
             SwitchControllerOption::SwitchToSetDiverted(switch) => {
-                hal.send_message_to_switch((**switch).switch, SwitchMessage::SetPositionDiverging)
+                hal.send_message_to_switch((**switch).switch, SwitchMessage::SetPositionDiverted)
             },
         }
     }

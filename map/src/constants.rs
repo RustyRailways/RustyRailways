@@ -1,2 +1,2 @@
 pub const DEFAULT_SWITCH_DISTANCE: u32 = 1;
-pub const DEFAULT_SWITCH_SPEED: i8 = 60;
+pub const DEFAULT_SWITCH_SPEED: i8 = 35;
