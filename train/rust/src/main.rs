@@ -11,6 +11,7 @@ mod train_hal;
 use train_hal::EspTrainHal;
 
 const THIS_TRAIN: Train = Train::T2;
+const SPEED_OFFSET:f32 = 0.6;
 
 fn main() -> Result<()> {
     sys::link_patches();
