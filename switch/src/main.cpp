@@ -12,15 +12,62 @@
 #include <ArduinoOTA.h>
 
 #ifndef STASSID
-#define STASSID "Rusty Railways"
-#define STAPSK "rustyrailways"
+    #define STASSID "Rusty Railways"
+    #define STAPSK "rustyrailways"
 #endif
-#define STRAIGHT 180
-#define DIVERTED 20
+
+#ifdef S1
+    #define STRAIGHT 180
+    #define DIVERTED 20
+    #define SWITCH_NAME "s1"
+#endif
+
+#ifdef S2
+   #define STRAIGHT 170
+    #define DIVERTED 10
+    #define SWITCH_NAME "s2"
+#endif
+
+#ifdef S3
+    #define STRAIGHT 180
+    #define DIVERTED 0
+    #define SWITCH_NAME "s3"
+#endif
+
+#ifdef S4
+   #define STRAIGHT 175
+    #define DIVERTED 5
+    #define SWITCH_NAME "s4"
+#endif
+
+#ifdef S5
+    #define STRAIGHT 170
+    #define DIVERTED 15
+    #define SWITCH_NAME "s5"
+#endif
+
+
+#ifdef S6
+    #define STRAIGHT 175
+    #define DIVERTED 5
+    #define SWITCH_NAME "s6"
+#endif
+
+#ifndef STRAIGHT
+    #define STRAIGHT 180
+#endif
+
+#ifndef DIVERTED
+    #define DIVERTED 20
+#endif
+
+#ifndef SWITCH_NAME
+    #define SWITCH_NAME "general switch"
+#endif
 
 #define JSON_DIM 256 // Adjust the size based on your JSON message, default 256
 
-const char* host = "s1";
+const char* host = SWITCH_NAME;
 const char* ssid = STASSID;
 const char* password = STAPSK;
 
