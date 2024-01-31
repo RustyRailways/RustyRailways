@@ -7,7 +7,6 @@ use map::views::map_controller_view::MapControllerView;
 use anyhow::Result;
 use common_infrastructure::messages::{MasterMessage, TrainMessage};
 use map::map_creation_object::TrainStatus;
-use rouille::url::Position;
 
 pub struct LowLevelController<'a, T: MasterHal> {
     hal: &'a T,
@@ -60,8 +59,14 @@ impl<'a,T:MasterHal> LowLevelController<'a,T> {
                 message = TrainMessage::SetSpeedAndStopAt(wanted_train_speed, *position);
             } else {
                 let next_position = &stations[i+1];
-                //let next_wanted_train_speed = self.map_controller.get_speed_to_reach(train, *position)?;
-                message = TrainMessage::SetSpeed(wanted_train_speed);
+                let next_wanted_train_speed = self.map_controller.get_speed_to_reach(train, *next_position)?;
+                if next_wanted_train_speed.is_negative() && wanted_train_speed.is_positive() ||
+                    next_wanted_train_speed.is_positive() && wanted_train_speed.is_negative()
+                {
+                    message = TrainMessage::SetSpeedAndStopAt(wanted_train_speed, *position);
+                }else{
+                    message = TrainMessage::SetSpeed(wanted_train_speed);
+                }
             }
             println!("Sending message: {:?}",message);
             self.hal.send_message_to_train(train, message)?;
