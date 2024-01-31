@@ -89,7 +89,7 @@ fn get_map()-> anyhow::Result<MapFactory>{
 
     //// S1 to S4 ////
     map.add_link(Position::P23, Position::P2, DEFAULT_STRAIGHT_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
-
+    
     //// S2 to S3 ////
     map.add_link(Position::P1, Position::P19, DEFAULT_STRAIGHT_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
 
@@ -97,7 +97,7 @@ fn get_map()-> anyhow::Result<MapFactory>{
     map.add_link(Position::P11, Position::P7, DEFAULT_STRAIGHT_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
 
     //// S5 to S6 ////
-    map.add_link(Position::P6, Position::P4, DEFAULT_STRAIGHT_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
+    map.add_link(Position::P6, Position::P4, 20,20, 50)?;
 
     //// S3 to S6 ////
     map.add_link(Position::P3, Position::P17, DEFAULT_STRAIGHT_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
@@ -106,8 +106,7 @@ fn get_map()-> anyhow::Result<MapFactory>{
 
     //// S2 to S5 | bridge ////
     map.add_link(Position::P12, Position::P13, DEFAULT_UPHILL_SPEED,0, 50)?;
-    map.add_link(Position::P13, Position::P9, 25,25, 50)?;
-    map.add_link(Position::P9, Position::P14, 25,25, 50)?;
+    map.add_link(Position::P13, Position::P14, 25,25, 50)?;
     map.add_link(Position::P14, Position::P15, 15,DEFAULT_UPHILL_SPEED, 50)?;
     map.add_link(Position::P15, Position::P16, 15,DEFAULT_UPHILL_SPEED, 50)?;
 
