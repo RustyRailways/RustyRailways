@@ -1,0 +1,280 @@
+[gd_scene load_steps=26 format=3 uid="uid://d0rmgd244h416"]
+
+[ext_resource type="Script" path="res://AutoDataUpdater.gd" id="1_buvbv"]
+[ext_resource type="Script" path="res://WebSocketClient.gd" id="1_wdu4v"]
+[ext_resource type="Script" path="res://HTTPIO.gd" id="1_wt0ks"]
+[ext_resource type="Script" path="res://AddressTextEdit.gd" id="2_hhqah"]
+[ext_resource type="PackedScene" uid="uid://dqe2yocnmvlcn" path="res://DebugUI.tscn" id="2_hn5uq"]
+[ext_resource type="Script" path="res://ConnectionStatusTextArea.gd" id="3_cgtxf"]
+[ext_resource type="Script" path="res://ReceivingTextPacketsTextArea.gd" id="4_hhjqi"]
+[ext_resource type="PackedScene" uid="uid://43sxev8pp7il" path="res://train-track-pieces/Curve.tscn" id="9_62217"]
+[ext_resource type="PackedScene" uid="uid://bmmt37ihxnnpc" path="res://trash-can/TrashCan.tscn" id="9_g4d8y"]
+[ext_resource type="Script" path="res://MainCamera.gd" id="9_wuc2u"]
+[ext_resource type="PackedScene" uid="uid://o2cea8ct6kut" path="res://train-track-pieces/CurveFlippedVertically.tscn" id="10_irbpo"]
+[ext_resource type="PackedScene" uid="uid://cem4mudpoky0f" path="res://train-track-pieces/HalfCurveFlippedVertically.tscn" id="10_x14bg"]
+[ext_resource type="PackedScene" uid="uid://cnjwfs5m653vu" path="res://train-track-pieces/SwitchHalfCurve.tscn" id="11_20n4t"]
+[ext_resource type="PackedScene" uid="uid://c456kspm3heqf" path="res://train-track-pieces/HalfCurve.tscn" id="11_uchv7"]
+[ext_resource type="PackedScene" uid="uid://dr7u1ha37i8ef" path="res://train-track-pieces/HalfStraight.tscn" id="13_fyhmf"]
+[ext_resource type="PackedScene" uid="uid://obvdt4u4q7q7" path="res://train-track-pieces/LongCurve.tscn" id="14_upbgr"]
+[ext_resource type="PackedScene" uid="uid://cwd5itauoli0v" path="res://train-track-pieces/LongCurveFlippedVertically.tscn" id="15_huauf"]
+[ext_resource type="PackedScene" uid="uid://dj8psrwvkj6cy" path="res://train-track-pieces/LongStraight.tscn" id="16_krvsw"]
+[ext_resource type="PackedScene" uid="uid://hs6qdmposrki" path="res://train-track-pieces/QuarterStraight.tscn" id="17_7gt4f"]
+[ext_resource type="PackedScene" uid="uid://b0w3ixbs5hk8o" path="res://train-track-pieces/Switch.tscn" id="18_ni8bv"]
+[ext_resource type="PackedScene" uid="uid://ijyrsh28ejdj" path="res://train-track-pieces/SwitchFlippedVertically.tscn" id="19_7peel"]
+[ext_resource type="PackedScene" uid="uid://ckxlfmmw0757c" path="res://train-track-pieces/SwitchHalfCurveFlippedVertically.tscn" id="21_igufp"]
+[ext_resource type="PackedScene" uid="uid://cnule33nhmeqa" path="res://Train.tscn" id="25_85y65"]
+[ext_resource type="PackedScene" uid="uid://crb32reckktf4" path="res://nfc-tags/NFCTag.tscn" id="26_qm2qs"]
+
+[sub_resource type="GDScript" id="GDScript_7igx0"]
+script/source = "extends Node2D
+
+func _on_AutoDataUpdater_timeout():
+	# call all update methods (that will then call to send requests)
+	
+	# the Train Nodes inside $Trains are actually just pointing to the real Train Nodes that are in the path of the train track
+#	for train in $Trains:
+#		train.updateStatus()
+	pass
+"
+
+[node name="Main" type="Node2D"]
+script = SubResource("GDScript_7igx0")
+
+[node name="AutoDataUpdater" type="Timer" parent="."]
+autostart = true
+script = ExtResource("1_buvbv")
+
+[node name="HTTPIO" type="Node" parent="."]
+script = ExtResource("1_wt0ks")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="WebSocketIO" type="Node" parent="."]
+script = ExtResource("1_wdu4v")
+
+[node name="NetworkingDebugUI" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AddressLabel" type="Label" parent="NetworkingDebugUI"]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 17.0
+offset_right = 129.0
+offset_bottom = 43.0
+text = "Address:"
+
+[node name="AddressTextEdit" type="TextEdit" parent="NetworkingDebugUI"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 46.0
+offset_right = 201.0
+offset_bottom = 92.0
+script = ExtResource("2_hhqah")
+
+[node name="ConnectButton" type="Button" parent="NetworkingDebugUI"]
+layout_mode = 0
+offset_left = 33.0
+offset_top = 98.0
+offset_right = 173.0
+offset_bottom = 129.0
+text = "Connect"
+
+[node name="ConnectionStatusTextArea" type="TextEdit" parent="NetworkingDebugUI"]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 134.0
+offset_right = 771.0
+offset_bottom = 209.0
+text = "None"
+editable = false
+script = ExtResource("3_cgtxf")
+
+[node name="SendTextPacketLabel" type="Label" parent="NetworkingDebugUI"]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 205.0
+offset_right = 128.0
+offset_bottom = 231.0
+text = "Text Packet:"
+
+[node name="SendTextPacketTextEdit" type="TextEdit" parent="NetworkingDebugUI"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 228.0
+offset_right = 390.0
+offset_bottom = 371.0
+
+[node name="SendTextPacketButton" type="Button" parent="NetworkingDebugUI"]
+layout_mode = 0
+offset_left = 33.0
+offset_top = 375.0
+offset_right = 173.0
+offset_bottom = 406.0
+text = "Send Text Packet"
+
+[node name="ReceivingTextPacketsTextArea" type="TextEdit" parent="NetworkingDebugUI"]
+layout_mode = 0
+offset_left = 33.0
+offset_top = 419.0
+offset_right = 498.0
+offset_bottom = 630.0
+editable = false
+script = ExtResource("4_hhjqi")
+
+[node name="a" type="TextEdit" parent="NetworkingDebugUI"]
+visible = false
+layout_mode = 0
+offset_left = 764.0
+offset_top = 166.0
+offset_right = 956.0
+offset_bottom = 203.0
+text = "10.0.0.2"
+
+[node name="a2" type="TextEdit" parent="NetworkingDebugUI"]
+visible = false
+layout_mode = 0
+offset_left = 762.0
+offset_top = 205.0
+offset_right = 954.0
+offset_bottom = 242.0
+text = "10.0.0.3"
+
+[node name="a3" type="TextEdit" parent="NetworkingDebugUI"]
+visible = false
+layout_mode = 0
+offset_left = 963.0
+offset_top = 167.0
+offset_right = 1155.0
+offset_bottom = 204.0
+text = "None"
+editable = false
+
+[node name="a4" type="TextEdit" parent="NetworkingDebugUI"]
+visible = false
+layout_mode = 0
+offset_left = 961.0
+offset_top = 206.0
+offset_right = 1153.0
+offset_bottom = 243.0
+text = "None"
+editable = false
+
+[node name="Button" type="Button" parent="NetworkingDebugUI"]
+visible = false
+layout_mode = 0
+offset_left = 768.0
+offset_top = 254.0
+offset_right = 1095.0
+offset_bottom = 292.0
+text = "Reconnect Disconnected Nodes"
+
+[node name="Button2" type="Button" parent="NetworkingDebugUI"]
+visible = false
+layout_mode = 0
+offset_left = 769.0
+offset_top = 295.0
+offset_right = 1096.0
+offset_bottom = 333.0
+text = "Disconnect+Reconnect All Nodes"
+
+[node name="DebugUI" parent="." instance=ExtResource("2_hn5uq")]
+offset_top = 176.0
+offset_bottom = 176.0
+
+[node name="MainCamera" type="Camera2D" parent="."]
+anchor_mode = 0
+script = ExtResource("9_wuc2u")
+
+[node name="Instructions" type="Label" parent="."]
+offset_left = 88.0
+offset_top = 13.0
+offset_right = 475.0
+offset_bottom = 140.0
+mouse_filter = 1
+text = "Pan with Ctrl + Mouse Left or just Space or Mouse Midle
+Zoom with Mouse Wheel
+Drag and Drop with Muse Left
+Press Delete to toggle Trash Mode (click on track pieces to remove them)
+Remove Track Piece by Dragging  itin the Tash
+There are More Train Track Pieces on Right and Top
+"
+
+[node name="TrashCan" parent="." instance=ExtResource("9_g4d8y")]
+unique_name_in_owner = true
+
+[node name="TrainTrackPieces" type="Node2D" parent="."]
+
+[node name="CurveSpawner" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(1065, 427)
+is_spawner = true
+
+[node name="CurveFlippedVerticallySpawner" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(1065, 254)
+is_spawner = true
+
+[node name="HalfCurveSpawner" parent="TrainTrackPieces" instance=ExtResource("11_uchv7")]
+position = Vector2(1065, 92)
+is_spawner = true
+
+[node name="HalfCurveFlippedVerticallySpawner" parent="TrainTrackPieces" instance=ExtResource("10_x14bg")]
+position = Vector2(1065, -86)
+is_spawner = true
+
+[node name="HalfStraightSpawner" parent="TrainTrackPieces" instance=ExtResource("13_fyhmf")]
+position = Vector2(1065, -248)
+is_spawner = true
+
+[node name="LongCurveSpawner" parent="TrainTrackPieces" instance=ExtResource("14_upbgr")]
+position = Vector2(1065, -426)
+is_spawner = true
+
+[node name="LongCurveFlippedVerticallySpawner" parent="TrainTrackPieces" instance=ExtResource("15_huauf")]
+position = Vector2(1065, -620)
+is_spawner = true
+
+[node name="LongStraightSpawner" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1065, -786)
+is_spawner = true
+
+[node name="QuarterStraightSpawner" parent="TrainTrackPieces" instance=ExtResource("17_7gt4f")]
+position = Vector2(1065, -956)
+is_spawner = true
+
+[node name="SwitchSpawner" parent="TrainTrackPieces" instance=ExtResource("18_ni8bv")]
+position = Vector2(1333, 427)
+is_spawner = true
+
+[node name="SwitchFlippedVerticallySpawner" parent="TrainTrackPieces" instance=ExtResource("19_7peel")]
+position = Vector2(1333, 166)
+is_spawner = true
+
+[node name="SwitchHalfCurveSpawner" parent="TrainTrackPieces" instance=ExtResource("11_20n4t")]
+position = Vector2(1333, -24)
+is_spawner = true
+
+[node name="SwitchHalfCurveVerticallyFlippedSpawner" parent="TrainTrackPieces" instance=ExtResource("21_igufp")]
+position = Vector2(1333, -248)
+is_spawner = true
+
+[node name="Trains" type="Node2D" parent="."]
+
+[node name="TrainSpawner" parent="Trains" instance=ExtResource("25_85y65")]
+position = Vector2(844, 49)
+
+[node name="NFCTags" type="Node2D" parent="."]
+
+[node name="NFCTag" parent="NFCTags" instance=ExtResource("26_qm2qs")]
+position = Vector2(844, 129)
+
+[connection signal="timeout" from="AutoDataUpdater" to="." method="_on_AutoDataUpdater_timeout"]
+[connection signal="connection_closed" from="WebSocketIO" to="NetworkingDebugUI/ConnectionStatusTextArea" method="_on_web_socket_io_connection_closed"]
+[connection signal="connection_failed" from="WebSocketIO" to="NetworkingDebugUI/ConnectionStatusTextArea" method="_on_web_socket_io_connection_failed"]
+[connection signal="connection_opened" from="WebSocketIO" to="NetworkingDebugUI/ConnectionStatusTextArea" method="_on_web_socket_io_connection_opened"]
+[connection signal="text_packet_received" from="WebSocketIO" to="NetworkingDebugUI/ReceivingTextPacketsTextArea" method="_on_web_socket_io_text_packet_received"]
+[connection signal="pressed" from="NetworkingDebugUI/ConnectButton" to="WebSocketIO" method="_on_connect_button_pressed"]
+[connection signal="pressed" from="NetworkingDebugUI/ConnectButton" to="NetworkingDebugUI/ConnectionStatusTextArea" method="_on_connect_button_pressed"]
+[connection signal="pressed" from="NetworkingDebugUI/SendTextPacketButton" to="WebSocketIO" method="_on_send_text_packet_button_pressed"]
