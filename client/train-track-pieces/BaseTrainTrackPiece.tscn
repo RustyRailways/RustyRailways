@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://train-track-pieces/BaseTrainTrackPiece.gd" id="1_48dgt"]
 [ext_resource type="Script" path="res://train-track-pieces/ConnectionPoint.gd" id="2_m8y75"]
-[ext_resource type="Texture2D" uid="uid://dviuhgfam8ndl" path="res://train-track-pieces/2859.8.png" id="3_kh3yv"]
+[ext_resource type="Texture2D" uid="uid://c3ftl42oohvn3" path="res://train-track-pieces/Switch.svg" id="3_kh3yv"]
 [ext_resource type="Texture2D" uid="uid://dmls1eufjhk03" path="res://arrow.png" id="4_xwom6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ofwjh"]
