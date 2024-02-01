@@ -209,55 +209,55 @@ unique_name_in_owner = true
 [node name="TrainTrackPieces" type="Node2D" parent="."]
 
 [node name="CurveSpawner" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
-position = Vector2(1065, 427)
+position = Vector2(1334, -112)
 is_spawner = true
 
 [node name="CurveFlippedVerticallySpawner" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
-position = Vector2(1065, 254)
+position = Vector2(1323, -287)
 is_spawner = true
 
 [node name="HalfCurveSpawner" parent="TrainTrackPieces" instance=ExtResource("11_uchv7")]
-position = Vector2(1065, 92)
+position = Vector2(1304, -458)
 is_spawner = true
 
 [node name="HalfCurveFlippedVerticallySpawner" parent="TrainTrackPieces" instance=ExtResource("10_x14bg")]
-position = Vector2(1065, -86)
+position = Vector2(1304, -636)
 is_spawner = true
 
 [node name="HalfStraightSpawner" parent="TrainTrackPieces" instance=ExtResource("13_fyhmf")]
-position = Vector2(1065, -248)
+position = Vector2(1037, 61)
 is_spawner = true
 
 [node name="LongCurveSpawner" parent="TrainTrackPieces" instance=ExtResource("14_upbgr")]
-position = Vector2(1065, -426)
+position = Vector2(1334, 254)
 is_spawner = true
 
 [node name="LongCurveFlippedVerticallySpawner" parent="TrainTrackPieces" instance=ExtResource("15_huauf")]
-position = Vector2(1065, -620)
+position = Vector2(1334, 60)
 is_spawner = true
 
 [node name="LongStraightSpawner" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
-position = Vector2(1065, -786)
+position = Vector2(1046, 239)
 is_spawner = true
 
 [node name="QuarterStraightSpawner" parent="TrainTrackPieces" instance=ExtResource("17_7gt4f")]
-position = Vector2(1065, -956)
+position = Vector2(1039, -105)
 is_spawner = true
 
 [node name="SwitchSpawner" parent="TrainTrackPieces" instance=ExtResource("18_ni8bv")]
-position = Vector2(1333, 427)
+position = Vector2(1683, 261)
 is_spawner = true
 
 [node name="SwitchFlippedVerticallySpawner" parent="TrainTrackPieces" instance=ExtResource("19_7peel")]
-position = Vector2(1333, 166)
+position = Vector2(1683, 0)
 is_spawner = true
 
 [node name="SwitchHalfCurveSpawner" parent="TrainTrackPieces" instance=ExtResource("11_20n4t")]
-position = Vector2(1333, -24)
+position = Vector2(1683, -190)
 is_spawner = true
 
 [node name="SwitchHalfCurveVerticallyFlippedSpawner" parent="TrainTrackPieces" instance=ExtResource("21_igufp")]
-position = Vector2(1333, -248)
+position = Vector2(1683, -414)
 is_spawner = true
 
 [node name="Trains" type="Node2D" parent="."]
