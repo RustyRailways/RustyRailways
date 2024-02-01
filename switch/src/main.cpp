@@ -1,8 +1,8 @@
 /**
  * @file main.cpp
  * @brief ESP8266 Rail Track Switch Control System
- * @author [Your Name]
- * @date [Date]
+ * @author Michele Callegari
+ * @date 11/02/2024
  */
 
 #include <ESP8266WiFi.h>
