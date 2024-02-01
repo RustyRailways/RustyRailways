@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Request"],"macro":["convert_id_or_return","unwrap_or_return"],"struct":["HighLevelController"]};

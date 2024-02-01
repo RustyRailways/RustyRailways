@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"master":[["impl&lt;'de&gt; <a class=\"trait\" href=\"https://docs.rs/serde/1.0.193/serde/de/trait.Deserialize.html\" title=\"trait serde::de::Deserialize\">Deserialize</a>&lt;'de&gt; for <a class=\"enum\" href=\"master/high_level_controller/enum.Request.html\" title=\"enum master::high_level_controller::Request\">Request</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

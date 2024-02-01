@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["map_navigation_functions"],"struct":["PathFinderAndScheduler"]};

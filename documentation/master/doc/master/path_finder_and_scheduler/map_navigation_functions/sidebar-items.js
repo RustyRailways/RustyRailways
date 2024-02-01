@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["path_finder","path_to_intersection","path_to_move_out_of_the_way","path_to_position","path_to_switch_point"],"struct":["OrderedPosition"]};

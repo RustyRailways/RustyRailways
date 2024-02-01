@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["DEFAULT_STRAIGHT_SPEED","DEFAULT_UPHILL_SPEED"],"fn":["get_map","main","run"],"mod":["hal","high_level_controller","low_level_controller","path_finder_and_scheduler"],"type":["Hal"]};

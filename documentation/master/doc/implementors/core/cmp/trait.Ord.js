@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"master":[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html\" title=\"trait core::cmp::Ord\">Ord</a> for <a class=\"struct\" href=\"master/path_finder_and_scheduler/map_navigation_functions/struct.OrderedPosition.html\" title=\"struct master::path_finder_and_scheduler::map_navigation_functions::OrderedPosition\">OrderedPosition</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["message_getter"],"struct":["MasterHalRaspberryPi"]};
