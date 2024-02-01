@@ -15,10 +15,6 @@ run/main_scene="res://Main.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://logo.png"
 
-[autoload]
-
-SaveSystem="*res://addons/save_system/save_system.gd"
-
 [editor]
 
 naming/default_signal_callback_name="_on_{NodeName}_{signal_name}"
