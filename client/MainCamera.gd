@@ -8,11 +8,14 @@ extends Camera2D
 #      - change it so that you can pan by holding down just the midle mouse button
 
 const ZOOM_INCREMENT = 0.05
-const ZOOM_MIN = 0.5
-const ZOOM_MAX = 2.0
+const ZOOM_MIN = 0.3
+const ZOOM_MAX = 3.0
 
-var panning := false
-var zoom_level := 1.0
+var panning: bool = false
+var zoom_level: float = max(zoom.x, zoom.y)  # idealy zoom.x and zoom.y should be the same
+
+func _ready() -> void:
+	position = Vector2(get_viewport().size) * (1 / max(zoom.x, zoom.y)) / 2  # center the view on the content (have the origin be the top-left corner), also idealy zoom.x and zoom.y should be the same
 
 func _unhandled_input(_event: InputEvent) -> void:
 	if _event.is_action_released("pan_mode"):
