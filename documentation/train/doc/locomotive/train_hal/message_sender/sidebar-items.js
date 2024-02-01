@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["URL_MASTER"],"struct":["MessageSender"]};
