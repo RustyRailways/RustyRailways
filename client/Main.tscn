@@ -173,9 +173,10 @@ text = "Disconnect+Reconnect All Nodes"
 [node name="DebugUI" parent="." instance=ExtResource("2_hn5uq")]
 offset_top = 176.0
 offset_bottom = 176.0
+metadata/_edit_use_anchors_ = true
 
 [node name="MainCamera" type="Camera2D" parent="."]
-anchor_mode = 0
+zoom = Vector2(0.4, 0.4)
 script = ExtResource("9_wuc2u")
 
 [node name="Instructions" type="Label" parent="."]
@@ -191,6 +192,7 @@ Press Delete to toggle Trash Mode (click on track pieces to remove them)
 Remove Track Piece by Dragging  itin the Tash
 There are More Train Track Pieces on Right and Top
 "
+metadata/_edit_use_anchors_ = true
 
 [node name="TrashCan" parent="." instance=ExtResource("9_g4d8y")]
 unique_name_in_owner = true
