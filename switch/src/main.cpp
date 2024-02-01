@@ -1,6 +1,9 @@
-/*
-  To upload through terminal you can use: curl -F "image=@firmware.bin" esp8266-webupdate.local/update
-*/
+/**
+ * @file main.cpp
+ * @brief ESP8266 Rail Track Switch Control System
+ * @author [Your Name]
+ * @date [Date]
+ */
 
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
@@ -44,7 +47,6 @@
     #define SWITCH_NAME "s5"
 #endif
 
-
 #if S6
     #define STRAIGHT 175
     #define DIVERTED 5
@@ -69,12 +71,12 @@ const char* host = SWITCH_NAME;
 const char* ssid = STASSID;
 const char* password = STAPSK;
 
-
-
 ESP8266WebServer server(80);
 Servo servo;
 
-// Handle client requests
+/**
+ * @brief Handles the root endpoint, sending hardware and switch information in JSON format.
+ */
 void handleRoot() {
     DynamicJsonDocument doc(JSON_DIM);
     doc["type"] = host;
@@ -84,57 +86,63 @@ void handleRoot() {
     server.send(200, "text/plain", message);
 }
 
-void  openSwitch() {
+/**
+ * @brief Opens the switch, setting it to the straight position.
+ */
+void openSwitch() {
     String response = "switch open";
-    //Serial.println("switch open");
     servo.write(STRAIGHT);
     server.send(200, "text/plain", response);
 }
 
+/**
+ * @brief Closes the switch, setting it to the diverted position.
+ */
 void closeSwitch() {
     String response = "switch close";
-    //Serial.println("switch close");
     servo.write(DIVERTED);
     server.send(200, "text/plain", response);
 }
 
-void handlerPost(){
-    //Seri"SetPositionStraight"al.println("POST request arrived");
+/**
+ * @brief Handles HTTP POST requests to set the switch position.
+ */
+void handlerPost() {
     String rawContent = server.arg("plain");
-    if(rawContent == "\"SetPositionStraight\""){
+    if (rawContent == "\"SetPositionStraight\"") {
         openSwitch();
-    }else if(rawContent == "\"SetPositionDiverted\""){
+    } else if (rawContent == "\"SetPositionDiverted\"") {
         closeSwitch();
-    }else{
+    } else {
         String response = "request not found";
         server.send(404, "text/plain", response);
     }
-  
 }
 
-
+/**
+ * @brief Setup function, initializes the system and starts the HTTP server.
+ */
 void setup() {
-    //Serial.begin(115200);
     servo.attach(2, 500, 2400);
     servo.write(STRAIGHT);
     delay(100);
     WiFi.mode(WIFI_AP_STA);
     WiFi.begin(ssid, password);
     if (WiFi.waitForConnectResult() == WL_CONNECTED) {
-
         // Define server routes
         server.on("/", HTTP_POST, handlerPost);
         server.on("/", HTTP_GET, handleRoot);
 
         // Start server
         server.begin();
-        //Serial.printf("Ready! Open http://%s.local:8266 in your browser\n", host);
-        //Serial.println("HTTP server started");
     } else {
         //Serial.println("WiFi Failed");
     }
 }
 
+/**
+ * @brief Loop function, handles incoming client requests.
+ */
 void loop() {
     server.handleClient();
 }

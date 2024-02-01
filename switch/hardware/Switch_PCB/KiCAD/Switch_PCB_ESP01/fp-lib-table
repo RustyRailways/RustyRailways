@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name "RustyRailways_Lib")(type "KiCad")(uri "/home/federico/Projects/RustyRailways/Switch_PCB/KiCAD/RustyRailways_Lib/RustyRailways_Lib.pretty")(options "")(descr ""))
+)
