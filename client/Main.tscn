@@ -1,0 +1,672 @@
+[gd_scene load_steps=26 format=3 uid="uid://d0rmgd244h416"]
+
+[ext_resource type="Script" path="res://AutoDataUpdater.gd" id="1_buvbv"]
+[ext_resource type="Script" path="res://Main.gd" id="1_uhvos"]
+[ext_resource type="Script" path="res://WebSocketClient.gd" id="1_wdu4v"]
+[ext_resource type="Script" path="res://HTTPIO.gd" id="1_wt0ks"]
+[ext_resource type="Script" path="res://AddressTextEdit.gd" id="2_hhqah"]
+[ext_resource type="PackedScene" uid="uid://dqe2yocnmvlcn" path="res://DebugUI.tscn" id="2_hn5uq"]
+[ext_resource type="Script" path="res://ConnectionStatusTextArea.gd" id="3_cgtxf"]
+[ext_resource type="Script" path="res://ReceivingTextPacketsTextArea.gd" id="4_hhjqi"]
+[ext_resource type="PackedScene" uid="uid://43sxev8pp7il" path="res://train-track-pieces/Curve.tscn" id="9_62217"]
+[ext_resource type="PackedScene" uid="uid://bmmt37ihxnnpc" path="res://trash-can/TrashCan.tscn" id="9_g4d8y"]
+[ext_resource type="Script" path="res://MainCamera.gd" id="9_wuc2u"]
+[ext_resource type="PackedScene" uid="uid://o2cea8ct6kut" path="res://train-track-pieces/CurveFlippedVertically.tscn" id="10_irbpo"]
+[ext_resource type="PackedScene" uid="uid://cem4mudpoky0f" path="res://train-track-pieces/HalfCurveFlippedVertically.tscn" id="10_x14bg"]
+[ext_resource type="PackedScene" uid="uid://cnjwfs5m653vu" path="res://train-track-pieces/SwitchHalfCurve.tscn" id="11_20n4t"]
+[ext_resource type="PackedScene" uid="uid://c456kspm3heqf" path="res://train-track-pieces/HalfCurve.tscn" id="11_uchv7"]
+[ext_resource type="PackedScene" uid="uid://dr7u1ha37i8ef" path="res://train-track-pieces/HalfStraight.tscn" id="13_fyhmf"]
+[ext_resource type="PackedScene" uid="uid://obvdt4u4q7q7" path="res://train-track-pieces/LongCurve.tscn" id="14_upbgr"]
+[ext_resource type="PackedScene" uid="uid://cwd5itauoli0v" path="res://train-track-pieces/LongCurveFlippedVertically.tscn" id="15_huauf"]
+[ext_resource type="PackedScene" uid="uid://dj8psrwvkj6cy" path="res://train-track-pieces/LongStraight.tscn" id="16_krvsw"]
+[ext_resource type="PackedScene" uid="uid://hs6qdmposrki" path="res://train-track-pieces/QuarterStraight.tscn" id="17_7gt4f"]
+[ext_resource type="PackedScene" uid="uid://b0w3ixbs5hk8o" path="res://train-track-pieces/Switch.tscn" id="18_ni8bv"]
+[ext_resource type="PackedScene" uid="uid://ijyrsh28ejdj" path="res://train-track-pieces/SwitchFlippedVertically.tscn" id="19_7peel"]
+[ext_resource type="PackedScene" uid="uid://ckxlfmmw0757c" path="res://train-track-pieces/SwitchHalfCurveFlippedVertically.tscn" id="21_igufp"]
+[ext_resource type="PackedScene" uid="uid://cnule33nhmeqa" path="res://trains/Train.tscn" id="25_85y65"]
+[ext_resource type="PackedScene" uid="uid://crb32reckktf4" path="res://nfc-tags/NFCTag.tscn" id="26_qm2qs"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_uhvos")
+
+[node name="AutoDataUpdater" type="Timer" parent="."]
+autostart = true
+script = ExtResource("1_buvbv")
+
+[node name="HTTPIO" type="Node" parent="."]
+script = ExtResource("1_wt0ks")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="WebSocketIO" type="Node" parent="."]
+script = ExtResource("1_wdu4v")
+
+[node name="NetworkingDebugUI" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AddressLabel" type="Label" parent="NetworkingDebugUI"]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 17.0
+offset_right = 129.0
+offset_bottom = 43.0
+text = "Address:"
+
+[node name="AddressTextEdit" type="TextEdit" parent="NetworkingDebugUI"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 46.0
+offset_right = 201.0
+offset_bottom = 92.0
+script = ExtResource("2_hhqah")
+
+[node name="ConnectButton" type="Button" parent="NetworkingDebugUI"]
+layout_mode = 0
+offset_left = 33.0
+offset_top = 98.0
+offset_right = 173.0
+offset_bottom = 129.0
+text = "Connect"
+
+[node name="ConnectionStatusTextArea" type="TextEdit" parent="NetworkingDebugUI"]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 134.0
+offset_right = 771.0
+offset_bottom = 209.0
+text = "None"
+editable = false
+script = ExtResource("3_cgtxf")
+
+[node name="SendTextPacketLabel" type="Label" parent="NetworkingDebugUI"]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 205.0
+offset_right = 128.0
+offset_bottom = 231.0
+text = "Text Packet:"
+
+[node name="SendTextPacketTextEdit" type="TextEdit" parent="NetworkingDebugUI"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 228.0
+offset_right = 390.0
+offset_bottom = 371.0
+
+[node name="SendTextPacketButton" type="Button" parent="NetworkingDebugUI"]
+layout_mode = 0
+offset_left = 33.0
+offset_top = 375.0
+offset_right = 173.0
+offset_bottom = 406.0
+text = "Send Text Packet"
+
+[node name="ReceivingTextPacketsTextArea" type="TextEdit" parent="NetworkingDebugUI"]
+layout_mode = 0
+offset_left = 33.0
+offset_top = 419.0
+offset_right = 498.0
+offset_bottom = 630.0
+editable = false
+script = ExtResource("4_hhjqi")
+
+[node name="a" type="TextEdit" parent="NetworkingDebugUI"]
+visible = false
+layout_mode = 0
+offset_left = 764.0
+offset_top = 166.0
+offset_right = 956.0
+offset_bottom = 203.0
+text = "10.0.0.2"
+
+[node name="a2" type="TextEdit" parent="NetworkingDebugUI"]
+visible = false
+layout_mode = 0
+offset_left = 762.0
+offset_top = 205.0
+offset_right = 954.0
+offset_bottom = 242.0
+text = "10.0.0.3"
+
+[node name="a3" type="TextEdit" parent="NetworkingDebugUI"]
+visible = false
+layout_mode = 0
+offset_left = 963.0
+offset_top = 167.0
+offset_right = 1155.0
+offset_bottom = 204.0
+text = "None"
+editable = false
+
+[node name="a4" type="TextEdit" parent="NetworkingDebugUI"]
+visible = false
+layout_mode = 0
+offset_left = 961.0
+offset_top = 206.0
+offset_right = 1153.0
+offset_bottom = 243.0
+text = "None"
+editable = false
+
+[node name="Button" type="Button" parent="NetworkingDebugUI"]
+visible = false
+layout_mode = 0
+offset_left = 768.0
+offset_top = 254.0
+offset_right = 1095.0
+offset_bottom = 292.0
+text = "Reconnect Disconnected Nodes"
+
+[node name="Button2" type="Button" parent="NetworkingDebugUI"]
+visible = false
+layout_mode = 0
+offset_left = 769.0
+offset_top = 295.0
+offset_right = 1096.0
+offset_bottom = 333.0
+text = "Disconnect+Reconnect All Nodes"
+
+[node name="DebugUI" parent="." instance=ExtResource("2_hn5uq")]
+offset_top = 176.0
+offset_bottom = 176.0
+metadata/_edit_use_anchors_ = true
+
+[node name="MainCamera" type="Camera2D" parent="."]
+zoom = Vector2(0.4, 0.4)
+script = ExtResource("9_wuc2u")
+
+[node name="Instructions" type="Label" parent="."]
+offset_left = 88.0
+offset_top = 13.0
+offset_right = 475.0
+offset_bottom = 140.0
+mouse_filter = 1
+text = "Pan with Ctrl + Mouse Left or just Space or Mouse Midle
+Zoom with Mouse Wheel
+Drag and Drop with Muse Left
+Press Delete to toggle Trash Mode (click on track pieces to remove them)
+Remove Track Piece by Dragging  itin the Tash
+There are More Train Track Pieces on Right and Top
+"
+metadata/_edit_use_anchors_ = true
+
+[node name="TrashCan" parent="." instance=ExtResource("9_g4d8y")]
+unique_name_in_owner = true
+
+[node name="TrainTrackPieces" type="Node2D" parent="."]
+
+[node name="CurveSpawner" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(1470, -186)
+is_spawner = true
+
+[node name="CurveFlippedVerticallySpawner" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(1459, -361)
+is_spawner = true
+
+[node name="HalfCurveSpawner" parent="TrainTrackPieces" instance=ExtResource("11_uchv7")]
+position = Vector2(1440, -532)
+is_spawner = true
+
+[node name="HalfCurveFlippedVerticallySpawner" parent="TrainTrackPieces" instance=ExtResource("10_x14bg")]
+position = Vector2(1440, -710)
+is_spawner = true
+
+[node name="HalfStraightSpawner" parent="TrainTrackPieces" instance=ExtResource("13_fyhmf")]
+position = Vector2(1173, -13)
+is_spawner = true
+
+[node name="LongCurveSpawner" parent="TrainTrackPieces" instance=ExtResource("14_upbgr")]
+position = Vector2(1470, 180)
+is_spawner = true
+
+[node name="LongCurveFlippedVerticallySpawner" parent="TrainTrackPieces" instance=ExtResource("15_huauf")]
+position = Vector2(1470, -14)
+is_spawner = true
+
+[node name="LongStraightSpawner" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1182, 165)
+is_spawner = true
+
+[node name="QuarterStraightSpawner" parent="TrainTrackPieces" instance=ExtResource("17_7gt4f")]
+position = Vector2(1175, -179)
+is_spawner = true
+
+[node name="SwitchSpawner" parent="TrainTrackPieces" instance=ExtResource("18_ni8bv")]
+position = Vector2(1819, 187)
+is_spawner = true
+
+[node name="SwitchFlippedVerticallySpawner" parent="TrainTrackPieces" instance=ExtResource("19_7peel")]
+position = Vector2(1819, -74)
+is_spawner = true
+
+[node name="SwitchHalfCurveSpawner" parent="TrainTrackPieces" instance=ExtResource("11_20n4t")]
+position = Vector2(1819, -264)
+is_spawner = true
+
+[node name="SwitchHalfCurveVerticallyFlippedSpawner" parent="TrainTrackPieces" instance=ExtResource("21_igufp")]
+position = Vector2(1819, -488)
+is_spawner = true
+
+[node name="BaseTrainTrackPiece" parent="TrainTrackPieces" instance=ExtResource("18_ni8bv")]
+position = Vector2(615, 1449)
+
+[node name="BaseTrainTrackPiece109" parent="TrainTrackPieces" instance=ExtResource("18_ni8bv")]
+position = Vector2(2545, 946)
+rotation = -1.57079
+
+[node name="BaseTrainTrackPiece74" parent="TrainTrackPieces" instance=ExtResource("18_ni8bv")]
+position = Vector2(886, 422)
+
+[node name="BaseTrainTrackPiece4" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(174, 629)
+rotation = -1.56738
+
+[node name="BaseTrainTrackPiece12" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(223, 517)
+rotation = -1.16101
+
+[node name="BaseTrainTrackPiece13" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(313, 431)
+rotation = -0.781287
+
+[node name="BaseTrainTrackPiece14" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(428, 382)
+rotation = -0.409542
+
+[node name="BaseTrainTrackPiece2" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(419, 1387)
+rotation = 0.400718
+
+[node name="BaseTrainTrackPiece6" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(306, 1340)
+rotation = 0.77478
+
+[node name="BaseTrainTrackPiece7" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(219, 1253)
+rotation = 1.19001
+scale = Vector2(1, 1)
+
+[node name="BaseTrainTrackPiece8" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(173, 1139)
+rotation = 1.57724
+scale = Vector2(1, 1)
+
+[node name="BaseTrainTrackPiece9" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(685, 1132)
+rotation = 0.379408
+
+[node name="BaseTrainTrackPiece52" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(1198, 1246)
+rotation = 0.00457264
+
+[node name="BaseTrainTrackPiece53" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(1312, 1201)
+rotation = -0.381844
+
+[node name="BaseTrainTrackPiece54" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(1401, 1116)
+rotation = -0.751667
+
+[node name="BaseTrainTrackPiece55" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(1451, 1002)
+rotation = -1.15824
+
+[node name="BaseTrainTrackPiece32" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(568, 1084)
+rotation = 0.798602
+
+[node name="BaseTrainTrackPiece33" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(482, 995)
+rotation = 1.20308
+
+[node name="BaseTrainTrackPiece99" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(2613, 754)
+rotation = -1.17001
+scale = Vector2(1, 1)
+
+[node name="BaseTrainTrackPiece50" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(2235, 1522)
+rotation = 0.00106107
+
+[node name="BaseTrainTrackPiece104" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(2349, 1475)
+rotation = -0.395303
+
+[node name="BaseTrainTrackPiece105" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(2436, 1387)
+rotation = -0.798021
+
+[node name="BaseTrainTrackPiece106" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(2483, 1272)
+rotation = -1.17416
+
+[node name="BaseTrainTrackPiece102" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(2100, 1393)
+rotation = -0.419529
+
+[node name="BaseTrainTrackPiece103" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(2184, 1302)
+rotation = -0.839196
+
+[node name="BaseTrainTrackPiece44" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(1435, 1390)
+rotation = 0.00781473
+
+[node name="BaseTrainTrackPiece45" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(1909, 1207)
+rotation = -0.389727
+
+[node name="BaseTrainTrackPiece85" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(1998, 1119)
+rotation = -0.769502
+
+[node name="BaseTrainTrackPiece86" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(2048, 1003)
+rotation = -1.17032
+
+[node name="BaseTrainTrackPiece36" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(436, 880)
+rotation = 1.56892
+scale = Vector2(1, 1)
+
+[node name="BaseTrainTrackPiece30" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(812, 1131)
+rotation = 0.0107288
+scale = Vector2(1, 1)
+
+[node name="BaseTrainTrackPiece31" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(1048, 1036)
+rotation = -0.376829
+
+[node name="BaseTrainTrackPiece57" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(1138, 948)
+rotation = -0.771123
+
+[node name="BaseTrainTrackPiece58" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(1188, 836)
+rotation = -1.14268
+
+[node name="BaseTrainTrackPiece23" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(806, 1519)
+rotation = 0.411286
+
+[node name="BaseTrainTrackPiece17" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(355, 1123)
+rotation = 1.11492
+
+[node name="BaseTrainTrackPiece18" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(447, 1205)
+rotation = 0.736819
+
+[node name="BaseTrainTrackPiece20" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
+position = Vector2(563, 1247)
+rotation = 0.342431
+
+[node name="BaseTrainTrackPiece101" parent="TrainTrackPieces" instance=ExtResource("19_7peel")]
+position = Vector2(1920, 1482)
+
+[node name="BaseTrainTrackPiece64" parent="TrainTrackPieces" instance=ExtResource("19_7peel")]
+position = Vector2(1905, 422)
+rotation = -3.14159
+
+[node name="BaseTrainTrackPiece11" parent="TrainTrackPieces" instance=ExtResource("19_7peel")]
+position = Vector2(214, 828)
+rotation = 1.57079
+
+[node name="BaseTrainTrackPiece5" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(799, 1398)
+
+[node name="BaseTrainTrackPiece15" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(293, 1012)
+rotation = 1.16489
+
+[node name="BaseTrainTrackPiece93" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(2363, 384)
+
+[node name="BaseTrainTrackPiece94" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(2477, 431)
+rotation = 0.388687
+
+[node name="BaseTrainTrackPiece95" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(2564, 518)
+rotation = 0.790599
+
+[node name="BaseTrainTrackPiece96" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(2612, 632)
+rotation = 1.163
+scale = Vector2(1, 1)
+
+[node name="BaseTrainTrackPiece111" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(2233, 516)
+
+[node name="BaseTrainTrackPiece112" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(2347, 563)
+rotation = 0.388687
+
+[node name="BaseTrainTrackPiece113" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(2434, 650)
+rotation = 0.790599
+
+[node name="BaseTrainTrackPiece114" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(2482, 764)
+rotation = 1.163
+scale = Vector2(1, 1)
+
+[node name="BaseTrainTrackPiece37" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(435, 754)
+rotation = -1.58001
+
+[node name="BaseTrainTrackPiece76" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(482, 642)
+rotation = -1.15474
+
+[node name="BaseTrainTrackPiece77" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(570, 557)
+rotation = -0.773756
+
+[node name="BaseTrainTrackPiece78" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(683, 512)
+rotation = -0.379725
+
+[node name="BaseTrainTrackPiece65" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(1066, 510)
+rotation = 0.411707
+
+[node name="BaseTrainTrackPiece66" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(1151, 599)
+rotation = 0.821201
+
+[node name="BaseTrainTrackPiece75" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(1193, 716)
+rotation = 1.2348
+
+[node name="BaseTrainTrackPiece60" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(1475, 755)
+rotation = -1.55102
+scale = Vector2(1, 1)
+
+[node name="BaseTrainTrackPiece61" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(1523, 644)
+rotation = -1.16235
+
+[node name="BaseTrainTrackPiece62" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
+position = Vector2(1610, 559)
+rotation = -0.777901
+
+[node name="BaseTrainTrackPiece100" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(2494, 1146)
+rotation = 1.57079
+
+[node name="BaseTrainTrackPiece92" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(2105, 371)
+
+[node name="BaseTrainTrackPiece110" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(2235, 372)
+
+[node name="BaseTrainTrackPiece87" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(2060, 878)
+rotation = 1.57079
+
+[node name="BaseTrainTrackPiece63" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1720, 501)
+rotation = -0.408509
+
+[node name="BaseTrainTrackPiece56" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1463, 879)
+rotation = -1.57079
+
+[node name="BaseTrainTrackPiece46" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1554, 1355)
+rotation = -0.367261
+
+[node name="BaseTrainTrackPiece47" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1674, 1309)
+rotation = -0.367261
+
+[node name="BaseTrainTrackPiece48" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1794, 1264)
+rotation = -0.367261
+
+[node name="BaseTrainTrackPiece34" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(933, 1093)
+rotation = -0.38242
+
+[node name="BaseTrainTrackPiece21" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(690, 1254)
+
+[node name="BaseTrainTrackPiece22" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(817, 1255)
+
+[node name="BaseTrainTrackPiece24" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(933, 1531)
+
+[node name="BaseTrainTrackPiece25" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1063, 1532)
+
+[node name="BaseTrainTrackPiece38" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1193, 1532)
+
+[node name="BaseTrainTrackPiece39" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1325, 1532)
+
+[node name="BaseTrainTrackPiece40" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1456, 1532)
+
+[node name="BaseTrainTrackPiece41" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1587, 1533)
+
+[node name="BaseTrainTrackPiece49" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1719, 1533)
+
+[node name="BaseTrainTrackPiece79" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1320, 503)
+
+[node name="BaseTrainTrackPiece80" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1450, 504)
+
+[node name="BaseTrainTrackPiece81" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1580, 504)
+
+[node name="BaseTrainTrackPiece82" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1712, 504)
+
+[node name="BaseTrainTrackPiece83" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1843, 504)
+
+[node name="BaseTrainTrackPiece84" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1974, 505)
+
+[node name="BaseTrainTrackPiece88" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(2106, 505)
+
+[node name="BaseTrainTrackPiece107" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(2107, 1533)
+
+[node name="BaseTrainTrackPiece51" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(2237, 1188)
+rotation = -1.22008
+
+[node name="BaseTrainTrackPiece108" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(2282, 1067)
+rotation = -1.22008
+
+[node name="BaseTrainTrackPiece59" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(684, 371)
+
+[node name="BaseTrainTrackPiece73" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(554, 371)
+
+[node name="BaseTrainTrackPiece67" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1073, 371)
+
+[node name="BaseTrainTrackPiece68" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1203, 371)
+
+[node name="BaseTrainTrackPiece69" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1332, 371)
+
+[node name="BaseTrainTrackPiece70" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1461, 371)
+
+[node name="BaseTrainTrackPiece89" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(934, 503)
+
+[node name="BaseTrainTrackPiece115" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(806, 503)
+
+[node name="BaseTrainTrackPiece90" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1063, 503)
+
+[node name="BaseTrainTrackPiece91" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1192, 503)
+
+[node name="BaseTrainTrackPiece71" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1590, 371)
+
+[node name="BaseTrainTrackPiece72" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1719, 371)
+
+[node name="BaseTrainTrackPiece42" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1181, 1399)
+
+[node name="BaseTrainTrackPiece43" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1308, 1400)
+
+[node name="BaseTrainTrackPiece26" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(926, 1398)
+
+[node name="BaseTrainTrackPiece27" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1053, 1399)
+
+[node name="BaseTrainTrackPiece28" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(944, 1255)
+
+[node name="BaseTrainTrackPiece29" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(1071, 1256)
+
+[node name="BaseTrainTrackPiece19" parent="TrainTrackPieces" instance=ExtResource("16_krvsw")]
+position = Vector2(163, 1013)
+rotation = 1.57079
+
+[node name="Trains" type="Node2D" parent="."]
+
+[node name="TrainSpawner" parent="Trains" instance=ExtResource("25_85y65")]
+position = Vector2(844, 49)
+
+[node name="NFCTags" type="Node2D" parent="."]
+
+[node name="NFCTag" parent="NFCTags" instance=ExtResource("26_qm2qs")]
+position = Vector2(844, 129)
+
+[connection signal="timeout" from="AutoDataUpdater" to="." method="_on_AutoDataUpdater_timeout"]
+[connection signal="connection_closed" from="WebSocketIO" to="NetworkingDebugUI/ConnectionStatusTextArea" method="_on_web_socket_io_connection_closed"]
+[connection signal="connection_failed" from="WebSocketIO" to="NetworkingDebugUI/ConnectionStatusTextArea" method="_on_web_socket_io_connection_failed"]
+[connection signal="connection_opened" from="WebSocketIO" to="NetworkingDebugUI/ConnectionStatusTextArea" method="_on_web_socket_io_connection_opened"]
+[connection signal="text_packet_received" from="WebSocketIO" to="NetworkingDebugUI/ReceivingTextPacketsTextArea" method="_on_web_socket_io_text_packet_received"]
+[connection signal="pressed" from="NetworkingDebugUI/ConnectButton" to="WebSocketIO" method="_on_connect_button_pressed"]
+[connection signal="pressed" from="NetworkingDebugUI/ConnectButton" to="NetworkingDebugUI/ConnectionStatusTextArea" method="_on_connect_button_pressed"]
+[connection signal="pressed" from="NetworkingDebugUI/SendTextPacketButton" to="WebSocketIO" method="_on_send_text_packet_button_pressed"]

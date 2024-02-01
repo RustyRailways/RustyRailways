@@ -1,0 +1,8 @@
+# Godot 4+ specific ignores
+.godot/
+
+# temporary files
+*.tmp
+
+# temporary godot project file (appears every time you export/build the client
+/build/web/project.godot
