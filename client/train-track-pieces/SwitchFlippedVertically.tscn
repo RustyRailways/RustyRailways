@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://train-track-pieces/BaseTrainTrackPiece.gd" id="1_x6apy"]
 [ext_resource type="Script" path="res://train-track-pieces/ConnectionPoint.gd" id="2_naver"]
 [ext_resource type="Texture2D" uid="uid://c3ftl42oohvn3" path="res://train-track-pieces/Switch.svg" id="3_b5lgu"]
-[ext_resource type="Texture2D" uid="uid://dmls1eufjhk03" path="res://arrow.png" id="4_h8dhi"]
+[ext_resource type="Texture2D" uid="uid://c68urfmgrfvuq" path="res://arrow-headless.png" id="4_6o706"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ofwjh"]
 radius = 25.0
@@ -207,12 +207,12 @@ autowrap_mode = 3
 
 [node name="SwitchStateStraight" type="Sprite2D" parent="."]
 position = Vector2(-34, 51.825)
-texture = ExtResource("4_h8dhi")
+texture = ExtResource("4_6o706")
 
 [node name="SwitchStateNotStraight" type="Sprite2D" parent="."]
 position = Vector2(-37, 30.91)
 rotation = -0.324631
-texture = ExtResource("4_h8dhi")
+texture = ExtResource("4_6o706")
 
 [node name="DebugRayCast2D" type="RayCast2D" parent="."]
 target_position = Vector2(0, 0)
