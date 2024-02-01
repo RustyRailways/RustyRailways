@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"map":[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/convert/trait.Into.html\" title=\"trait core::convert::Into\">Into</a>&lt;<a class=\"struct\" href=\"map/references/struct.IntiNodeRef.html\" title=\"struct map::references::IntiNodeRef\">IntiNodeRef</a>&gt; for &amp;<a class=\"struct\" href=\"map/nodes/struct.Node.html\" title=\"struct map::nodes::Node\">Node</a>&lt;<a class=\"struct\" href=\"map/states/struct.MapStateInitialized.html\" title=\"struct map::states::MapStateInitialized\">MapStateInitialized</a>&gt;"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

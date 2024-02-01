@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["SwitchControllerOption","SwitchPosition","TrainStatus"],"struct":["SwitchController","TrainController"]};

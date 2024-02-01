@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["AdjacentNodes","Direction","NodeStatus"],"struct":["Link","Node"]};

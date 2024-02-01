@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["MapStateInitialized","MapStateUninitialized"],"trait":["MapState","ReferenceState","ReferenceStateInitialized","ReferenceStateUninitialized"]};

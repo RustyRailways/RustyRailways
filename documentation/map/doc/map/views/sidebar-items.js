@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["map_controller_view","map_creation_view","map_factory","map_navigation_view","map_visualization_view"]};

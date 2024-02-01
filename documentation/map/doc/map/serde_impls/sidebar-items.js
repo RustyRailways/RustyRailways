@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["ref_serde_impls"]};

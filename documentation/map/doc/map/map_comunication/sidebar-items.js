@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Message"],"struct":["MapComunicationMaster","MapComunicationSlave"],"trait":["Comunicator"]};

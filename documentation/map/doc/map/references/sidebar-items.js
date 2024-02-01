@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["IntiNodeRef","IntiSwitchRef","IntiTrainRef","UnIntiNodeRef","UnIntiSwitchRef","UnIntiTrainRef"],"trait":["NodeRef","SwitchRef","TrainRef"]};
