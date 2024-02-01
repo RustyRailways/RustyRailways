@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"railway_sim_map":[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html\" title=\"trait core::clone::Clone\">Clone</a> for <a class=\"struct\" href=\"railway_sim_map/map/nodes/struct.RoadNode.html\" title=\"struct railway_sim_map::map::nodes::RoadNode\">RoadNode</a>"],["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html\" title=\"trait core::clone::Clone\">Clone</a> for <a class=\"struct\" href=\"railway_sim_map/map/nodes/struct.SwitchNode.html\" title=\"struct railway_sim_map::map::nodes::SwitchNode\">SwitchNode</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
