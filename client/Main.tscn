@@ -1,6 +1,7 @@
 [gd_scene load_steps=26 format=3 uid="uid://d0rmgd244h416"]
 
 [ext_resource type="Script" path="res://AutoDataUpdater.gd" id="1_buvbv"]
+[ext_resource type="Script" path="res://Main.gd" id="1_uhvos"]
 [ext_resource type="Script" path="res://WebSocketClient.gd" id="1_wdu4v"]
 [ext_resource type="Script" path="res://HTTPIO.gd" id="1_wt0ks"]
 [ext_resource type="Script" path="res://AddressTextEdit.gd" id="2_hhqah"]
@@ -25,20 +26,8 @@
 [ext_resource type="PackedScene" uid="uid://cnule33nhmeqa" path="res://trains/Train.tscn" id="25_85y65"]
 [ext_resource type="PackedScene" uid="uid://crb32reckktf4" path="res://nfc-tags/NFCTag.tscn" id="26_qm2qs"]
 
-[sub_resource type="GDScript" id="GDScript_7igx0"]
-script/source = "extends Node2D
-
-func _on_AutoDataUpdater_timeout():
-	# call all update methods (that will then call to send requests)
-	
-	# the Train Nodes inside $Trains are actually just pointing to the real Train Nodes that are in the path of the train track
-#	for train in $Trains:
-#		train.updateStatus()
-	pass
-"
-
 [node name="Main" type="Node2D"]
-script = SubResource("GDScript_7igx0")
+script = ExtResource("1_uhvos")
 
 [node name="AutoDataUpdater" type="Timer" parent="."]
 autostart = true
