@@ -1,5 +1,3 @@
-use std::os::linux::raw::stat;
-
 use common_infrastructure::devices::Train;
 use common_infrastructure::hals::MasterHal;
 use common_infrastructure::Position;
