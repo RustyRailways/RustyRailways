@@ -179,21 +179,29 @@ func _on_ConnectionPoint_body_entered(other_body: Area2D, self_body: RayCast2D):
 	var other_connection_point = (other_body.get_parent() as RayCast2D)
 	var self_connection_point = self_body
 	
-	# if other_body is not a grabbed body then it's probably a bug as only grabbed bodies should be able to collide with self_body
-	if !(((other_connection_point.get_parent() as Node2D).get_parent() as Node2D).grabbed):
-		push_warning("[WARNING] " + other_connection_point.name + "/" + other_body.name + " exited " + self_body.name + " which should not be possible, this is a possible bug!")
-		return
+	# if other_body is not a grabbed body then it's probably caused by a force_update_connections() or is a bug as only grabbed bodies should be able to collide with self_body normally, TODO: revisit this
+	#if !(((other_connection_point.get_parent() as Node2D).get_parent() as Node2D).grabbed):
+		#push_warning("[WARNING] " + other_connection_point.name + "/" + other_body.name + " exited " + self_body.name + " which should not be possible, this is a possible bug!")
+		#return
 	
 	print_debug("[DEBUG] " + (other_body.get_parent() as RayCast2D).name + "/" + other_body.name + " entered " + self_body.name)
 	
-	self_connection_point.soft_connected_to = other_connection_point
-	other_connection_point.soft_connected_to = self_connection_point
+	# if a force_update_connections() is running then bypass the normal connection system and hard connect directly
+	if get_parent().get_parent().force_update_connections_running:
+		self_connection_point.hard_connected_to = other_connection_point
+		other_connection_point.hard_connected_to = self_connection_point
 	
-	# rotate the other_connection_point parent (train track piece) to align it with self_connection_point parent (train track piece)
-	if self_connection_point.connection_point_id == CONNECTION_POINT_POSITION.LEFT:
-		((other_connection_point.get_parent() as Node2D).get_parent() as Node2D).rotation_degrees = - rad_to_deg(other_connection_point.target_position.angle()) - rad_to_deg(self_connection_point.target_position.angle()) + $".".rotation_degrees + 180
-	elif (self_connection_point.connection_point_id == CONNECTION_POINT_POSITION.TOP_RIGHT) || (self_connection_point.connection_point_id == CONNECTION_POINT_POSITION.BOTTOM_RIGHT):
-		((other_connection_point.get_parent() as Node2D).get_parent() as Node2D).rotation_degrees = rad_to_deg(self_connection_point.target_position.angle()) + $".".rotation_degrees
+	# soft connect and have _input() handle the hard connection
+	# also rotate the train track piece
+	else:
+		self_connection_point.soft_connected_to = other_connection_point
+		other_connection_point.soft_connected_to = self_connection_point
+		
+		# rotate the other_connection_point parent (train track piece) to align it with self_connection_point parent (train track piece)
+		if self_connection_point.connection_point_id == CONNECTION_POINT_POSITION.LEFT:
+			((other_connection_point.get_parent() as Node2D).get_parent() as Node2D).rotation_degrees = - rad_to_deg(other_connection_point.target_position.angle()) - rad_to_deg(self_connection_point.target_position.angle()) + $".".rotation_degrees + 180
+		elif (self_connection_point.connection_point_id == CONNECTION_POINT_POSITION.TOP_RIGHT) || (self_connection_point.connection_point_id == CONNECTION_POINT_POSITION.BOTTOM_RIGHT):
+			((other_connection_point.get_parent() as Node2D).get_parent() as Node2D).rotation_degrees = rad_to_deg(self_connection_point.target_position.angle()) + $".".rotation_degrees
 	
 func _on_ConnectionPoint_body_exited(other_body: Area2D, self_body: RayCast2D):
 	# NOTE:
