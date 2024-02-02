@@ -40,13 +40,13 @@ collide_with_areas = true
 collide_with_bodies = false
 script = ExtResource("2_xbwkb")
 
-[node name="ConnectionPointSnapArea" type="Area2D" parent="ConnectionPoints/ConnectionPoint1Left"]
+[node name="SnapArea" type="Area2D" parent="ConnectionPoints/ConnectionPoint1Left"]
 collision_layer = 2
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ConnectionPoints/ConnectionPoint1Left/ConnectionPointSnapArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ConnectionPoints/ConnectionPoint1Left/SnapArea"]
 shape = SubResource("CircleShape2D_ofwjh")
 disabled = true
 
@@ -92,13 +92,13 @@ collide_with_areas = true
 collide_with_bodies = false
 script = ExtResource("2_xbwkb")
 
-[node name="ConnectionPointSnapArea" type="Area2D" parent="ConnectionPoints/ConnectionPoint2TopRight"]
+[node name="SnapArea" type="Area2D" parent="ConnectionPoints/ConnectionPoint2TopRight"]
 collision_layer = 2
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ConnectionPoints/ConnectionPoint2TopRight/ConnectionPointSnapArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ConnectionPoints/ConnectionPoint2TopRight/SnapArea"]
 shape = SubResource("CircleShape2D_ofwjh")
 disabled = true
 
