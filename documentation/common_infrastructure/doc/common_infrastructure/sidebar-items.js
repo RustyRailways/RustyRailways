@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["IP_MASTER","MASTER_PORT_CONTROLLER","MASTER_PORT_VISUALIZER","URL_MASTER"],"enum":["Position"],"mod":["devices","hals","messages","wifi_credentials"],"trait":["HasUrl"]};
