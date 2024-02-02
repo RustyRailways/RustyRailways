@@ -1,4 +1,4 @@
-use common_infrastructure::{devices::Switch, devices::Train, messages::SwitchMessage, Position};
+use common_infrastructure::{devices::Switch, devices::Train, messages::{SwitchMessage, TrainMessage}, Position};
 #[allow(unused_imports)]
 use railway_sim_map::SimulatedMap;
 #[allow(unused_imports)]
@@ -117,13 +117,33 @@ fn get_map()-> anyhow::Result<MapFactory>{
     
 
     //// trains ////
+    //map.add_train(Train::T2, Position::P18, None)?;
     map.add_train(Train::T2, Position::P18, None)?;
-    map.add_train(Train::T1, Position::P22, None)?;
     
     
     //// creation ////
     let factory: MapFactory = map.into();
     Ok(factory)
+}
+
+
+#[test]
+fn test_all_connections(){
+    let hal = Hal::new().unwrap();
+
+    for train in [Train::T1,Train::T2]{
+        print!("Testing {:?} connection...",train);
+        let _ = hal.send_message_to_train(train, TrainMessage::SetSpeed(0)).map_err(|e|{
+            eprint!("{:?} is not connected: {:?}",train,e);
+        });
+    }
+
+    for switch in [Switch::S1,Switch::S2,Switch::S3,Switch::S4,Switch::S5,Switch::S6]{
+        print!("Testing {:?} connection...",switch);
+        let _ = hal.send_message_to_switch(switch, SwitchMessage::SetPositionDiverted).map_err(|e|{
+            eprint!("{:?} is not connected: {:?}",switch,e);
+        });
+    }
 }
 
 #[test]
