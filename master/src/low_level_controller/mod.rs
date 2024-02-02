@@ -63,6 +63,7 @@ impl<'a,T:MasterHal> LowLevelController<'a,T> {
                 {
                     message = TrainMessage::SetSpeedAndStopAt(wanted_train_speed, *position);
                 }else{
+                    self.map_controller.set_switch_between(*position, *next_position)?;
                     message = TrainMessage::SetSpeed(wanted_train_speed);
                 }
             }
