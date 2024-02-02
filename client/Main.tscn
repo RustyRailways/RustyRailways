@@ -180,10 +180,10 @@ zoom = Vector2(0.4, 0.4)
 script = ExtResource("9_wuc2u")
 
 [node name="Instructions" type="Label" parent="."]
-offset_left = 88.0
-offset_top = 13.0
-offset_right = 475.0
-offset_bottom = 140.0
+offset_left = 132.0
+offset_top = 9.0
+offset_right = 693.0
+offset_bottom = 162.0
 mouse_filter = 1
 text = "Pan with Ctrl + Mouse Left or just Space or Mouse Midle
 Zoom with Mouse Wheel
@@ -196,6 +196,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="TrashCan" parent="." instance=ExtResource("9_g4d8y")]
 unique_name_in_owner = true
+position = Vector2(63, 74)
 
 [node name="TrainTrackPieces" type="Node2D" parent="."]
 
@@ -288,12 +289,10 @@ rotation = 0.77478
 [node name="BaseTrainTrackPiece7" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
 position = Vector2(219, 1253)
 rotation = 1.19001
-scale = Vector2(1, 1)
 
 [node name="BaseTrainTrackPiece8" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
 position = Vector2(173, 1139)
 rotation = 1.57724
-scale = Vector2(1, 1)
 
 [node name="BaseTrainTrackPiece9" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
 position = Vector2(685, 1132)
@@ -326,7 +325,6 @@ rotation = 1.20308
 [node name="BaseTrainTrackPiece99" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
 position = Vector2(2613, 754)
 rotation = -1.17001
-scale = Vector2(1, 1)
 
 [node name="BaseTrainTrackPiece50" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
 position = Vector2(2235, 1522)
@@ -371,12 +369,10 @@ rotation = -1.17032
 [node name="BaseTrainTrackPiece36" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
 position = Vector2(436, 880)
 rotation = 1.56892
-scale = Vector2(1, 1)
 
 [node name="BaseTrainTrackPiece30" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
 position = Vector2(812, 1131)
 rotation = 0.0107288
-scale = Vector2(1, 1)
 
 [node name="BaseTrainTrackPiece31" parent="TrainTrackPieces" instance=ExtResource("10_irbpo")]
 position = Vector2(1048, 1036)
@@ -438,7 +434,6 @@ rotation = 0.790599
 [node name="BaseTrainTrackPiece96" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
 position = Vector2(2612, 632)
 rotation = 1.163
-scale = Vector2(1, 1)
 
 [node name="BaseTrainTrackPiece111" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
 position = Vector2(2233, 516)
@@ -454,7 +449,6 @@ rotation = 0.790599
 [node name="BaseTrainTrackPiece114" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
 position = Vector2(2482, 764)
 rotation = 1.163
-scale = Vector2(1, 1)
 
 [node name="BaseTrainTrackPiece37" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
 position = Vector2(435, 754)
@@ -487,7 +481,6 @@ rotation = 1.2348
 [node name="BaseTrainTrackPiece60" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
 position = Vector2(1475, 755)
 rotation = -1.55102
-scale = Vector2(1, 1)
 
 [node name="BaseTrainTrackPiece61" parent="TrainTrackPieces" instance=ExtResource("9_62217")]
 position = Vector2(1523, 644)
