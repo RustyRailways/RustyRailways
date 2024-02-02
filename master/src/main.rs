@@ -97,7 +97,7 @@ fn get_map()-> anyhow::Result<MapFactory>{
     map.add_link(Position::P11, Position::P7, DEFAULT_STRAIGHT_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
 
     //// S5 to S6 ////
-    map.add_link(Position::P6, Position::P4, 20,20, 50)?;
+    map.add_link(Position::P6, Position::P4, 30,30, 50)?;
 
     //// S3 to S6 ////
     map.add_link(Position::P3, Position::P17, DEFAULT_STRAIGHT_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
@@ -111,8 +111,8 @@ fn get_map()-> anyhow::Result<MapFactory>{
     map.add_link(Position::P15, Position::P16, 15,DEFAULT_UPHILL_SPEED, 50)?;
 
     //// dead track S1 ////
-    map.add_link(Position::P5, Position::P10, DEFAULT_UPHILL_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
-    map.add_link(Position::P10, Position::P25, DEFAULT_STRAIGHT_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
+    map.add_link(Position::P5, Position::P9, DEFAULT_UPHILL_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
+    map.add_link(Position::P9, Position::P25, DEFAULT_STRAIGHT_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
     map.add_link(Position::P25, Position::P18, DEFAULT_STRAIGHT_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
     
 
@@ -132,16 +132,16 @@ fn test_all_connections(){
     let hal = Hal::new().unwrap();
 
     for train in [Train::T1,Train::T2]{
-        print!("Testing {:?} connection...",train);
+        println!("Testing {:?} connection...",train);
         let _ = hal.send_message_to_train(train, TrainMessage::SetSpeed(0)).map_err(|e|{
-            eprint!("{:?} is not connected: {:?}",train,e);
+            eprintln!("{:?} is not connected: {}",train,e);
         });
     }
 
     for switch in [Switch::S1,Switch::S2,Switch::S3,Switch::S4,Switch::S5,Switch::S6]{
-        print!("Testing {:?} connection...",switch);
+        println!("Testing {:?} connection...",switch);
         let _ = hal.send_message_to_switch(switch, SwitchMessage::SetPositionDiverted).map_err(|e|{
-            eprint!("{:?} is not connected: {:?}",switch,e);
+            eprintln!("{:?} is not connected: {}",switch,e);
         });
     }
 }
