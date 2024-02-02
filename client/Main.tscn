@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://43sxev8pp7il" path="res://train-track-pieces/Curve.tscn" id="9_62217"]
 [ext_resource type="PackedScene" uid="uid://bmmt37ihxnnpc" path="res://trash-can/TrashCan.tscn" id="9_g4d8y"]
 [ext_resource type="Script" path="res://MainCamera.gd" id="9_wuc2u"]
+[ext_resource type="Script" path="res://BackgroundColorChanger.gd" id="10_hvcpu"]
 [ext_resource type="PackedScene" uid="uid://o2cea8ct6kut" path="res://train-track-pieces/CurveFlippedVertically.tscn" id="10_irbpo"]
 [ext_resource type="PackedScene" uid="uid://cem4mudpoky0f" path="res://train-track-pieces/HalfCurveFlippedVertically.tscn" id="10_x14bg"]
 [ext_resource type="PackedScene" uid="uid://cnjwfs5m653vu" path="res://train-track-pieces/SwitchHalfCurve.tscn" id="11_20n4t"]
@@ -25,6 +26,8 @@
 [ext_resource type="PackedScene" uid="uid://ckxlfmmw0757c" path="res://train-track-pieces/SwitchHalfCurveFlippedVertically.tscn" id="21_igufp"]
 [ext_resource type="PackedScene" uid="uid://cnule33nhmeqa" path="res://trains/Train.tscn" id="25_85y65"]
 [ext_resource type="PackedScene" uid="uid://crb32reckktf4" path="res://nfc-tags/NFCTag.tscn" id="26_qm2qs"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_nxkvu"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_uhvos")
@@ -178,6 +181,28 @@ metadata/_edit_use_anchors_ = true
 [node name="MainCamera" type="Camera2D" parent="."]
 zoom = Vector2(0.4, 0.4)
 script = ExtResource("9_wuc2u")
+
+[node name="Settings" type="Node2D" parent="."]
+position = Vector2(13, 146)
+
+[node name="BackgroundColorChanger" type="ColorPickerButton" parent="Settings"]
+custom_minimum_size = Vector2(50, 50)
+offset_left = 25.0
+offset_top = 34.0
+offset_right = 75.0
+offset_bottom = 84.0
+script = ExtResource("10_hvcpu")
+
+[node name="BackgroundColorLabel" type="Label" parent="Settings"]
+offset_left = 2.0
+offset_top = -16.0
+offset_right = 100.0
+offset_bottom = 33.0
+text = "Background
+Color
+"
+label_settings = SubResource("LabelSettings_nxkvu")
+horizontal_alignment = 1
 
 [node name="Instructions" type="Label" parent="."]
 offset_left = 132.0
@@ -663,3 +688,4 @@ position = Vector2(844, 129)
 [connection signal="pressed" from="NetworkingDebugUI/ConnectButton" to="WebSocketIO" method="_on_connect_button_pressed"]
 [connection signal="pressed" from="NetworkingDebugUI/ConnectButton" to="NetworkingDebugUI/ConnectionStatusTextArea" method="_on_connect_button_pressed"]
 [connection signal="pressed" from="NetworkingDebugUI/SendTextPacketButton" to="WebSocketIO" method="_on_send_text_packet_button_pressed"]
+[connection signal="color_changed" from="Settings/BackgroundColorChanger" to="Settings/BackgroundColorChanger" method="_on_color_changed"]
