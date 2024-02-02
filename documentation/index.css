@@ -1,0 +1,90 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 20px;
+    padding: 0;
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+div{
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+h1 {
+    color: #d4d4d4;
+    border-bottom: 2px solid #3b3b3b;
+    padding-bottom: 10px;
+}
+
+h2 {
+    color: #a8a8a8;
+}
+
+a {
+    color: #e0b225;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a:visited {
+    color: #e0b225;
+}
+
+a:active,
+a:focus {
+    outline: none;
+}
+
+a:focus-visible {
+    outline: 2px solid #e0b225;
+}
+
+a,
+a:hover,
+a:visited {
+    transition: color 0.3s ease-in-out;
+}
+
+/* Navigation */
+nav {
+    float: left;
+    width: 20%;
+    padding-right: 20px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav a {
+    display: block;
+    padding: 10px 0;
+    color: #e0b225;
+}
+
+nav a:hover {
+    background-color: #303030;
+}
+
+/* Content */
+.content {
+    float: left;
+    width: 70%;
+}
+
+/* Clearfix to clear floats */
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
