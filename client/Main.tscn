@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://d0rmgd244h416"]
+[gd_scene load_steps=28 format=3 uid="uid://d0rmgd244h416"]
 
 [ext_resource type="Script" path="res://AutoDataUpdater.gd" id="1_buvbv"]
 [ext_resource type="Script" path="res://Main.gd" id="1_uhvos"]
