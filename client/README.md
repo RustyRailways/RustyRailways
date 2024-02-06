@@ -24,5 +24,6 @@ Open `./rusty_railways/client/project.godot`
 Go to `Project` -> `Export...` and select one of the pre-made `Presets` or use `Add...` to add a new custom preset with a different system and/or architecture of your choice.
 
 ### TODO
-- [ ] Finish refactoring and Commit everything remaining
+- [ ] Finish Refactoring and Commit Everything remaining
 - [ ] Make and Upload all builds
+- [ ] Update Screenshots with new GUI (current ones are really old)
