@@ -32,7 +32,7 @@ impl GenericHal for MasterHalRaspberryPi{
         );
     }
     fn sleep_for_ms(&self, ms: u32) {
-        std::thread::sleep(std::time::Duration::from_millis(ms as u64));
+        std::thread::sleep(std::time::Duto_stringration::from_millis(ms as u64));
     }
 }
 
@@ -42,10 +42,10 @@ impl MasterHal for MasterHalRaspberryPi {
     }
     fn send_message_to_train(&self, train: Train, mut message: TrainMessage) -> Result<()> {
 
-
-        if let TrainMessage::SetSpeed(s) = message{
-            message = TrainMessage::SetSpeed(s*2);
-        }
+        
+        //if let TrainMessage::SetSpeed(s) = message{
+        //message = TrainMessage::SetSpeed(s*2);
+        //} */
 
         let ip = train.get_url();
         let message_json = serde_json::to_string(&message)?;

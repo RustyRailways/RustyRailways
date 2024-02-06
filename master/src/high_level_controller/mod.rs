@@ -100,7 +100,7 @@ impl HighLevelController{
                         rouille::Response::text(&serde_json::to_string(&pos).unwrap())
                     },
                     _ => {
-                        println!("not found");
+                        println!("not found: {:?}",request);
                         rouille::Response::empty_404()
                     }
                 )
