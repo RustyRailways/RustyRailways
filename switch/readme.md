@@ -1,16 +1,16 @@
 # ESP8266 Rail Track Switch Control System
 
-This section of the repository contains the source code for an ESP8266-based rail track switch control system. The code enables the ESP8266 to function as a web server, offering control over a servo-driven rail track switch. It is designed for the master to set the correct path for trains.
+This section of the repository contains the source code for an ESP8266-based rail track switch control system. The code enables the ESP8266 to function as a web server, offering control over a servo-driven rail track switch. It is designed to set the correct path for trains.
 
 ![Switch Image](../imgs/switch.jpg)
 
 ## Features
-- The ESP8266 serves a REST API to interface with other components of the project.
+- The ESP8266 uses a REST API to interface with other components of the project.
 - Switch control commands can be transmitted via HTTP POST requests.
 
 ## Hardware
 - The system utilizes a Servo motor (specifically, the MSG90S) to control the position of the rail track switch.
-- WiFi connectivity is established using the ESP8266 module 01.
+- WiFi connectivity is established using the built-in wireless functionality of the ESP8266-01S module.
 
 ## Code Overview
 - The code includes essential libraries such as `ESP8266WiFi`, `WiFiClient`, `ESP8266WebServer`, `Arduino`, `Servo`, and `ArduinoJson`.
@@ -45,12 +45,17 @@ This section of the repository contains the source code for an ESP8266-based rai
 ## Supported Hardware Parts:
 ### PCB
 Files to create the PCBs are located here "switch/hardware/Switch_PCB"
-#### To Mill the PCB:
-To mill the PCB, follow this [tutorial](https://hackaday.com/2019/03/03/cnc-your-own-pcb-with-this-tutorial/).  
-Useful software:
-- KiCad
-- FlatCAM
-- CADmon GMDR Controller
+#### To Design and Mill a PCB:
+You will require the following software:
+- [KiCad](https://www.kicad.org/)
+- [FlatCAM](http://flatcam.org/)
+- GRBL Controller, like [Candle](https://github.com/Denvi/Candle)
+
+#### To mill the PCB of the Switch:
+- Only the GRBL Controller or a GCode for CNC/NC controller for your CNC is required.
+1. Download the .nc files in the "switch/hardware/Switch_PCB/FlatCAM/OutputFiles"
+2. Load in the CNC Program / NC Code Feeder the file with F_Cu in his name, to make the isolation of the traces of the PCB circuit.
+3. Then load in this sequence the following files: 0.8mm, 1.0mm, Edge_Cuts.
 
 ### 3D Part
 Files to print the switch mechanism are located here "switch/hardware/Switch_3D_print"
