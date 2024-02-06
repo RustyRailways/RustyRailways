@@ -31,24 +31,21 @@ The system is implemented using 5 different components:
 Here you can find a quick list of the things you need to do to try our project yourself 
 
 ### Master Installation
-    The current implementation of the master runs on a linux system (e.g. Raspberry py with Raspberry Pi OS) so in order to run in you just need to install the [regular rust toolchain](https://www.rust-lang.org/tools/install)
-    Given that we used a Hardware abstraction layer to implement the master, with a bit more work, it can be executed on something smaller (like an eso32), if yow are interested in this you can check out the train toolchain installation down bellow. 
+The current implementation of the master runs on a linux system (e.g. Raspberry py with Raspberry Pi OS) so in order to run in you just need to install the [regular rust toolchain](https://www.rust-lang.org/tools/install)
+Given that we used a Hardware abstraction layer to implement the master, with a bit more work, it can be executed on something smaller (like an eso32), if yow are interested in this you can check out the train toolchain installation down bellow. 
 
 ### Train Toolchain Installation
-    The trains code is built using embedded rust, with the [embedded-hal](https://github.com/rust-embedded/embedded-hal) and [embedded-svc](https://github.com/esp-rs/embedded-svc/tree/master) crates. To install the software for our target (The ESP-32) you can follow the tutorial [here](https://github.com/esp-rs/esp-idf-template?tab=readme-ov-file#prerequisites)
+The trains code is built using embedded rust, with the [embedded-hal](https://github.com/rust-embedded/embedded-hal) and [embedded-svc](https://github.com/esp-rs/embedded-svc/tree/master) crates. To install the software for our target (The ESP-32) you can follow the tutorial [here](https://github.com/esp-rs/esp-idf-template?tab=readme-ov-file#prerequisites)
 
 ### Switch Toolchain Installation
-    todo michele
+todo michele
 
 ### Client Installation
-    
-    todo cattai
+todo cattai
 
 ### 3D Printing
-
-    Files to print the switch mechanism are located [here](./switch/hardware/Switch_3D_print/)
-    You can find a 3D printing tutorial [here](https://all3dp.com/1/cura-tutorial-software-slicer-cura-3d/).  
+Files to print the switch mechanism are located [here](./switch/hardware/Switch_3D_print/)
+You can find a 3D printing tutorial [here](https://all3dp.com/1/cura-tutorial-software-slicer-cura-3d/).  
 
 ### Electronic Components
-
-    todo fede
+todo fede
