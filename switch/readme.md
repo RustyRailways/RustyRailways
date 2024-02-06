@@ -56,10 +56,3 @@ You will require the following software:
 1. Download the .nc files in the "switch/hardware/Switch_PCB/FlatCAM/OutputFiles"
 2. Load in the CNC Program / NC Code Feeder the file with F_Cu in his name, to make the isolation of the traces of the PCB circuit.
 3. Then load in this sequence the following files: 0.8mm, 1.0mm, Edge_Cuts.
-
-### 3D Part
-Files to print the switch mechanism are located here "switch/hardware/Switch_3D_print"
-#### To Print
-Follow this [tutorial](https://all3dp.com/1/cura-tutorial-software-slicer-cura-3d/).  
-Useful software:
-- UltimateKura
