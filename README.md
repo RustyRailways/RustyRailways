@@ -45,7 +45,7 @@ The trains code is built using embedded rust, with the [embedded-hal](https://gi
 To compile the switch code you can follow [this](./switch/readme.md) tutorial we written
 
 ### Client Installation
-todo cattai
+See [Client README.md](https://github.com/MrLakige/rusty_railways/blob/main/client/README.md).
 
 ### 3D Printing
 Files to print the switch mechanism are located [here](./switch/hardware/Switch_3D_print/)
