@@ -12,7 +12,7 @@ way if necessary.
 
 ## Video
 
-[![Watch the video](https://i.stack.imgur.com/Vp2cE.png)](https://youtu.be/AwafprRb6JQ)
+[![Watch the video](https://img.youtube.com/vi/AwafprRb6JQ/0.jpg)](https://youtu.be/AwafprRb6JQ)
 
 ## Components
 
