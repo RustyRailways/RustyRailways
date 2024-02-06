@@ -81,20 +81,21 @@ fn get_map()-> anyhow::Result<MapFactory>{
     //// switch stations ////
     map.add_switch_station(Switch::S1, Position::P21, Position::P2, Position::P5)?;
     map.add_switch_station(Switch::S2, Position::P24, Position::P1, Position::P12)?;
-    map.add_switch_station(Switch::S3, Position::P19, Position::P20, Position::P11)?;
-    map.add_switch_station(Switch::S4, Position::P23, Position::P22, Position::P24)?;
+    //map.add_switch_station(Switch::S3, Position::P19, Position::P20, Position::P11)?;
+    map.add_switch_station(Switch::S4, Position::P19, Position::P20, Position::P11)?;
+    //map.add_switch_station(Switch::S4, Position::P23, Position::P22, Position::P24)?;
     map.add_switch_station(Switch::S5, Position::P6, Position::P16, Position::P7)?;
     map.add_switch_station(Switch::S6, Position::P4, Position::P3, Position::P21)?;
 
 
     //// S1 to S4 ////
-    map.add_link(Position::P23, Position::P2, DEFAULT_STRAIGHT_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
+    map.add_link(Position::P23, Position::P2, 30,DEFAULT_STRAIGHT_SPEED, 50)?;
     
     //// S2 to S3 ////
     map.add_link(Position::P1, Position::P19, DEFAULT_STRAIGHT_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
 
     //// S3 to S5 ////
-    map.add_link(Position::P11, Position::P7, DEFAULT_STRAIGHT_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
+    map.add_link(Position::P11, Position::P7, 25,DEFAULT_STRAIGHT_SPEED, 50)?;
 
     //// S5 to S6 ////
     map.add_link(Position::P6, Position::P4, 30,30, 50)?;
@@ -108,17 +109,16 @@ fn get_map()-> anyhow::Result<MapFactory>{
     map.add_link(Position::P12, Position::P13, DEFAULT_UPHILL_SPEED,0, 50)?;
     map.add_link(Position::P13, Position::P14, 25,25, 50)?;
     map.add_link(Position::P14, Position::P15, 15,DEFAULT_UPHILL_SPEED, 50)?;
-    map.add_link(Position::P15, Position::P16, 15,DEFAULT_UPHILL_SPEED, 50)?;
+    map.add_link(Position::P15, Position::P16, DEFAULT_STRAIGHT_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
 
     //// dead track S1 ////
-    map.add_link(Position::P5, Position::P9, DEFAULT_UPHILL_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
-    map.add_link(Position::P9, Position::P25, DEFAULT_STRAIGHT_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
+    map.add_link(Position::P5, Position::P25, DEFAULT_STRAIGHT_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
     map.add_link(Position::P25, Position::P18, DEFAULT_STRAIGHT_SPEED,DEFAULT_STRAIGHT_SPEED, 50)?;
     
 
     //// trains ////
-    //map.add_train(Train::T2, Position::P18, None)?;
-    map.add_train(Train::T2, Position::P18, None)?;
+    map.add_train(Train::T2, Position::P23, Some(Position::P2))?;
+    map.add_train(Train::T1, Position::P18, None)?;
     
     
     //// creation ////

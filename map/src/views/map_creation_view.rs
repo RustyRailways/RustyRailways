@@ -3,7 +3,7 @@ use crate::Map;
 use crate::states::MapStateUninitialized;
 use anyhow::Result;
 pub use crate::map_creation_object::*;
-use crate::constants::{DEFAULT_SWITCH_DISTANCE, DEFAULT_SWITCH_SPEED};
+use crate::constants::{DEFAULT_SWITCH_DISTANCE, DEFAULT_SWITCH_SPEED, DEFAULT_SWITCH_SPEED_DIVERTED};
 use crate::map_creation_error::MapCreationError;
 
 /// # This struct is used to create a map
@@ -109,8 +109,8 @@ impl MapCreationView{
         // from main to straight
         self.map.add_link(position_center, position_straight,
                           Direction::Forward, Direction::Backward,
-                          DEFAULT_SWITCH_DISTANCE,DEFAULT_SWITCH_SPEED ,
-                          DEFAULT_SWITCH_SPEED,
+                          DEFAULT_SWITCH_DISTANCE,DEFAULT_SWITCH_SPEED_DIVERTED ,
+                          DEFAULT_SWITCH_SPEED_DIVERTED,
                           Some((switch, SwitchPosition::Straight)))?;
 
         self.used_switches.insert(switch);

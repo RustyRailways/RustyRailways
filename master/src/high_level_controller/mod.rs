@@ -32,7 +32,10 @@ macro_rules! unwrap_or_return {
     ($expr:expr) => {
         match $expr{
             Ok(value) => value,
-            Err(err) => return rouille::Response::text(format!("error: {}", err)).with_status_code(500)
+            Err(err) => {
+                println!("{:?}",err);
+                return rouille::Response::text(format!("error: {}", err)).with_status_code(500)
+            }
         }
     };
     () => {};
@@ -61,9 +64,13 @@ impl HighLevelController{
             rouille::start_server(&format!("{IP_MASTER}:{MASTER_PORT_VISUALIZER}"), move|request| {
                 router!(request,
                     (POST) (/add_request) => {
-                        let body: String = try_or_400!(rouille::input::plain_text_body(&request));
+                        let body = rouille::input::plain_text_body(&request);
+                        let mut body: String = try_or_400!(body);
+                        body = body.replace("\\","");
+                        println!("{:?}",body);
                         let message = serde_json::from_str::<Request>(&body);
                         let message= unwrap_or_return!(message);
+                        println!("{:?}",message);
                         // is ok if this thread panics because the main one has been closed
                         sender.lock().unwrap().send(message).unwrap();
                         rouille::Response::text("ok")
@@ -92,7 +99,10 @@ impl HighLevelController{
                         serde_json::to_string(&pos).unwrap();
                         rouille::Response::text(&serde_json::to_string(&pos).unwrap())
                     },
-                    _ => rouille::Response::empty_404()
+                    _ => {
+                        println!("not found");
+                        rouille::Response::empty_404()
+                    }
                 )
             });
         });

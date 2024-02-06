@@ -40,7 +40,13 @@ impl MasterHal for MasterHalRaspberryPi {
     fn get_message(&self) -> Result<Option<MasterMessage>> {
         self.message_receiver.try_get_message()
     }
-    fn send_message_to_train(&self, train: Train, message: TrainMessage) -> Result<()> {
+    fn send_message_to_train(&self, train: Train, mut message: TrainMessage) -> Result<()> {
+
+
+        if let TrainMessage::SetSpeed(s) = message{
+            message = TrainMessage::SetSpeed(s*2);
+        }
+
         let ip = train.get_url();
         let message_json = serde_json::to_string(&message)?;
         self.send_message_to_url(ip, message_json)
