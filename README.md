@@ -42,7 +42,7 @@ Given that we used a Hardware abstraction layer to implement the master, with a 
 The trains code is built using embedded rust, with the [embedded-hal](https://github.com/rust-embedded/embedded-hal) and [embedded-svc](https://github.com/esp-rs/embedded-svc/tree/master) crates. To install the software for our target (The ESP-32) you can follow the tutorial [here](https://github.com/esp-rs/esp-idf-template?tab=readme-ov-file#prerequisites)
 
 ### Switch Toolchain Installation
-todo michele
+To compile the switch code you can follow [this](./switch/readme.md) tutorial we written
 
 ### Client Installation
 todo cattai
@@ -52,4 +52,5 @@ Files to print the switch mechanism are located [here](./switch/hardware/Switch_
 You can find a 3D printing tutorial [here](https://all3dp.com/1/cura-tutorial-software-slicer-cura-3d/).  
 
 ### Electronic Components
-todo fede
+
+To build the switch PCB you can follow [this](switch#pcb) tutorial we written
