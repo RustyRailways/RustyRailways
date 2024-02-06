@@ -25,6 +25,10 @@ The system is implemented using 5 different components:
  - `The Trains`: You can learn more about the code that manage the trains [here](./train/rust/readme.md)
  - `The Switches`: You can learn more about the code that manage the switches [here](./switch/readme.md)
 
+## Documentation
+
+Other that the readme available at the links above we have also a HTML documentation generated with 
+doxigen and rust-doc available [here](https://mrlakige.github.io/rusty_railways/)
 
 ## Installation
 
