@@ -19,10 +19,10 @@ https://github.com/MrLakige/rusty_railways/assets/116217951/4c1d8071-14fc-486d-a
   - Create and Edit the Train Track, set IDs and Master IP
 
 - HTTPIO ([HTTPIO.gd](./HTTPIO.gd))
-  - Send move requests to Master (using HTTP)
+  - Send move requests to Master (using HTTP with [this standard](./../master/src/high_level_controller#requests))
 
 - Updaters ([TrainUpdatePosition.gd](./trains/TrainUpdatePosition.gd), [TrainUpdateStatus.gd](./trains/TrainUpdateStatus.gd), [TrainUpdateSpeed.gd](./trains/TrainUpdateSpeed.gd), [SwitchStateUpdater.gd](./trains/SwitchStateUpdater.gd))
-  - Pools Train Positions, States, Speeds and Switch States data from Master (using HTTP)
+  - Pools Train Positions, States, Speeds and Switch States data from Master (using HTTP with [this standard](./../master/src/high_level_controller#requests))
 
 ### Installation (from pre-made builds)
 Download the latest master build for your OS from the [latest release page](https://github.com/MrLakige/rusty_railways/releases/latest) under `Assets` and launch it, the following builds are currently available:
