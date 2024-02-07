@@ -25,11 +25,13 @@ https://github.com/MrLakige/rusty_railways/assets/116217951/4c1d8071-14fc-486d-a
   - Pools Train Positions, States, Speeds and Switch States data from Master (using HTTP)
 
 ### Installation (from pre-made builds)
-Download the latest master build for your OS and launch it
+Download the latest master build for your OS from the [latest release page](https://github.com/MrLakige/rusty_railways/releases/latest) under `Assets` and launch it, the following builds are currently available:
 
-- [Linux x86_64 Latest Build](https://github.com/MrLakige/rusty_railways/releases/latest/linux-x86_64-rusty-railways-client.x86_64)
-- [Windows x86_64 Latest Build](https://github.com/MrLakige/rusty_railways/releases/latest/windows-x86_64-rusty-railways-client.exe)
-- [MacOS x86_64 Latest Build](https://github.com/MrLakige/rusty_railways/releases/latest/macos-x86_64-rusty-railways-client.zip)
+- Linux x86_64
+- Windows x86_64
+- MacOS x86_64
+
+https://github.com/MrLakige/rusty_railways/releases/download/V0.1/linux-x86_64-rusty-railways-client.x86_64
 
 If you need a build for a different system and/or architecture please follow the [Installation (from source)](#Installation (from source)) section.
 
