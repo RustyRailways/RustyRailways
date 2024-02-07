@@ -14,6 +14,25 @@ https://github.com/MrLakige/rusty_railways/assets/116217951/4c1d8071-14fc-486d-a
 
 ![available-train-track-pieces](./screenshots/available-train-track-pieces.png)
 
+
+### Main Components
+
+#### Main (UI)
+Create and Edit the
+Train Track, set IDs and
+Master IP
+
+#### HTTPIO
+Send move requests to
+Master (using HTTP)
+
+#### Updaters
+Pools Train Positions,
+States, Speeds and
+Switch States data from
+Master (using HTTP)
+
+
 ### Installation (from pre-made builds)
 Download the latest master build for your OS and launch it, [Linux x86_64 Builds](https://github.com/MrLakige/rusty_railways/tree/main/client/build/linux_x86_64), [Windows x86_64 Builds](https://github.com/MrLakige/rusty_railways/tree/main/client/build/windows_x86_64), [MacOS x86_64 Builds](https://github.com/MrLakige/rusty_railways/tree/main/client/build/macos_x86_64)
 
