@@ -6,6 +6,20 @@ This section of the repository focuses on the train component of the project. Ea
 
 ![Trains Image](../../imgs/trains.jpg)
 
+## Hardware schematics
+
+![Image](../../imgs/train_hardware.png)
+
+ - Motor control pins:
+    - pwm_pin: Gpio25
+    - forward_pin: Gpio26
+    - backward_pin: Gpio27
+ - NFIC reader pins:
+    - SCK: Gpio15
+    - MISO: Gpio16
+    - MOSI: Gpio17
+    - SS/Reset: Gpio18
+
 ## Features
 
 The features include reading NFC tags placed on the track, WiFi communication, and motor control. Each feature is implemented in specific files according to the Rust HAL framework.
