@@ -20,3 +20,10 @@ The master is divided into 3 different components:
  ## Low level controller
 
  This component receives from the path-finder and scheduler a list of positions and sends the messages to the trains and switches to achieve the desired movement
+
+ ## Installation (from pre-made builds)
+ Download the latest [build](./build/) for your OS and launch it
+ If you need a build for a different system and/or architecture please follow the [Installation (from source)](#Installation (from source)) section.
+
+ ## Installation (from source)
+ To compile the master code you need the rust toolchain; To do so you can follow one of the many guides available online, like [this](https://doc.rust-lang.org/cargo/getting-started/installation.html)
