@@ -26,8 +26,12 @@ The system is implemented using 5 different components:
 
 ## Documentation
 
-Other than the readme available at the links above we have also HTML documentation generated with 
-Doxygen and rust-doc are available [here](https://mrlakige.github.io/rusty_railways/).
+- [Common infrastructure documentation](https://mrlakige.github.io/rusty_railways/common_infrastructure/doc/common_infrastructure/index.html)
+- [Map documentation](https://mrlakige.github.io/rusty_railways/map/doc/map/index.html)
+- [Master documentation](https://mrlakige.github.io/rusty_railways/master/doc/master/index.html)
+- [Railway sim map documentation](https://mrlakige.github.io/rusty_railways/railway_sim_map/doc/railway_sim_map/index.html)<br>
+- [Switch documentation](https://mrlakige.github.io/rusty_railways/switch/html/index.html)<br>
+- [Train documentation](https://mrlakige.github.io/rusty_railways/train/doc/locomotive/index.html)<br>
 
 ## Installation
 
