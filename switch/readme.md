@@ -43,6 +43,8 @@ This section of the repository contains the source code for an ESP8266-based rai
    Command: `source /your_local_path_to/ENV/bin/activate`
 
 ## Supported Hardware Parts:
+>[!CAUTION]
+>⚠️ **BASIC CNC AND ELECTRONICS KNOWLEDGE IS NEEDED TO REPRODUCE BELOW STEPS** ⚠️
 ### PCB
 Files to create the PCBs are located here "switch/hardware/Switch_PCB"
 #### To Design and Mill a PCB:
@@ -52,7 +54,20 @@ You will require the following software:
 - GRBL Controller, like [Candle](https://github.com/Denvi/Candle)
 
 #### To mill the PCB of the Switch:
-- Only the GRBL Controller or a GCode for CNC/NC controller for your CNC is required.
+>[!IMPORTANT]
+>GRBL Controller or a GCode for CNC/NC controller for your CNC is required.
 1. Download the .nc files in the "switch/hardware/Switch_PCB/FlatCAM/OutputFiles"
 2. Load in the CNC Program / NC Code Feeder the file with F_Cu in his name, to make the isolation of the traces of the PCB circuit.
 3. Then load in this sequence the following files: 0.8mm, 1.0mm, Edge_Cuts.
+
+___
+### Images for reference
+
+<p float="left">
+   <img src="../imgs/switch_KiCAD_pcb.png" height="600" />
+   <img src="../imgs/switch_board.jpg" height="600" />
+</p>
+
+![Switch PCB inside CNC](../imgs/switch_pcb_inside_CNC.jpg)
+
+
