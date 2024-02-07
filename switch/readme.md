@@ -28,8 +28,9 @@ This section of the repository contains the source code for an ESP8266-based rai
 ## Usage
 1. Connect the ESP8266 to the rail track switch control mechanism.
 2. Flash the firmware using this command:.  
-   `platformio run --target upload`
-
+   ```bash
+      platformio run --target upload`
+   ```
 ### Troubleshooting
 #### If a library is not found
 1. Run:  
@@ -40,8 +41,10 @@ This section of the repository contains the source code for an ESP8266-based rai
 #### If PlatformIO is not found
 1. Ensure that PlatformIO and the toolchain are installed correctly.
 2. Verify that the PlatformIO global variable is set.  
-   Command: `source /your_local_path_to/ENV/bin/activate`
-
+   Command:
+   ```bash
+      source /your_local_path_to/ENV/bin/activate
+   ```
 ## Supported Hardware Parts:
 >[!CAUTION]
 >⚠️ **BASIC CNC AND ELECTRONICS KNOWLEDGE IS NEEDED TO REPRODUCE BELOW STEPS** ⚠️
