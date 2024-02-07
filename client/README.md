@@ -14,7 +14,6 @@ https://github.com/MrLakige/rusty_railways/assets/116217951/4c1d8071-14fc-486d-a
 
 ![available-train-track-pieces](./screenshots/available-train-track-pieces.png)
 
-
 ### Main Components
 - Main (UI) ([Main.gd](./Main.gd) and [Main.tscn](./Main.tscn))
   - Create and Edit the Train Track, set IDs and Master IP
@@ -25,9 +24,12 @@ https://github.com/MrLakige/rusty_railways/assets/116217951/4c1d8071-14fc-486d-a
 - Updaters ([TrainUpdatePosition.gd](./trains/TrainUpdatePosition.gd), [TrainUpdateStatus.gd](./trains/TrainUpdateStatus.gd), [TrainUpdateSpeed.gd](./trains/TrainUpdateSpeed.gd), [SwitchStateUpdater.gd](./trains/SwitchStateUpdater.gd))
   - Pools Train Positions, States, Speeds and Switch States data from Master (using HTTP)
 
-
 ### Installation (from pre-made builds)
-Download the latest master build for your OS and launch it, [Linux x86_64 Builds](https://github.com/MrLakige/rusty_railways/tree/main/client/build/linux_x86_64), [Windows x86_64 Builds](https://github.com/MrLakige/rusty_railways/tree/main/client/build/windows_x86_64), [MacOS x86_64 Builds](https://github.com/MrLakige/rusty_railways/tree/main/client/build/macos_x86_64)
+Download the latest master build for your OS and launch it
+
+- [Linux x86_64 Latest Build](https://github.com/MrLakige/rusty_railways/releases/latest/linux-x86_64-rusty-railways-client.x86_64)
+- [Windows x86_64 Latest Build](https://github.com/MrLakige/rusty_railways/releases/latest/windows-x86_64-rusty-railways-client.exe)
+- [MacOS x86_64 Latest Build](https://github.com/MrLakige/rusty_railways/releases/latest/macos-x86_64-rusty-railways-client.zip)
 
 If you need a build for a different system and/or architecture please follow the [Installation (from source)](#Installation (from source)) section.
 
