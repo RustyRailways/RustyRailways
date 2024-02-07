@@ -27,8 +27,8 @@ This section of the repository contains the source code for an ESP8266-based rai
 
 ## Usage
 1. Connect the ESP8266 to the rail track switch control mechanism.
-2. Flash the firmware using the provided curl command or preferred method.  
-   Command: `platformio run --target upload`
+2. Flash the firmware using this command:.  
+   `platformio run --target upload`
 
 ### Troubleshooting
 #### If a library is not found
