@@ -2,8 +2,8 @@
 
 This is a [Godot](https://godotengine.org/) based client to create the train track and control/see the status of the train system.
 
-It will (hopefully) let you **Create** and **Edit** the **Train Track**, place the **NFC Tags**, **Trains** and **upload** everything to the Controller,
-**Control** and **Monitor** the **High Level Controller**, **Scheduler**, **Trains** and **Switches**.
+It lets you **Create** and **Edit** the **Train Track**, place the **NFC Tags**, **Trains** and **upload** (currently broken) everything to the Controller,
+**Control** and **Monitor** the **Trains** and **Switches**.
 
 ### Screenshots
 ![example-train-track](./screenshots/example-train-track.png)
@@ -45,8 +45,3 @@ Open
 ```
 
 Go to `Project` -> `Export...` and choose one of the pre-made `Presets` or use `Add...` to add a new custom preset with a different system and/or architecture of your choice.
-
-### TODO
-- [ ] Finish Refactoring and Commit Everything remaining
-- [ ] Make and Upload all builds
-- [ ] Update Screenshots with new GUI (current ones are really old)
