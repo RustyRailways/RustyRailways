@@ -8,7 +8,7 @@ It will (hopefully) let you **Create** and **Edit** the **Train Track**, place t
 ### Screenshots
 ![example-train-track](./screenshots/example-train-track.png)
 
-https://github.com/MrLakige/rusty_railways/assets/116217951/f5cb0ec4-0af8-4f79-ade2-f686deb53043
+https://github.com/MrLakige/rusty_railways/assets/116217951/06c1ccc1-122a-48b4-8d96-e06f8fb9ee58
 
 https://github.com/MrLakige/rusty_railways/assets/116217951/4c1d8071-14fc-486d-a815-6086c24b4450
 
