@@ -16,21 +16,14 @@ https://github.com/MrLakige/rusty_railways/assets/116217951/4c1d8071-14fc-486d-a
 
 
 ### Main Components
+- Main (UI)
+  - Create and Edit the Train Track, set IDs and Master IP
 
-#### Main (UI)
-Create and Edit the
-Train Track, set IDs and
-Master IP
+- HTTPIO
+  - Send move requests to Master (using HTTP)
 
-#### HTTPIO
-Send move requests to
-Master (using HTTP)
-
-#### Updaters
-Pools Train Positions,
-States, Speeds and
-Switch States data from
-Master (using HTTP)
+- Updaters
+  - Pools Train Positions, States, Speeds and Switch States data from Master (using HTTP)
 
 
 ### Installation (from pre-made builds)
