@@ -13,4 +13,4 @@ This crate defines some common components that are in use in all the other creat
   - `TrainHal` is the _HAL_ for the train
   - `HeartBeatManagerHal` is a _HAL_ for an optional component that can be used for additional safety that allows the system to detect if a component is disconnected. This is not in use in the current implementation of the master and the train
   
-Note: the switch does not have a _HAL_ because our switches run on `ESP-01s` that are not supported in embedded rust.
+Note: the switch does not have a _HAL_ because our switches run on `ESP-8266` that are not supported in embedded rust.
