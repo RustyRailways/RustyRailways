@@ -26,4 +26,4 @@ The master is divided into 3 different components:
  If you need a build for a different system and/or architecture please follow the [Installation (from source)](#Installation (from source)) section.
 
  ## Installation (from source)
- To compile the master code you need the rust toolchain; To do so you can follow one of the many guides available online, like [this](https://doc.rust-lang.org/cargo/getting-started/installation.html)
+ To compile the master code you need the rust toolchain; To install it you can follow one of the many guides available online, like [this](https://doc.rust-lang.org/cargo/getting-started/installation.html)
