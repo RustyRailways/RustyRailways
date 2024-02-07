@@ -36,4 +36,4 @@ Before proceeding, ensure that the main requirements are installed. Refer to the
 1. Initialize: `make init`
 2. Compile: `make build`
 3. Connect the ESP32 and flash: `make flash`
-4. (Optional) For debugging, check the serial output: `make init`
+4. (Optional) For debugging, check the serial output: `make monitor`
