@@ -32,7 +32,7 @@ impl GenericHal for MasterHalRaspberryPi{
         );
     }
     fn sleep_for_ms(&self, ms: u32) {
-        std::thread::sleep(std::time::Duto_stringration::from_millis(ms as u64));
+        std::thread::sleep(std::time::Duration::from_millis(ms as u64));
     }
 }
 
