@@ -1,7 +1,7 @@
 # Rusty Railways
 git repository for the embedded project
 
-<img alt="Rusty Railways Logo" src="logo.png" width="200" height="200">
+<img alt="Rusty Railways Logo" src="imgs/logo.png" width="200" height="200">
 
 ## Description
 
