@@ -16,13 +16,13 @@ https://github.com/MrLakige/rusty_railways/assets/116217951/4c1d8071-14fc-486d-a
 
 
 ### Main Components
-- Main (UI)
+- Main (UI) ([Main.gd](./Main.gd) and [Main.tscn](./Main.tscn))
   - Create and Edit the Train Track, set IDs and Master IP
 
-- HTTPIO
+- HTTPIO ([HTTPIO.gd](./HTTPIO.gd))
   - Send move requests to Master (using HTTP)
 
-- Updaters
+- Updaters ([TrainUpdatePosition.gd](./trains/TrainUpdatePosition.gd), [TrainUpdateStatus.gd](./trains/TrainUpdateStatus.gd), [TrainUpdateSpeed.gd](./trains/TrainUpdateSpeed.gd), [SwitchStateUpdater.gd](./trains/SwitchStateUpdater.gd))
   - Pools Train Positions, States, Speeds and Switch States data from Master (using HTTP)
 
 
@@ -44,7 +44,7 @@ Open
 ./rusty_railways/client/project.godot
 ```
 
-Go to `Project` -> `Export...` and select one of the pre-made `Presets` or use `Add...` to add a new custom preset with a different system and/or architecture of your choice.
+Go to `Project` -> `Export...` and choose one of the pre-made `Presets` or use `Add...` to add a new custom preset with a different system and/or architecture of your choice.
 
 ### TODO
 - [ ] Finish Refactoring and Commit Everything remaining
