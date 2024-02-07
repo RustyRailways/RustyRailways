@@ -7,6 +7,7 @@ It will (hopefully) let you **Create** and **Edit** the **Train Track**, place t
 
 ### Screenshots
 ![example-train-track](./screenshots/example-train-track.png)
+https://github.com/MrLakige/rusty_railways/assets/116217951/f5cb0ec4-0af8-4f79-ade2-f686deb53043
 ![available-train-track-pieces](./screenshots/available-train-track-pieces.png)
 
 ### Installation (from pre-made builds)
