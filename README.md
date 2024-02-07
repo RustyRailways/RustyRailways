@@ -11,7 +11,7 @@ way if necessary.
 
 ## Video
 
-[![Watch the video](https://img.youtube.com/vi/AwafprRb6JQ/0.jpg)](https://youtu.be/AwafprRb6JQ)
+[![Watch the video](https://img.youtube.com/vi/J4SjKY6N7vM/0.jpg)](https://youtu.be/J4SjKY6N7vM)
 
 ## Components
 
