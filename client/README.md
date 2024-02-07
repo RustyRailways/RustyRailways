@@ -18,9 +18,15 @@ If you need a build for a different system and/or architecture please follow the
 ### Installation (from source)
 Install the latest Godot 4 Version ([Steam App](https://store.steampowered.com/app/404790/Godot_Engine/), [Standalone Installer](https://godotengine.org/download/windows/), [Flatpak (Linux only)](https://flathub.org/apps/org.godotengine.Godot) or [WinGet (Windows only)](https://winstall.app/apps/GodotEngine.GodotEngine))
 
-Clone the repository with `git clone https://github.com/MrLakige/rusty_railways.git`
+Clone the repository with 
+```bash
+git clone https://github.com/MrLakige/rusty_railways.git
+```
 
-Open `./rusty_railways/client/project.godot`
+Open 
+```bash
+./rusty_railways/client/project.godot
+```
 
 Go to `Project` -> `Export...` and select one of the pre-made `Presets` or use `Add...` to add a new custom preset with a different system and/or architecture of your choice.
 
