@@ -1,6 +1,6 @@
 # ESP-8266 Rail Track Switch Control System
 
-This section of the repository contains the source code for an ESP-8266-based rail track switch control system. The code enables the ESP8266 to function as a web server, offering control over a servo-driven rail track switch. It is designed to set the correct path for trains.
+This section of the repository contains the source code for an ESP-8266-based rail track switch control system. The code enables the `ESP-8266` to function as a web server, offering control over a servo-driven rail track switch. It is designed to set the correct path for trains.
 
 ![Switch Image](../imgs/switch.jpg)
 
