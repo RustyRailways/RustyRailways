@@ -1,15 +1,15 @@
-# ESP8266 Rail Track Switch Control System
+# ESP-8266 Rail Track Switch Control System
 
 This section of the repository contains the source code for an ESP-8266-based rail track switch control system. The code enables the ESP8266 to function as a web server, offering control over a servo-driven rail track switch. It is designed to set the correct path for trains.
 
 ![Switch Image](../imgs/switch.jpg)
 
 ## Features
-- The ESP8266 uses a REST API to interface with the other components of the project.
+- The `ESP-8266` uses a REST API to interface with the other components of the project.
 - Switch control commands can be transmitted via HTTP POST requests.
 
 ## Hardware
-- The system utilizes a Servo motor (specifically, the MSG90S) to control the position of the rail track switch.
+- The system utilizes a Servo motor (specifically, the `MSG90S`) to control the position of the rail track switch.
 - WiFi connectivity is established using the built-in wireless functionality of the `ESP-8266` module.
 
 ## Code Overview
