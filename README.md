@@ -4,7 +4,7 @@
 
 ## Description
 
-Group Project by [**lucaSartore** (Sartore Luca)](https://github.com/lucaSartore), [**cattai-lorenzo** (Cattai Lorenzo)](https://github.com/cattai-lorenzo), [**MrLakige** (Callegari Michele)](https://github.com/MrLakige), [**Technorico** (Peruzzo Federico)](https://github.com/Technorico)
+Group Project by [**lucaSartore** (Sartore Luca)](https://github.com/lucaSartore), [**LorenzoCattai** (Cattai Lorenzo)](https://github.com/LorenzoCattai), [**MrLakige** (Callegari Michele)](https://github.com/MrLakige), [**Technorico** (Peruzzo Federico)](https://github.com/Technorico)
 for [Embedded Software for The Internet of Things - 145996](https://unitn.coursecatalogue.cineca.it/insegnamenti/2023/95013/2019/10002/10712?annoOrdinamento=2019) taught by professor [Kasim Sinan Yildirim](https://webapps.unitn.it/du/it/Persona/PER0212812/Didattica) at [University of Trento, DISI Department](https://www.disi.unitn.it/).
 
 This is a system that automates the motion of Lego trains and rail switches.
