@@ -1,6 +1,12 @@
-# Rusty Railways
-
-<img alt="Rusty Railways Logo" src="imgs/logo.png" width="200" height="200">
+<p align="center">
+    <img alt="Rusty Railways Logo" src="imgs/logo.png" style="width: 20%;">
+</p>
+<h3 align="center">Rust and Godot Based Autonomous Lego Train System</h3>
+<br/>
+<p align="center">
+    <img alt="Rusty Railways Railtrack 2" src="https://github.com/RustyRailways/RustyRailways/assets/116217951/8ebff71d-9b64-48a1-86f5-50a38c5b9bbc" style="width: 71%;">
+    <img alt="Rusty Railways Server and Client Station 2" src="https://github.com/RustyRailways/RustyRailways/assets/116217951/352528a2-75bf-400b-add8-0c4c2b1afb42" style="width: 27%;;">
+</p>
 
 ## Description
 
@@ -10,11 +16,11 @@ for [Embedded Software for The Internet of Things - 145996](https://unitn.course
 This is a system that automates the motion of Lego trains and rail switches.
 You can tell the system in which station you want a train to go (either using an HTTP request or using our GUI),
 and the system will figure out the best way to achieve the goal, even moving trains that are on your
-way if necessary. 
+way if necessary.
 
-## Video
+## Presentation Video
 
-[![Watch the video](https://img.youtube.com/vi/J4SjKY6N7vM/0.jpg)](https://youtu.be/J4SjKY6N7vM)
+[![Presentation Video](https://img.youtube.com/vi/J4SjKY6N7vM/0.jpg)](https://youtu.be/J4SjKY6N7vM)
 
 ## Components
 
@@ -60,6 +66,18 @@ You can find a 3D printing tutorial [here](https://all3dp.com/1/cura-tutorial-so
 ### Electronic Components
 
 To build the switch PCB you can follow [this](switch#pcb) tutorial we have written
+
+## Additional Videos
+
+https://github.com/RustyRailways/RustyRailways/assets/116217951/42091e8f-f878-42e6-8666-56fedade8acc
+
+https://github.com/RustyRailways/RustyRailways/assets/116217951/6e29771f-3cac-484c-83f4-8b54dd48968c
+
+https://github.com/RustyRailways/RustyRailways/assets/116217951/05d6a2de-c693-4c84-9944-1e6514dbb60c
+
+https://github.com/RustyRailways/RustyRailways/assets/116217951/6d81c1b0-d530-42d4-b9ea-9f0555a467a0
+
+https://github.com/RustyRailways/RustyRailways/assets/116217951/e64ef0ef-5b17-43a4-998a-6358e84ad2e4
 
 ### Special Thanks
 
