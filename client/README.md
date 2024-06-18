@@ -2,6 +2,9 @@
 
 This is a [Godot](https://godotengine.org/) based client to create the train track and control/see the status of the train system.
 
+> [!WARNING]  
+> This part of the project is currently broken, the code was fixed before the project presentation but never committed here properly with meaningful commits and comments in the code, I will try to do that whenever I find enough free time and willpower. Meanwhile you can use the [v0.1 release build](https://github.com/RustyRailways/RustyRailways/releases/tag/V0.1), it's an older version but it mostly works.
+
 It lets you **Create** and **Edit** the **Train Track**, place the **NFC Tags**, **Trains** and **upload** (currently broken) everything to the Controller,
 **Control** and **Monitor** the **Trains** and **Switches**.
 
