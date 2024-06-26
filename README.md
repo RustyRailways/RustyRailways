@@ -11,7 +11,7 @@
 ## Description
 
 Group Project by [**lucaSartore** (Luca Sartore)](https://github.com/lucaSartore), [**LorenzoCattai** (Lorenzo Cattai)](https://github.com/LorenzoCattai), [**MrLakige** (Michele Callegari)](https://github.com/MrLakige), [**Technorico** (Federico Peruzzo)](https://github.com/Technorico)
-for [Embedded Software for The Internet of Things - 145996](https://unitn.coursecatalogue.cineca.it/insegnamenti/2023/95013/2019/10002/10712?annoOrdinamento=2019) taught by professor [Kasim Sinan Yildirim](https://webapps.unitn.it/du/it/Persona/PER0212812/Didattica) at [University of Trento, DISI Department](https://www.disi.unitn.it/).
+for [Embedded Software for The Internet of Things - 145996](https://unitn.coursecatalogue.cineca.it/insegnamenti/2025/50459_641197_95013/2019/50459/10712?coorte=2024&schemaid=8535) taught by professor [Kasim Sinan Yildirim](https://webapps.unitn.it/du/it/Persona/PER0212812/Didattica) at [University of Trento, DISI Department](https://www.disi.unitn.it/).
 
 This is a system that automates the motion of Lego trains and rail switches.
 You can tell the system in which station you want a train to go (either using an HTTP request or using our GUI),
