@@ -29,12 +29,12 @@ The system is implemented using 5 different components:
 
 ## Documentation
 
-- [Common infrastructure documentation](https://mrlakige.github.io/rusty_railways/common_infrastructure/doc/common_infrastructure/index.html)
-- [Map documentation](https://mrlakige.github.io/rusty_railways/map/doc/map/index.html)
-- [Master documentation](https://mrlakige.github.io/rusty_railways/master/doc/master/index.html)
-- [Railway sim map documentation](https://mrlakige.github.io/rusty_railways/railway_sim_map/doc/railway_sim_map/index.html)<br>
-- [Switch documentation](https://mrlakige.github.io/rusty_railways/switch/html/index.html)<br>
-- [Train documentation](https://mrlakige.github.io/rusty_railways/train/doc/locomotive/index.html)<br>
+- [Common infrastructure documentation](https://rustyrailways.github.io/RustyRailways/common_infrastructure/doc/common_infrastructure/index.html)
+- [Map documentation](https://rustyrailways.github.io/RustyRailways/map/doc/map/index.html)
+- [Master documentation](https://rustyrailways.github.io/RustyRailways/master/doc/master/index.html)
+- [Railway sim map documentation](https://rustyrailways.github.io/RustyRailways/railway_sim_map/doc/railway_sim_map/index.html)<br>
+- [Switch documentation](https://rustyrailways.github.io/RustyRailways/switch/html/index.html)<br>
+- [Train documentation](https://rustyrailways.github.io/RustyRailways/train/doc/locomotive/index.html)<br>
 
 ## Installation
 
